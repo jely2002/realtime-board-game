@@ -8,6 +8,6 @@ public class Account {
   public Account() {}
 
   public boolean validateLogin(String uid, String pwd) {
-      return (uid.equals(this.uid)) && (pwd.equals(this.pwd));
+    return (uid.equals(this.uid)) && (pwd.equals(this.pwd));
   }
 }
