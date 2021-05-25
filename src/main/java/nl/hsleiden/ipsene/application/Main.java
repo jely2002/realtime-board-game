@@ -3,6 +3,7 @@ package nl.hsleiden.ipsene.application;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.views.AccountView;
+import nl.hsleiden.ipsene.views.LobbyView;
 
 public class Main extends Application {
 
@@ -12,6 +13,6 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    AccountView b = new AccountView(primaryStage);
+    LobbyView b = new LobbyView(primaryStage);
   }
 }
