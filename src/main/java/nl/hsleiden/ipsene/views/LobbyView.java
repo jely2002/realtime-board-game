@@ -1,11 +1,10 @@
 package nl.hsleiden.ipsene.views;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,113 +22,134 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class LobbyView {
-    private final int WIDTH = 1600;
-    private final int HEIGHT = 900;
+  private final int WIDTH = 1600;
+  private final int HEIGHT = 900;
 
-    String labelCSS = "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
-    String headerCSS = "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30;";
-    String textFieldCSS = "-fx-font-size: 20";
-    String playerDisplayCSS = "-fx-background-color: #444444; -fx-border-color: #111111; -fx-border-width: 5; -fx-border-style: solid; -fx-font-size: 20; -fx-padding: 11 9";
-    String quitButtonCSS = "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #808080; -fx-padding: 10 255";
+  String labelCSS =
+      "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
+  String headerCSS = "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30;";
+  String textFieldCSS = "-fx-font-size: 20";
+  String playerDisplayCSS =
+      "-fx-background-color: #444444; -fx-border-color: #111111; -fx-border-width: 5;"
+          + " -fx-border-style: solid; -fx-font-size: 20; -fx-padding: 11 9";
+  String quitButtonCSS =
+      "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #808080;"
+          + " -fx-padding: 10 255";
 
-    VBox playerDisplay;
-    Button joinButton;
-    Button hostButton;
-    Button quitButton;
+  VBox playerDisplay;
+  Button joinButton;
+  Button hostButton;
+  Button quitButton;
 
-    TextField joinLobbyIDInput;
-    PasswordField joinPasswordInput;
-    Label hostLobbyIDDisplay;
-    PasswordField hostPasswordInput;
-    Stage primaryStage;
+  TextField joinLobbyIDInput;
+  PasswordField joinPasswordInput;
+  Label hostLobbyIDDisplay;
+  PasswordField hostPasswordInput;
+  Stage primaryStage;
 
-    Label joinInputErrorLabel;
-    Label hostInputErrorLabel;
+  Label joinInputErrorLabel;
+  Label hostInputErrorLabel;
 
-    public LobbyView(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        try {
-            loadPrimaryStage(createPane());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+  public LobbyView(Stage primaryStage) {
+    this.primaryStage = primaryStage;
+    try {
+      loadPrimaryStage(createPane());
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
     }
+  }
 
-    private void loadPrimaryStage(Pane pane){
-        try {
-            Pane root = pane;
-            Scene scene = new Scene(root, WIDTH, HEIGHT);
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("Keezbord");
-            primaryStage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+  private void loadPrimaryStage(Pane pane) {
+    try {
+      Pane root = pane;
+      Scene scene = new Scene(root, WIDTH, HEIGHT);
+      primaryStage.setScene(scene);
+      primaryStage.setTitle("Keezbord");
+      primaryStage.show();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 
-    private Pane createPane() throws FileNotFoundException {
-        Pane pane = new Pane();
+  private Pane createPane() throws FileNotFoundException {
+    Pane pane = new Pane();
 
-        Rectangle joinRect = rectangleBuilder();
-        setNodeCoordinates(joinRect, 500, 200);
+    Rectangle joinRect = rectangleBuilder();
+    setNodeCoordinates(joinRect, 500, 200);
 
-        Rectangle hostRect = rectangleBuilder();
-        setNodeCoordinates(hostRect, 500, 500);
+    Rectangle hostRect = rectangleBuilder();
+    setNodeCoordinates(hostRect, 500, 500);
 
-        this.hostLobbyIDDisplay = lobbyIDLabelBuilder("-");
-        setNodeCoordinates(hostLobbyIDDisplay, 510, 560);
+    this.hostLobbyIDDisplay = lobbyIDLabelBuilder("-");
+    setNodeCoordinates(hostLobbyIDDisplay, 510, 560);
 
-        this.joinLobbyIDInput = textFieldBuilder();
-        setNodeCoordinates(joinLobbyIDInput ,510, 260);
+    this.joinLobbyIDInput = textFieldBuilder();
+    setNodeCoordinates(joinLobbyIDInput, 510, 260);
 
-        this.joinPasswordInput = passwordFieldBuilder();
-        setNodeCoordinates(joinPasswordInput, 510, 360);
+    this.joinPasswordInput = passwordFieldBuilder();
+    setNodeCoordinates(joinPasswordInput, 510, 360);
 
-        this.hostPasswordInput = passwordFieldBuilder();
-        setNodeCoordinates(hostPasswordInput, 510, 660);
+    this.hostPasswordInput = passwordFieldBuilder();
+    setNodeCoordinates(hostPasswordInput, 510, 660);
 
-        Label joinLobbyIDHeader = inputHeaderBuilder("JOIN: LobbyID");
-        setNodeCoordinates(joinLobbyIDHeader, 510 , 210);
+    Label joinLobbyIDHeader = inputHeaderBuilder("JOIN: LobbyID");
+    setNodeCoordinates(joinLobbyIDHeader, 510, 210);
 
-        Label joinPasswordHeader = inputHeaderBuilder("Password (optional)");
-        setNodeCoordinates(joinPasswordHeader, 510 , 310);
+    Label joinPasswordHeader = inputHeaderBuilder("Password (optional)");
+    setNodeCoordinates(joinPasswordHeader, 510, 310);
 
-        Label hostLobbyIDHeader = inputHeaderBuilder("HOST");
-        setNodeCoordinates(hostLobbyIDHeader, 510 , 510);
+    Label hostLobbyIDHeader = inputHeaderBuilder("HOST");
+    setNodeCoordinates(hostLobbyIDHeader, 510, 510);
 
-        Label hostPasswordHeader = inputHeaderBuilder("Password (optional)");
-        setNodeCoordinates(hostPasswordHeader, 510 , 610);
+    Label hostPasswordHeader = inputHeaderBuilder("Password (optional)");
+    setNodeCoordinates(hostPasswordHeader, 510, 610);
 
-        this.joinButton = buttonBuilder("JOIN");
-        setNodeCoordinates(joinButton, 1110, 350);
+    this.joinButton = buttonBuilder("JOIN");
+    setNodeCoordinates(joinButton, 1110, 350);
 
-        this.hostButton = buttonBuilder("HOST");
-        setNodeCoordinates(hostButton, 1220, 650);
+    this.hostButton = buttonBuilder("HOST");
+    setNodeCoordinates(hostButton, 1220, 650);
 
-        this.playerDisplay = vboxBuilder(playerListBuilder());
-        setNodeCoordinates(playerDisplay, 1110, 500);
+    this.playerDisplay = vboxBuilder(playerListBuilder());
+    setNodeCoordinates(playerDisplay, 1110, 500);
 
-        this.quitButton = quitButtonBuilder();
-        setNodeCoordinates(quitButton, 500, 800);
-        this.quitButton.addEventFilter(MouseEvent.MOUSE_CLICKED, quitButtonClicked);
+    this.quitButton = quitButtonBuilder();
+    setNodeCoordinates(quitButton, 500, 800);
+    this.quitButton.addEventFilter(MouseEvent.MOUSE_CLICKED, quitButtonClicked);
 
-        Image image = new Image(new FileInputStream("keez.png"));
-        ImageView imageView = new ImageView(image);
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(150);
-        applyDropShadow(imageView);
-        setNodeCoordinates(imageView, 677 , 20);
+    Image image = new Image(new FileInputStream("keez.png"));
+    ImageView imageView = new ImageView(image);
+    imageView.setPreserveRatio(true);
+    imageView.setFitHeight(150);
+    applyDropShadow(imageView);
+    setNodeCoordinates(imageView, 677, 20);
 
-        this.joinInputErrorLabel = errorLabelBuilder();
-        setNodeCoordinates(joinInputErrorLabel, 520, 420);
+    this.joinInputErrorLabel = errorLabelBuilder();
+    setNodeCoordinates(joinInputErrorLabel, 520, 420);
 
-        this.hostInputErrorLabel = errorLabelBuilder();
-        setNodeCoordinates(hostInputErrorLabel, 520, 720);
+    this.hostInputErrorLabel = errorLabelBuilder();
+    setNodeCoordinates(hostInputErrorLabel, 520, 720);
 
-        pane.getChildren().addAll(joinRect, hostRect, joinLobbyIDInput, joinPasswordInput, hostPasswordInput, hostLobbyIDDisplay, joinLobbyIDHeader, joinPasswordHeader);
-        pane.getChildren().addAll(hostLobbyIDHeader, hostPasswordHeader, joinButton, hostButton, playerDisplay, quitButton);
-        pane.getChildren().addAll(imageView, joinInputErrorLabel, hostInputErrorLabel);
-        return pane;
+    pane.getChildren()
+        .addAll(
+            joinRect,
+            hostRect,
+            joinLobbyIDInput,
+            joinPasswordInput,
+            hostPasswordInput,
+            hostLobbyIDDisplay,
+            joinLobbyIDHeader,
+            joinPasswordHeader);
+    pane.getChildren()
+        .addAll(
+            hostLobbyIDHeader,
+            hostPasswordHeader,
+            joinButton,
+            hostButton,
+            playerDisplay,
+            quitButton);
+    pane.getChildren().addAll(imageView, joinInputErrorLabel, hostInputErrorLabel);
+    return pane;
   }
 
   public void setNodeCoordinates(Node node, int x, int y) {
@@ -264,11 +284,13 @@ public class LobbyView {
 
     return lbl;
   }
-  EventHandler<MouseEvent> quitButtonClicked = new EventHandler<MouseEvent>() {
+
+  EventHandler<MouseEvent> quitButtonClicked =
+      new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-            System.out.println("quit button pressed");
-            Platform.exit();
+          System.out.println("quit button pressed");
+          Platform.exit();
         }
-    };
+      };
 }
