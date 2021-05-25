@@ -1,5 +1,3 @@
 package nl.hsleiden.ipsene.observers;
 
-public interface BoardObservable {
-
-}
+public interface BoardObservable {}

@@ -1,4 +1,3 @@
 package nl.hsleiden.ipsene.observers;
 
-public interface LobbyObservable {
-}
+public interface LobbyObservable {}
