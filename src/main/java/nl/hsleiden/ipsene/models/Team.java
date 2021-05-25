@@ -1,6 +1,12 @@
 package nl.hsleiden.ipsene.models;
 
-public class Team {
+import nl.hsleiden.ipsene.observers.TeamObserver;
+import nl.hsleiden.ipsene.observers.TeamObservable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Team implements TeamObservable {
     private Pawn[][] pawns;
     public static final int PAWNS_PER_PLAYER = 2; // idk
     public static final int PLAYERS_PER_TEAM = 2;
@@ -19,4 +25,19 @@ public class Team {
             }
         }
     }
+
+    private List<TeamObserver> observers = new ArrayList<TeamObserver>();
+
+    // Add an observer to the list
+    public void register(TeamObserver to){
+        observers.add(to);
+    }
+    // Signal all observers that something has changed.
+    // Also send <<this>> object to the observers.
+    public void notifyAllObservers(){
+        for (TeamObserver to : observers) {
+            to.update((TeamObserver) this);
+        }
+    }
+
 }
