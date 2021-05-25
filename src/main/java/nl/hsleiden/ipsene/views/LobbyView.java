@@ -3,6 +3,8 @@ package nl.hsleiden.ipsene.views;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -37,6 +40,7 @@ public class LobbyView {
   Button joinButton;
   Button hostButton;
   Button quitButton;
+
   TextField joinLobbyIDInput;
   PasswordField joinPasswordInput;
   Label hostLobbyIDDisplay;
@@ -111,6 +115,7 @@ public class LobbyView {
 
     this.quitButton = quitButtonBuilder();
     setNodeCoordinates(quitButton, 500, 800);
+    this.quitButton.addEventFilter(MouseEvent.MOUSE_CLICKED, quitButtonClicked);
 
     Image image = new Image(new FileInputStream("keez.png"));
     ImageView imageView = new ImageView(image);
@@ -279,4 +284,13 @@ public class LobbyView {
 
     return lbl;
   }
+
+  EventHandler<MouseEvent> quitButtonClicked =
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+          System.out.println("quit button pressed");
+          Platform.exit();
+        }
+      };
 }
