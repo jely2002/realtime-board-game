@@ -20,4 +20,5 @@ public class Lobby implements LobbyObservable {
             lo.update((LobbyObserver) this);
         }
     }
+
 }
