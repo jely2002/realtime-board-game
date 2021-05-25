@@ -32,17 +32,13 @@ public class Card implements CardObservable {
         this.type = type;
         onPlay = onPlayActions[type];
         // determine amount of steps card allows
-        if (type == 2) // spawn_step_1
-            steps = 1;
-        else if (type == 3) // step_7
-            steps = 7;
-        else if (type == 4) // step_4
-            steps = 4;
-        else if (type == 5) { // step_n
-            steps = CardController.getNCardStepValue();
+        switch (type) {
+            case 2 -> steps = 1;
+            case 3 -> steps = 7;
+            case 4 -> steps = 4;
+            case 5 -> steps = CardController.getNCardStepValue();
+            default -> steps = 0;
         }
-        else // not a step card
-            steps = 0;
     }
 
     /** calls the appropriate method for this card to be played
