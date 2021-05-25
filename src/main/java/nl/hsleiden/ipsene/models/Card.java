@@ -33,11 +33,20 @@ public class Card implements CardObservable {
         onPlay = onPlayActions[type];
         // determine amount of steps card allows
         switch (type) {
-            case 2 -> steps = 1;
-            case 3 -> steps = 7;
-            case 4 -> steps = 4;
-            case 5 -> steps = CardController.getNCardStepValue();
-            default -> steps = 0;
+            case 2:
+                steps = 1;
+                break;
+            case 3:
+                steps = 7;
+                break;
+            case 4:
+                steps = 4;
+                break;
+            case 5:
+                steps = CardController.getNCardStepValue();
+                break;
+            default:
+                steps = 0;
         }
     }
 
