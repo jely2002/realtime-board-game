@@ -1,9 +1,7 @@
 package nl.hsleiden.ipsene.models;
-
-import nl.hsleiden.ipsene.observers.PlayerObserver;
 import nl.hsleiden.ipsene.observers.PlayerObservable;
-
 import java.util.ArrayList;
+import nl.hsleiden.ipsene.observers.PlayerObserver;
 import java.util.List;
 
 public class Player implements PlayerObservable {

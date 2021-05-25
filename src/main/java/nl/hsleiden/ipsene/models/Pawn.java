@@ -11,7 +11,6 @@ public class Pawn implements PawnObservable {
     private final TeamType team;
     private final int pawnNum;
 
-
     /**
      * @param team - the 'type' of the team, from enum TeamType used to get team info and calculate pos
      * @param pawnNum - the number of the pawn, acts as an id and is used to determine initial board position
