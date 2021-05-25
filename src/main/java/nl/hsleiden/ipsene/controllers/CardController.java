@@ -9,6 +9,9 @@ public class CardController {
     private ArrayList<Card> deck = new ArrayList<Card>();
     // all possible values for nCards filled by generateDeck, slowly emptied over the course of the game
     private static ArrayList<Integer> nCardValues = new ArrayList<Integer>();
+    // all possible values for n cards
+    private final static int[] POSSIBLE_N_CARDS = {2, 3, 5, 6, 8, 9, 10, 12};
+
     /** generate a shuffled deck of integers, used to create cards
      * @param amountOfPlayers the amount of players in the game
      * @return a shuffled deck of integers corresponding to Cards
@@ -16,16 +19,29 @@ public class CardController {
     public static Integer[] generateDeck(int amountOfPlayers) {
         fillNCardValues(amountOfPlayers);
 
-        // each different card appears once for every player
-        Integer[] cards = new Integer[6 * amountOfPlayers];
+        // each different card appears once for every player, nCards are added separately
+        final int AMOUNT_NORMAL_CARDS = 5;
+        final int AMOUNT_N_CARDS = POSSIBLE_N_CARDS.length;
+        int amountOfCards = (AMOUNT_NORMAL_CARDS * amountOfPlayers) + (AMOUNT_N_CARDS * amountOfPlayers);
+        Integer[] cards = new Integer[amountOfCards];
+
         // fill the deck
         int index = 0;
-        for (int i = 0; i < 6; i++) {
+        // add normal cards
+        for (int i = 0; i < AMOUNT_NORMAL_CARDS; i++) {
             for (int j = 0; j < amountOfPlayers; j++) {
                 cards[index] = i;
                 ++index;
             }
         }
+        // add nCards
+        for (int i = 0; i < amountOfPlayers; i++) {
+            for (int j = 0; j < AMOUNT_N_CARDS; j++) {
+                cards[index] = 5;
+                ++index;
+            }
+        }
+
         // shuffle
         List<Integer> shuffled = Arrays.asList(cards);
         Collections.shuffle(shuffled);
@@ -39,7 +55,15 @@ public class CardController {
     public CardController(Integer[] deck) {
         // copy our deck and generate cards
         for (int i = 0; i < deck.length; i++) {
-            this.deck.add(new Card(deck[i]));
+            int steps = 0;
+            switch (deck[i]) {
+                case 2 -> steps = 1;
+                case 3 -> steps = 7;
+                case 4 -> steps = 4;
+                case 5 -> steps = CardController.getNCardStepValue();
+                default -> steps = 0;
+            }
+            this.deck.add(new Card(deck[i], steps));
         }
     }
 
@@ -68,10 +92,9 @@ public class CardController {
      * @param amountOfPlayers the amount of players in the game
      */
     private static void fillNCardValues(int amountOfPlayers) {
-        int[] possible = {2, 3, 5, 6, 8, 9, 10, 12};
         for (int i = 0; i < amountOfPlayers; i++) {
-            for (int j = 0; j < possible.length; j++) {
-                nCardValues.add(possible[j]);
+            for (int j = 0; j < POSSIBLE_N_CARDS.length; j++) {
+                nCardValues.add(POSSIBLE_N_CARDS[j]);
             }
         }
         Collections.shuffle(nCardValues);

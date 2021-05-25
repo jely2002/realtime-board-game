@@ -1,13 +1,11 @@
 package nl.hsleiden.ipsene.models;
 
-import nl.hsleiden.ipsene.controllers.CardController;
 import nl.hsleiden.ipsene.observers.CardObservable;
 import nl.hsleiden.ipsene.observers.CardObserver;
 
 import java.util.ArrayList;
-import java.util.List;
 
-interface Playable{
+interface Playable {
     void play(Player player, Pawn pawn, Card card);
 }
 
@@ -28,17 +26,10 @@ public class Card implements CardObservable {
      *      *   "step_n":       5
      * @param type the type of card as an integer
      */
-    public Card(int type) {
+    public Card(int type, int steps) {
         this.type = type;
+        this.steps = steps;
         onPlay = onPlayActions[type];
-        // determine amount of steps card allows
-        switch (type) {
-            case 2 -> steps = 1;
-            case 3 -> steps = 7;
-            case 4 -> steps = 4;
-            case 5 -> steps = CardController.getNCardStepValue();
-            default -> steps = 0;
-        }
     }
 
     /** calls the appropriate method for this card to be played
