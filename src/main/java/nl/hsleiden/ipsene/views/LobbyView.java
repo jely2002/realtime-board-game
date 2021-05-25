@@ -38,8 +38,6 @@ public class LobbyView {
     Button hostButton;
     Button quitButton;
 
-    
-
     TextField joinLobbyIDInput;
     PasswordField joinPasswordInput;
     Label hostLobbyIDDisplay;
