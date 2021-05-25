@@ -1,12 +1,7 @@
 package nl.hsleiden.ipsene.models;
 
-<<<<<<< HEAD
 import java.util.HashMap;
 
-public class Board {
-    public static final int STEPS_BETWEEN_TEAMS = 14;
-    public static final HashMap<TeamType, Integer> boardOffset = new HashMap<TeamType, Integer>();
-=======
 import nl.hsleiden.ipsene.observers.BoardObserver;
 import nl.hsleiden.ipsene.observers.BoardObservable;
 
@@ -18,17 +13,12 @@ public class Board implements BoardObservable {
     public static final int STEPS_BETWEEN_TEAMS = 14;
     public static final HashMap<TeamType, Integer> boardOffset = new HashMap<TeamType, Integer>();
 
-
-
->>>>>>> origin/develop
     static {
         boardOffset.put(TeamType.RED, 0);
         boardOffset.put(TeamType.GREEN, STEPS_BETWEEN_TEAMS);
         boardOffset.put(TeamType.BLUE, STEPS_BETWEEN_TEAMS * 2);
         boardOffset.put(TeamType.YELLOW, STEPS_BETWEEN_TEAMS * 3);
     }
-<<<<<<< HEAD
-=======
 
     private List<BoardObserver> observers = new ArrayList<BoardObserver>();
 
@@ -43,5 +33,4 @@ public class Board implements BoardObservable {
             bo.update(this);
         }
     }
->>>>>>> origin/develop
 }

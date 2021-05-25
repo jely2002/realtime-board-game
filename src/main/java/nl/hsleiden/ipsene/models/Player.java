@@ -1,18 +1,10 @@
 package nl.hsleiden.ipsene.models;
-
-<<<<<<< HEAD
-import java.util.ArrayList;
-
-public class Player {
-=======
-import nl.hsleiden.ipsene.observers.PlayerObserver;
 import nl.hsleiden.ipsene.observers.PlayerObservable;
-
 import java.util.ArrayList;
+import nl.hsleiden.ipsene.observers.PlayerObserver;
 import java.util.List;
 
 public class Player implements PlayerObservable {
->>>>>>> origin/develop
     private ArrayList<Card> cards;
 
     public Player() {
@@ -22,8 +14,6 @@ public class Player implements PlayerObservable {
     public void addCard() {
         // push back a card and check bounds
     }
-<<<<<<< HEAD
-=======
 
     private List<PlayerObserver> observers = new ArrayList<PlayerObserver>();
 
@@ -39,5 +29,4 @@ public class Player implements PlayerObservable {
         }
     }
 
->>>>>>> origin/develop
 }

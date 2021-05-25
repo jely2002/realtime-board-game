@@ -1,8 +1,5 @@
 package nl.hsleiden.ipsene.models;
 
-<<<<<<< HEAD
-public class Pawn {
-=======
 import nl.hsleiden.ipsene.observers.PawnObserver;
 import nl.hsleiden.ipsene.observers.PawnObservable;
 
@@ -10,11 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pawn implements PawnObservable {
->>>>>>> origin/develop
     private int boardPos;
     private final TeamType team;
     private final int pawnNum;
-
 
     /**
      * @param team - the 'type' of the team, from enum TeamType used to get team info and calculate pos
@@ -37,8 +32,6 @@ public class Pawn implements PawnObservable {
     public void addRelativeBoardPos(int amount) {
         setRelativeBoardpos(boardPos + amount);
     }
-<<<<<<< HEAD
-=======
 
     private List<PawnObserver> observers = new ArrayList<PawnObserver>();
 
@@ -53,5 +46,4 @@ public class Pawn implements PawnObservable {
             pao.update((PawnObserver) this);
         }
     }
->>>>>>> origin/develop
 }
