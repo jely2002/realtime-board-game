@@ -56,13 +56,22 @@ public class CardController {
         // copy our deck and generate cards
         for (int i = 0; i < deck.length; i++) {
             int steps = 0;
-            switch (deck[i]) {
-                case 2 -> steps = 1;
-                case 3 -> steps = 7;
-                case 4 -> steps = 4;
-                case 5 -> steps = CardController.getNCardStepValue();
-                default -> steps = 0;
-            }
+           switch (deck[i]) {
+            case 2:
+                steps = 1;
+                break;
+            case 3:
+                steps = 7;
+                break;
+            case 4:
+                steps = 4;
+                break;
+            case 5:
+                steps = CardController.getNCardStepValue();
+                break;
+            default:
+                steps = 0;
+        }
             this.deck.add(new Card(deck[i], steps));
         }
     }
