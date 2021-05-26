@@ -3,7 +3,6 @@ package nl.hsleiden.ipsene.views;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -20,8 +19,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import nl.hsleiden.ipsene.controllers.LobbyController;
+import nl.hsleiden.ipsene.observers.LobbyObserver;
 
-public class LobbyView {
+public class LobbyView implements LobbyObserver {
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
 
@@ -50,6 +51,8 @@ public class LobbyView {
   Label joinInputErrorLabel;
   Label hostInputErrorLabel;
 
+  LobbyController lobbyController;
+
   public LobbyView(Stage primaryStage) {
     this.primaryStage = primaryStage;
     try {
@@ -57,6 +60,8 @@ public class LobbyView {
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
+    lobbyController = LobbyController.getInstance();
+    lobbyController.registerObserver(this);
   }
 
   private void loadPrimaryStage(Pane pane) {
@@ -285,12 +290,21 @@ public class LobbyView {
     return lbl;
   }
 
+  public Button getQuitButton() {
+    Button quitButton = this.quitButton;
+    return quitButton;
+  }
+
   EventHandler<MouseEvent> quitButtonClicked =
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
           System.out.println("quit button pressed");
-          Platform.exit();
+          // Platform.exit();
+          lobbyController.quitGame();
         }
       };
+
+  @Override
+  public void update(LobbyObserver lo) {}
 }
