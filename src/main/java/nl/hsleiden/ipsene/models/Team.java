@@ -3,7 +3,6 @@ package nl.hsleiden.ipsene.models;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import nl.hsleiden.ipsene.controllers.CardController;
 import nl.hsleiden.ipsene.observers.TeamObservable;
 import nl.hsleiden.ipsene.observers.TeamObserver;
@@ -30,16 +29,16 @@ public class Team implements TeamObservable {
     }
   }
 
-  /**
-   * calls doTurn() on all players
-   */
+  /** calls doTurn() on all players */
   public void doTurn() {
     for (int i = 0; i < players.length; i++) {
       players[i].doTurn();
     }
   }
 
-  /** draws a number of cards per player
+  /**
+   * draws a number of cards per player
+   *
    * @param amountOfCardsPerPlayer the amount off cards drawn per player
    * @param controller the card controller drawn from
    */
@@ -51,16 +50,18 @@ public class Team implements TeamObservable {
     }
   }
 
-  /** gets a pawn with a given index from a given player
+  /**
+   * gets a pawn with a given index from a given player
+   *
    * @param playerIndex index of the player within their team
    * @param pawnIndex index of the pawn to get
    * @return the corresponding pawn
    */
   public Pawn getPawn(int playerIndex, int pawnIndex) {
-    if (playerIndex < PLAYERS_PER_TEAM)
-      return pawns.get(playerIndex).get(pawnIndex);
+    if (playerIndex < PLAYERS_PER_TEAM) return pawns.get(playerIndex).get(pawnIndex);
     return null;
   }
+
   private List<TeamObserver> observers = new ArrayList<TeamObserver>();
 
   // Add an observer to the list

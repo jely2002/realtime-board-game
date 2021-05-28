@@ -3,7 +3,6 @@ package nl.hsleiden.ipsene.application;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.BoardController;
-import nl.hsleiden.ipsene.controllers.TeamController;
 import nl.hsleiden.ipsene.models.*;
 import nl.hsleiden.ipsene.views.LobbyView;
 
