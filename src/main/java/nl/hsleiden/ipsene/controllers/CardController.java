@@ -86,7 +86,7 @@ public class CardController {
     if (deck.size() != 0) return deck.remove(deck.size() - 1);
     else return null;
   }
-
+  public int getAmountOfCardsInDeck() { return deck.size(); }
   /**
    * internally called by Card to determine the value of the 'step' variable
    *
