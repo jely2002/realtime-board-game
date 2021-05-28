@@ -21,6 +21,7 @@ public class Pawn implements PawnObservable {
     this.pawnNum = pawnNum;
     boardPos = pawnNum;
   }
+  public int getPawnNum() { return pawnNum; }
 
   public int getAbsoluteBoardPos() {
     return Board.boardOffset.get(team) + boardPos;
