@@ -2,12 +2,9 @@ package nl.hsleiden.ipsene.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import nl.hsleiden.ipsene.controllers.CardController;
-import nl.hsleiden.ipsene.observers.TeamObservable;
-import nl.hsleiden.ipsene.observers.TeamObserver;
 
-public class Team implements TeamObservable {
+public class Team {
   private ArrayList<HashMap<Integer, Pawn>> pawns;
   private Player[] players;
   public static final int PAWNS_PER_PLAYER = 2; // idk
@@ -60,19 +57,5 @@ public class Team implements TeamObservable {
   public Pawn getPawn(int playerIndex, int pawnIndex) {
     if (playerIndex < PLAYERS_PER_TEAM) return pawns.get(playerIndex).get(pawnIndex);
     return null;
-  }
-
-  private List<TeamObserver> observers = new ArrayList<TeamObserver>();
-
-  // Add an observer to the list
-  public void register(TeamObserver to) {
-    observers.add(to);
-  }
-  // Signal all observers that something has changed.
-  // Also send <<this>> object to the observers.
-  public void notifyAllObservers() {
-    for (TeamObserver to : observers) {
-      to.update((TeamObserver) this);
-    }
   }
 }

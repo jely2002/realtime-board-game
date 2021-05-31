@@ -1,11 +1,9 @@
 package nl.hsleiden.ipsene.models;
 
 import java.util.ArrayList;
-import java.util.List;
-import nl.hsleiden.ipsene.observers.PlayerObservable;
-import nl.hsleiden.ipsene.observers.PlayerObserver;
+import nl.hsleiden.ipsene.views.View;
 
-public class Player implements PlayerObservable {
+public class Player implements Model {
   private ArrayList<Card> cards;
   /** index of the player in its team */
   private int playerIndex;
@@ -49,20 +47,15 @@ public class Player implements PlayerObservable {
     c.play(this, pawn);
     cards.remove(c);
     // removed a card so call observers
-    notifyAllObservers();
+    notifyObservers();
   }
 
-  private List<PlayerObserver> observers = new ArrayList<PlayerObserver>();
+  @Override
+  public void registerObserver(View v) {}
 
-  // Add an observer to the list
-  public void register(PlayerObserver plo) {
-    observers.add(plo);
-  }
-  // Signal all observers that something has changed.
-  // Also send <<this>> object to the observers.
-  public void notifyAllObservers() {
-    for (PlayerObserver plo : observers) {
-      plo.update((PlayerObserver) this);
-    }
-  }
+  @Override
+  public void unregisterObserver(View v) {}
+
+  @Override
+  public void notifyObservers() {}
 }

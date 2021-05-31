@@ -1,14 +1,12 @@
 package nl.hsleiden.ipsene.models;
 
-import java.util.ArrayList;
-import nl.hsleiden.ipsene.observers.CardObservable;
-import nl.hsleiden.ipsene.observers.CardObserver;
+import nl.hsleiden.ipsene.views.View;
 
 interface Playable {
   void play(Player player, Pawn pawn, Card card);
 }
 
-public class Card implements CardObservable {
+public class Card implements Model {
 
   public final int steps;
 
@@ -74,17 +72,12 @@ public class Card implements CardObservable {
     onPlayActions[5] = Card::playStepNCard;
   }
 
-  private ArrayList<CardObserver> observers = new ArrayList<CardObserver>();
+  @Override
+  public void registerObserver(View v) {}
 
-  // Add an observer to the list
-  public void register(CardObserver co) {
-    observers.add(co);
-  }
-  // Signal all observers that something has changed.
-  // Also send <<this>> object to the observers.
-  public void notifyAllObservers() {
-    for (CardObserver co : observers) {
-      co.update((CardObserver) this);
-    }
-  }
+  @Override
+  public void unregisterObserver(View v) {}
+
+  @Override
+  public void notifyObservers() {}
 }

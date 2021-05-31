@@ -1,10 +1,12 @@
 package nl.hsleiden.ipsene.controllers;
 
+import com.google.cloud.firestore.DocumentSnapshot;
 import javafx.application.Platform;
 import nl.hsleiden.ipsene.models.Lobby;
-import nl.hsleiden.ipsene.views.LobbyView;
+import nl.hsleiden.ipsene.views.Menu;
+import nl.hsleiden.ipsene.views.View;
 
-public class LobbyController {
+public class LobbyController implements Controller {
 
   static LobbyController lobbyController;
   Lobby lobby;
@@ -20,11 +22,17 @@ public class LobbyController {
     return lobbyController;
   }
 
-  public void registerObserver(LobbyView lobbyView) {
-    lobby.register(lobbyView);
+  public void registerObserver(Menu menu) {
+    lobby.registerObserver(menu);
   }
 
   public void quitGame() {
     Platform.exit();
   }
+
+  @Override
+  public void update(DocumentSnapshot ds) {}
+
+  @Override
+  public void registerObserver(View v) {}
 }

@@ -2,7 +2,6 @@ package nl.hsleiden.ipsene.views;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -15,14 +14,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.LobbyController;
-import nl.hsleiden.ipsene.observers.LobbyObserver;
 
-public class LobbyView implements LobbyObserver {
+public class Menu implements View {
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
 
@@ -37,15 +34,12 @@ public class LobbyView implements LobbyObserver {
       "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #808080;"
           + " -fx-padding: 10 255";
 
-  VBox playerDisplay;
   Button joinButton;
   Button hostButton;
   Button quitButton;
 
   TextField joinLobbyIDInput;
-  PasswordField joinPasswordInput;
   Label hostLobbyIDDisplay;
-  PasswordField hostPasswordInput;
   Stage primaryStage;
 
   Label joinInputErrorLabel;
@@ -53,7 +47,7 @@ public class LobbyView implements LobbyObserver {
 
   LobbyController lobbyController;
 
-  public LobbyView(Stage primaryStage) {
+  public Menu(Stage primaryStage) {
     this.primaryStage = primaryStage;
     try {
       loadPrimaryStage(createPane());
@@ -91,32 +85,17 @@ public class LobbyView implements LobbyObserver {
     this.joinLobbyIDInput = textFieldBuilder();
     setNodeCoordinates(joinLobbyIDInput, 510, 260);
 
-    this.joinPasswordInput = passwordFieldBuilder();
-    setNodeCoordinates(joinPasswordInput, 510, 360);
-
-    this.hostPasswordInput = passwordFieldBuilder();
-    setNodeCoordinates(hostPasswordInput, 510, 660);
-
     Label joinLobbyIDHeader = inputHeaderBuilder("JOIN: LobbyID");
     setNodeCoordinates(joinLobbyIDHeader, 510, 210);
-
-    Label joinPasswordHeader = inputHeaderBuilder("Password (optional)");
-    setNodeCoordinates(joinPasswordHeader, 510, 310);
 
     Label hostLobbyIDHeader = inputHeaderBuilder("HOST");
     setNodeCoordinates(hostLobbyIDHeader, 510, 510);
 
-    Label hostPasswordHeader = inputHeaderBuilder("Password (optional)");
-    setNodeCoordinates(hostPasswordHeader, 510, 610);
-
     this.joinButton = buttonBuilder("JOIN");
-    setNodeCoordinates(joinButton, 1110, 350);
+    setNodeCoordinates(joinButton, 1110, 250);
 
     this.hostButton = buttonBuilder("HOST");
-    setNodeCoordinates(hostButton, 1220, 650);
-
-    this.playerDisplay = vboxBuilder(playerListBuilder());
-    setNodeCoordinates(playerDisplay, 1110, 500);
+    setNodeCoordinates(hostButton, 1110, 550);
 
     this.quitButton = quitButtonBuilder();
     setNodeCoordinates(quitButton, 500, 800);
@@ -130,29 +109,14 @@ public class LobbyView implements LobbyObserver {
     setNodeCoordinates(imageView, 677, 20);
 
     this.joinInputErrorLabel = errorLabelBuilder();
-    setNodeCoordinates(joinInputErrorLabel, 520, 420);
+    setNodeCoordinates(joinInputErrorLabel, 520, 320);
 
     this.hostInputErrorLabel = errorLabelBuilder();
-    setNodeCoordinates(hostInputErrorLabel, 520, 720);
+    setNodeCoordinates(hostInputErrorLabel, 520, 620);
 
     pane.getChildren()
-        .addAll(
-            joinRect,
-            hostRect,
-            joinLobbyIDInput,
-            joinPasswordInput,
-            hostPasswordInput,
-            hostLobbyIDDisplay,
-            joinLobbyIDHeader,
-            joinPasswordHeader);
-    pane.getChildren()
-        .addAll(
-            hostLobbyIDHeader,
-            hostPasswordHeader,
-            joinButton,
-            hostButton,
-            playerDisplay,
-            quitButton);
+        .addAll(joinRect, hostRect, joinLobbyIDInput, hostLobbyIDDisplay, joinLobbyIDHeader);
+    pane.getChildren().addAll(hostLobbyIDHeader, joinButton, hostButton, quitButton);
     pane.getChildren().addAll(imageView, joinInputErrorLabel, hostInputErrorLabel);
     return pane;
   }
@@ -166,7 +130,7 @@ public class LobbyView implements LobbyObserver {
     Rectangle rect = new Rectangle();
 
     rect.setWidth(600);
-    rect.setHeight(250);
+    rect.setHeight(150);
     rect.setFill(Color.GREY);
     return rect;
   }
@@ -233,31 +197,6 @@ public class LobbyView implements LobbyObserver {
     return btn;
   }
 
-  private ArrayList<Node> playerListBuilder() {
-    ArrayList<Node> nodes = new ArrayList<>();
-
-    for (int i = 0; i < 4; i++) {
-      int j = i + 1;
-      Label label = new Label();
-      label.setText("Player " + j);
-      label.setTextFill(Color.WHITE);
-      nodes.add(label);
-    }
-
-    return nodes;
-  }
-
-  private VBox vboxBuilder(ArrayList<Node> nodes) {
-    VBox vbx = new VBox();
-
-    for (Node node : nodes) {
-      node.setStyle(playerDisplayCSS);
-      vbx.getChildren().add(node);
-    }
-
-    return vbx;
-  }
-
   private Button quitButtonBuilder() {
     Button btn = new Button();
 
@@ -306,5 +245,5 @@ public class LobbyView implements LobbyObserver {
       };
 
   @Override
-  public void update(LobbyObserver lo) {}
+  public void update() {}
 }
