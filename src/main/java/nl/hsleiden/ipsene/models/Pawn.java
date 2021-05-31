@@ -22,6 +22,10 @@ public class Pawn implements Model {
     boardPos = pawnNum;
   }
 
+  public int getPawnNum() {
+    return pawnNum;
+  }
+
   public int getAbsoluteBoardPos() {
     return Board.boardOffset.get(team) + boardPos;
   }
