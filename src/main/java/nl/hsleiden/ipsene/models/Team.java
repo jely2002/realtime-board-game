@@ -1,10 +1,8 @@
 package nl.hsleiden.ipsene.models;
 
-import nl.hsleiden.ipsene.controllers.CardController;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import nl.hsleiden.ipsene.controllers.CardController;
 
 public class Team {
   private ArrayList<HashMap<Integer, Pawn>> pawns;

@@ -2,7 +2,6 @@ package nl.hsleiden.ipsene.views;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -15,7 +14,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -117,19 +115,8 @@ public class Menu implements View {
     setNodeCoordinates(hostInputErrorLabel, 520, 620);
 
     pane.getChildren()
-        .addAll(
-            joinRect,
-            hostRect,
-            joinLobbyIDInput,
-            hostLobbyIDDisplay,
-            joinLobbyIDHeader
-                );
-    pane.getChildren()
-        .addAll(
-            hostLobbyIDHeader,
-            joinButton,
-            hostButton,
-            quitButton);
+        .addAll(joinRect, hostRect, joinLobbyIDInput, hostLobbyIDDisplay, joinLobbyIDHeader);
+    pane.getChildren().addAll(hostLobbyIDHeader, joinButton, hostButton, quitButton);
     pane.getChildren().addAll(imageView, joinInputErrorLabel, hostInputErrorLabel);
     return pane;
   }
@@ -210,7 +197,6 @@ public class Menu implements View {
     return btn;
   }
 
-
   private Button quitButtonBuilder() {
     Button btn = new Button();
 
@@ -259,7 +245,5 @@ public class Menu implements View {
       };
 
   @Override
-  public void update() {
-
-  }
+  public void update() {}
 }

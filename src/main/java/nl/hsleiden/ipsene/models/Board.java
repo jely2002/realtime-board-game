@@ -1,10 +1,7 @@
 package nl.hsleiden.ipsene.models;
 
-import nl.hsleiden.ipsene.views.View;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import nl.hsleiden.ipsene.views.View;
 
 public class Board implements Model {
   public static final int STEPS_BETWEEN_TEAMS = 14;
@@ -18,17 +15,11 @@ public class Board implements Model {
   }
 
   @Override
-  public void registerObserver(View v) {
-
-  }
+  public void registerObserver(View v) {}
 
   @Override
-  public void unregisterObserver(View v) {
-
-  }
+  public void unregisterObserver(View v) {}
 
   @Override
-  public void notifyObservers() {
-
-  }
+  public void notifyObservers() {}
 }

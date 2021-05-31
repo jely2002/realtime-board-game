@@ -31,12 +31,8 @@ public class LobbyController implements Controller {
   }
 
   @Override
-  public void update(DocumentSnapshot ds) {
-
-  }
+  public void update(DocumentSnapshot ds) {}
 
   @Override
-  public void registerObserver(View v) {
-
-  }
+  public void registerObserver(View v) {}
 }

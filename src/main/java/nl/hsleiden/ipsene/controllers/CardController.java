@@ -1,8 +1,7 @@
 package nl.hsleiden.ipsene.controllers;
 
-import java.util.*;
-
 import com.google.cloud.firestore.DocumentSnapshot;
+import java.util.*;
 import nl.hsleiden.ipsene.models.Card;
 import nl.hsleiden.ipsene.views.View;
 
@@ -121,12 +120,8 @@ public class CardController implements Controller {
   }
 
   @Override
-  public void update(DocumentSnapshot ds) {
-
-  }
+  public void update(DocumentSnapshot ds) {}
 
   @Override
-  public void registerObserver(View v) {
-
-  }
+  public void registerObserver(View v) {}
 }

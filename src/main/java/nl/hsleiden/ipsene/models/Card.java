@@ -2,8 +2,6 @@ package nl.hsleiden.ipsene.models;
 
 import nl.hsleiden.ipsene.views.View;
 
-import java.util.ArrayList;
-
 interface Playable {
   void play(Player player, Pawn pawn, Card card);
 }
@@ -74,19 +72,12 @@ public class Card implements Model {
     onPlayActions[5] = Card::playStepNCard;
   }
 
+  @Override
+  public void registerObserver(View v) {}
 
   @Override
-  public void registerObserver(View v) {
-
-  }
+  public void unregisterObserver(View v) {}
 
   @Override
-  public void unregisterObserver(View v) {
-
-  }
-
-  @Override
-  public void notifyObservers() {
-
-  }
+  public void notifyObservers() {}
 }
