@@ -2,10 +2,9 @@ package nl.hsleiden.ipsene.application;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import nl.hsleiden.ipsene.models.*;
-import nl.hsleiden.ipsene.views.LobbyView;
+import nl.hsleiden.ipsene.views.Menu;
 
-public class Main extends Application {
+public class GameController extends Application {
 
   public static void run(String[] args) {
     //    CardController c = new CardController(CardController.generateDeck(4));
@@ -17,6 +16,6 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    LobbyView lobbyView = new LobbyView(primaryStage);
+    Menu menu = new Menu(primaryStage);
   }
 }

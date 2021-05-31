@@ -1,12 +1,12 @@
 package nl.hsleiden.ipsene.models;
 
+import nl.hsleiden.ipsene.views.View;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import nl.hsleiden.ipsene.observers.BoardObservable;
-import nl.hsleiden.ipsene.observers.BoardObserver;
 
-public class Board implements BoardObservable {
+public class Board implements Model {
   public static final int STEPS_BETWEEN_TEAMS = 14;
   public static final HashMap<TeamType, Integer> boardOffset = new HashMap<TeamType, Integer>();
 
@@ -17,17 +17,18 @@ public class Board implements BoardObservable {
     boardOffset.put(TeamType.YELLOW, STEPS_BETWEEN_TEAMS * 3);
   }
 
-  private List<BoardObserver> observers = new ArrayList<BoardObserver>();
+  @Override
+  public void registerObserver(View v) {
 
-  // Add an observer to the list
-  public void register(BoardObserver bo) {
-    observers.add(bo);
   }
-  // Signal all observers that something has changed.
-  // Also send <<this>> object to the observers.
-  public void notifyAllObservers() {
-    for (BoardObserver bo : observers) {
-      bo.update(this);
-    }
+
+  @Override
+  public void unregisterObserver(View v) {
+
+  }
+
+  @Override
+  public void notifyObservers() {
+
   }
 }

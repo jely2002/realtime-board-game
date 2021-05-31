@@ -1,9 +1,12 @@
 package nl.hsleiden.ipsene.controllers;
 
 import java.util.*;
-import nl.hsleiden.ipsene.models.Card;
 
-public class CardController {
+import com.google.cloud.firestore.DocumentSnapshot;
+import nl.hsleiden.ipsene.models.Card;
+import nl.hsleiden.ipsene.views.View;
+
+public class CardController implements Controller {
 
   private ArrayList<Card> deck = new ArrayList<Card>();
   // all possible values for nCards filled by generateDeck, slowly emptied over the course of the
@@ -112,5 +115,15 @@ public class CardController {
       }
     }
     Collections.shuffle(nCardValues);
+  }
+
+  @Override
+  public void update(DocumentSnapshot ds) {
+
+  }
+
+  @Override
+  public void registerObserver(View v) {
+
   }
 }

@@ -1,11 +1,11 @@
 package nl.hsleiden.ipsene.models;
 
+import nl.hsleiden.ipsene.views.View;
+
 import java.util.ArrayList;
 import java.util.List;
-import nl.hsleiden.ipsene.observers.PawnObservable;
-import nl.hsleiden.ipsene.observers.PawnObserver;
 
-public class Pawn implements PawnObservable {
+public class Pawn implements Model {
   private int boardPos;
   private final TeamType team;
   private final int pawnNum;
@@ -38,17 +38,18 @@ public class Pawn implements PawnObservable {
     setRelativeBoardpos(boardPos + amount);
   }
 
-  private List<PawnObserver> observers = new ArrayList<PawnObserver>();
+  @Override
+  public void registerObserver(View v) {
 
-  // Add an observer to the list
-  public void register(PawnObserver pao) {
-    observers.add(pao);
   }
-  // Signal all observers that something has changed.
-  // Also send <<this>> object to the observers.
-  public void notifyAllObservers() {
-    for (PawnObserver pao : observers) {
-      pao.update((PawnObserver) this);
-    }
+
+  @Override
+  public void unregisterObserver(View v) {
+
+  }
+
+  @Override
+  public void notifyObservers() {
+
   }
 }

@@ -1,11 +1,11 @@
 package nl.hsleiden.ipsene.models;
 
+import nl.hsleiden.ipsene.views.View;
+
 import java.util.ArrayList;
 import java.util.List;
-import nl.hsleiden.ipsene.observers.AccountObservable;
-import nl.hsleiden.ipsene.observers.AccountObserver;
 
-public class Account implements AccountObservable {
+public class Account implements Model {
 
   private final String uid = "";
   private final String pwd = "";
@@ -16,20 +16,18 @@ public class Account implements AccountObservable {
     return (uid.equals(this.uid)) && (pwd.equals(this.pwd));
   }
 
-  private List<AccountObserver> observers = new ArrayList<AccountObserver>();
+  @Override
+  public void registerObserver(View v) {
 
-  // Add an observer to the list
-  public void register(AccountObserver ao) {
-    observers.add(ao);
-  }
-  // Signal all observers that something has changed.
-  // Also send <<this>> object to the observers.
-  public void notifyAllObservers() {
-    for (AccountObserver ao : observers) {
-      ao.update((AccountObserver) this);
-    }
   }
 
   @Override
-  public void update(Account account) {}
+  public void unregisterObserver(View v) {
+
+  }
+
+  @Override
+  public void notifyObservers() {
+
+  }
 }
