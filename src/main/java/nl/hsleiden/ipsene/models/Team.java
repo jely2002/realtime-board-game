@@ -1,15 +1,12 @@
 package nl.hsleiden.ipsene.models;
 
-import nl.hsleiden.ipsene.views.View;
+import nl.hsleiden.ipsene.controllers.CardController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Team implements Model {
-  private Pawn[][] pawns;
-
-public class Team implements TeamObservable {
+public class Team {
   private ArrayList<HashMap<Integer, Pawn>> pawns;
   private Player[] players;
   public static final int PAWNS_PER_PLAYER = 2; // idk
@@ -62,20 +59,5 @@ public class Team implements TeamObservable {
   public Pawn getPawn(int playerIndex, int pawnIndex) {
     if (playerIndex < PLAYERS_PER_TEAM) return pawns.get(playerIndex).get(pawnIndex);
     return null;
-  }
-
-  @Override
-  public void registerObserver(View v) {
-
-  }
-
-  @Override
-  public void unregisterObserver(View v) {
-
-  }
-
-  @Override
-  public void notifyObservers() {
-
   }
 }

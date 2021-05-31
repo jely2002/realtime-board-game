@@ -49,7 +49,7 @@ public class Player implements Model {
     c.play(this, pawn);
     cards.remove(c);
     // removed a card so call observers
-    notifyAllObservers();
+    notifyObservers();
   }
 
   @Override
