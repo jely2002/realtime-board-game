@@ -21,6 +21,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
       - uses: axel-op/googlejavaformat-action@v3
+        with:
+          commitMessage: "style: format code to match Google Java Format"
   verify:
     runs-on: ubuntu-latest
     steps:
