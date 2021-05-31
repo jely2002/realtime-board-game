@@ -6,7 +6,7 @@ import nl.hsleiden.ipsene.controllers.BoardController;
 import nl.hsleiden.ipsene.models.*;
 import nl.hsleiden.ipsene.views.LobbyView;
 
-public class Main extends Application {
+public class GameController extends Application {
 
   public static void run(String[] args) {
     launch(args);
