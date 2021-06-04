@@ -6,18 +6,18 @@ import nl.hsleiden.ipsene.models.Lobby;
 import nl.hsleiden.ipsene.views.Menu;
 import nl.hsleiden.ipsene.views.View;
 
-public class LobbyController implements Controller {
+public class MenuController implements Controller {
 
-  static LobbyController lobbyController;
+  static MenuController lobbyController;
   Lobby lobby;
 
-  private LobbyController() {
+  private MenuController() {
     lobby = new Lobby();
   }
 
-  public static LobbyController getInstance() {
+  public static MenuController getInstance() {
     if (lobbyController == null) {
-      lobbyController = new LobbyController();
+      lobbyController = new MenuController();
     }
     return lobbyController;
   }

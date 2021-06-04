@@ -17,35 +17,35 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import nl.hsleiden.ipsene.controllers.LobbyController;
+import nl.hsleiden.ipsene.controllers.MenuController;
 
 public class Menu implements View {
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
 
-  String labelCSS =
-      "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
-  String headerCSS = "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30;";
-  String textFieldCSS = "-fx-font-size: 20";
-  String playerDisplayCSS =
+  private String labelCSS =
+    "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
+  private String headerCSS = "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30;";
+  private String textFieldCSS = "-fx-font-size: 20";
+  private String playerDisplayCSS =
       "-fx-background-color: #444444; -fx-border-color: #111111; -fx-border-width: 5;"
           + " -fx-border-style: solid; -fx-font-size: 20; -fx-padding: 11 9";
-  String quitButtonCSS =
+  private String quitButtonCSS =
       "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #808080;"
           + " -fx-padding: 10 255";
 
-  Button joinButton;
-  Button hostButton;
-  Button quitButton;
+  private Button joinButton;
+  private Button hostButton;
+  private Button quitButton;
 
-  TextField joinLobbyIDInput;
-  Label hostLobbyIDDisplay;
-  Stage primaryStage;
+  private TextField joinLobbyIDInput;
+  private Label hostLobbyIDDisplay;
+  private Stage primaryStage;
 
-  Label joinInputErrorLabel;
-  Label hostInputErrorLabel;
+  private Label joinInputErrorLabel;
+  private Label hostInputErrorLabel;
 
-  LobbyController lobbyController;
+  private MenuController menuController;
 
   public Menu(Stage primaryStage) {
     this.primaryStage = primaryStage;
@@ -54,8 +54,8 @@ public class Menu implements View {
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
-    lobbyController = LobbyController.getInstance();
-    lobbyController.registerObserver(this);
+    menuController = MenuController.getInstance();
+    menuController.registerObserver(this);
   }
 
   private void loadPrimaryStage(Pane pane) {
@@ -121,7 +121,7 @@ public class Menu implements View {
     return pane;
   }
 
-  public void setNodeCoordinates(Node node, int x, int y) {
+  public static void setNodeCoordinates(Node node, int x, int y) {
     node.setTranslateX(x);
     node.setTranslateY(y);
   }
@@ -209,7 +209,7 @@ public class Menu implements View {
     return btn;
   }
 
-  private void applyDropShadow(Node node) {
+  public static void applyDropShadow(Node node) {
     DropShadow shadow = new DropShadow();
     shadow.setColor(Color.BLACK);
     shadow.setRadius(2);
@@ -240,7 +240,7 @@ public class Menu implements View {
         public void handle(MouseEvent e) {
           System.out.println("quit button pressed");
           // Platform.exit();
-          lobbyController.quitGame();
+          menuController.quitGame();
         }
       };
 
