@@ -1,5 +1,7 @@
 package nl.hsleiden.ipsene.controllers;
 
+import nl.hsleiden.ipsene.models.CardType;
+
 public class BoardController {
 
   private CardController cardController;
@@ -38,7 +40,7 @@ public class BoardController {
   }
 
   private void generateDeck() {
-    Integer[] cards = CardController.generateDeck(AMOUNT_OF_PLAYERS);
+    CardType[] cards = CardController.generateDeck(AMOUNT_OF_PLAYERS);
     cardController = new CardController(cards);
   }
 }

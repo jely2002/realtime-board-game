@@ -11,7 +11,7 @@ public class Card implements Model {
   public final int steps;
 
   private Playable onPlay;
-  private int type;
+  private CardType type;
 
   /**
    * binds the appropriate method to be called when Card.play is called and determines the correct
@@ -20,10 +20,10 @@ public class Card implements Model {
    *
    * @param type the type of card as an integer
    */
-  public Card(int type, int steps) {
+  public Card(CardType type, int steps) {
     this.type = type;
     this.steps = steps;
-    onPlay = onPlayActions[type];
+    onPlay = onPlayActions[type.getCode()];
   }
 
   /**
@@ -61,15 +61,15 @@ public class Card implements Model {
   }
 
   /** types: "spawn": 0 "sub": 1 "spawn_step_1": 2 "step_7": 3 "step_4": 4 "step_n": 5 */
-  private static final Playable[] onPlayActions = new Playable[6];
+  private static final Playable[] onPlayActions = new Playable[CardType.values().length];
 
   static {
-    onPlayActions[0] = Card::playSpawnCard;
-    onPlayActions[1] = Card::playSubCard;
-    onPlayActions[2] = Card::playSpawnStep1Card;
-    onPlayActions[3] = Card::playStep7Card;
-    onPlayActions[4] = Card::playStep4Card;
-    onPlayActions[5] = Card::playStepNCard;
+    onPlayActions[CardType.SPAWN.getCode()] = Card::playSpawnCard;
+    onPlayActions[CardType.SUB.getCode()] = Card::playSubCard;
+    onPlayActions[CardType.SPAWN_STEP_1.getCode()] = Card::playSpawnStep1Card;
+    onPlayActions[CardType.STEP_7.getCode()] = Card::playStep7Card;
+    onPlayActions[CardType.STEP_4.getCode()] = Card::playStep4Card;
+    onPlayActions[CardType.STEP_N.getCode()] = Card::playStepNCard;
   }
 
   @Override
