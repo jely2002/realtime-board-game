@@ -27,7 +27,8 @@ public class CardController implements Controller {
     // each different card appears once for every player, nCards are added separately
     final int AMOUNT_NORMAL_CARDS = CardType.values().length;
     final int AMOUNT_N_CARDS = POSSIBLE_N_CARDS.length;
-    int amountOfCards = (AMOUNT_NORMAL_CARDS * amountOfPlayers) + (AMOUNT_N_CARDS * amountOfPlayers);
+    int amountOfCards =
+        (AMOUNT_NORMAL_CARDS * amountOfPlayers) + (AMOUNT_N_CARDS * amountOfPlayers);
     CardType[] cards = new CardType[amountOfCards];
 
     // fill the deck
