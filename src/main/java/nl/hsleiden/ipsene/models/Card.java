@@ -2,6 +2,8 @@ package nl.hsleiden.ipsene.models;
 
 import nl.hsleiden.ipsene.views.View;
 
+import java.util.HashMap;
+
 interface Playable {
   void play(Player player, Pawn pawn, Card card);
 }
@@ -23,12 +25,11 @@ public class Card implements Model {
   public Card(CardType type, int steps) {
     this.type = type;
     this.steps = steps;
-    onPlay = onPlayActions[type.getCode()];
+    onPlay = onPlayActions.get(type);
   }
 
   /**
    * calls the appropriate method for this card to be played
-   *
    * @param player the player playing this card
    * @param pawn the pawn the card was used on
    */
@@ -61,15 +62,15 @@ public class Card implements Model {
   }
 
   /** types: "spawn": 0 "sub": 1 "spawn_step_1": 2 "step_7": 3 "step_4": 4 "step_n": 5 */
-  private static final Playable[] onPlayActions = new Playable[CardType.values().length];
+  private static final HashMap<CardType, Playable> onPlayActions = new HashMap<CardType, Playable>();
 
   static {
-    onPlayActions[CardType.SPAWN.getCode()] = Card::playSpawnCard;
-    onPlayActions[CardType.SUB.getCode()] = Card::playSubCard;
-    onPlayActions[CardType.SPAWN_STEP_1.getCode()] = Card::playSpawnStep1Card;
-    onPlayActions[CardType.STEP_7.getCode()] = Card::playStep7Card;
-    onPlayActions[CardType.STEP_4.getCode()] = Card::playStep4Card;
-    onPlayActions[CardType.STEP_N.getCode()] = Card::playStepNCard;
+    onPlayActions.put(CardType.SPAWN, Card::playSpawnCard);
+    onPlayActions.put(CardType.SUB, Card::playSubCard);
+    onPlayActions.put(CardType.SPAWN_STEP_1, Card::playSpawnStep1Card);
+    onPlayActions.put(CardType.STEP_7, Card::playStep7Card);
+    onPlayActions.put(CardType.STEP_4, Card::playStep4Card);
+    onPlayActions.put(CardType.STEP_N, Card::playStepNCard);
   }
 
   @Override
