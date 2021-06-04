@@ -16,7 +16,7 @@ public class GameController extends Application {
   public void start(Stage primaryStage) {
     Menu menu = new Menu(primaryStage);
     CardView cardView = new CardView(primaryStage);
-    // BoardController boardController = new BoardController(4, 2);
-    // boardController.doGameLoop();
+    //    BoardController boardController = new BoardController(4, 2);
+    //    boardController.doGameLoop();
   }
 }
