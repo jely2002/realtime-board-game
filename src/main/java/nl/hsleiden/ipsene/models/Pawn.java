@@ -19,24 +19,24 @@ public class Pawn implements Model {
     boardPos = pawnNum;
   }
 
-  public int getPawnNum() {
+  public int getPawnNumber() {
     return pawnNum;
   }
 
-  public int getAbsoluteBoardPos() {
+  public int getAbsoluteBoardPosition() {
     return Board.boardOffset.get(team) + boardPos;
   }
 
-  public int getRelativeBoardPos() {
+  public int getRelativeBoardPosition() {
     return boardPos;
   }
 
-  public void setRelativeBoardpos(int pos) {
+  public void setRelativeBoardposition(int pos) {
     boardPos = pos;
   }
 
-  public void addRelativeBoardPos(int amount) {
-    setRelativeBoardpos(boardPos + amount);
+  public void addRelativeBoardPosition(int amount) {
+    setRelativeBoardposition(boardPos + amount);
   }
 
   @Override

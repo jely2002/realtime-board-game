@@ -3,6 +3,7 @@ package nl.hsleiden.ipsene.controllers;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
 import nl.hsleiden.ipsene.models.Card;
+import nl.hsleiden.ipsene.models.CardType;
 import nl.hsleiden.ipsene.views.View;
 
 public class CardController implements Controller {
@@ -20,56 +21,56 @@ public class CardController implements Controller {
    * @param amountOfPlayers the amount of players in the game
    * @return a shuffled deck of integers corresponding to Cards
    */
-  public static Integer[] generateDeck(int amountOfPlayers) {
+  public static CardType[] generateDeck(int amountOfPlayers) {
     fillNCardValues(amountOfPlayers);
 
     // each different card appears once for every player, nCards are added separately
-    final int AMOUNT_NORMAL_CARDS = 5;
+    final int AMOUNT_NORMAL_CARDS = CardType.values().length;
     final int AMOUNT_N_CARDS = POSSIBLE_N_CARDS.length;
     int amountOfCards =
         (AMOUNT_NORMAL_CARDS * amountOfPlayers) + (AMOUNT_N_CARDS * amountOfPlayers);
-    Integer[] cards = new Integer[amountOfCards];
+    CardType[] cards = new CardType[amountOfCards];
 
     // fill the deck
     int index = 0;
     // add normal cards
     for (int i = 0; i < AMOUNT_NORMAL_CARDS; i++) {
       for (int j = 0; j < amountOfPlayers; j++) {
-        cards[index] = i;
+        cards[index] = CardType.get(i);
         ++index;
       }
     }
     // add nCards
     for (int i = 0; i < amountOfPlayers; i++) {
       for (int j = 0; j < AMOUNT_N_CARDS; j++) {
-        cards[index] = 5;
+        cards[index] = CardType.STEP_N;
         ++index;
       }
     }
 
     // shuffle
-    List<Integer> shuffled = Arrays.asList(cards);
+    List<CardType> shuffled = Arrays.asList(cards);
     Collections.shuffle(shuffled);
     shuffled.toArray(cards);
 
     return cards;
   }
   /** @param deck the deck of cards, must be generated with the static Card.generateDeck */
-  public CardController(Integer[] deck) {
+  public CardController(CardType[] deck) {
     // copy our deck and generate cards
     for (int i = 0; i < deck.length; i++) {
       int steps = 0;
       switch (deck[i]) {
-        case 2:
+        case SPAWN_STEP_1:
           steps = 1;
           break;
-        case 3:
+        case STEP_7:
           steps = 7;
           break;
-        case 4:
+        case STEP_4:
           steps = 4;
           break;
-        case 5:
+        case STEP_N:
           steps = CardController.getNCardStepValue();
           break;
         default:
