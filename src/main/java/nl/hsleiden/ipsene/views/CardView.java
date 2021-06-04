@@ -7,42 +7,41 @@ import nl.hsleiden.ipsene.controllers.CardController;
 
 public class CardView implements View {
 
-    private final int WIDTH = 1600;
-    private final int HEIGHT = 250;
+  private final int WIDTH = 1600;
+  private final int HEIGHT = 250;
 
-    private Stage primaryStage;
+  private Stage primaryStage;
 
-    CardController cardController;
+  CardController cardController;
 
-    public CardView(Stage s){
-        primaryStage = s;
-        loadPrimaryStage(createInitialPane());
-        cardController = CardController.getInstance();
+  public CardView(Stage s) {
+    primaryStage = s;
+    loadPrimaryStage(createInitialPane());
+    cardController = CardController.getInstance();
 
-        // PASS IT TO THE CONTROLLER WHO WILL PASS IT TO THE MODEL
-        cardController.registerObserver(this);
+    // PASS IT TO THE CONTROLLER WHO WILL PASS IT TO THE MODEL
+    cardController.registerObserver(this);
+  }
+
+  private void loadPrimaryStage(Pane pane) {
+    try {
+      Pane root = pane;
+      Scene scene = new Scene(root, WIDTH, HEIGHT);
+      primaryStage.setScene(scene);
+      primaryStage.setTitle("Keezbord");
+      primaryStage.show();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 
-    private void loadPrimaryStage(Pane pane) {
-        try {
-            Pane root = pane;
-            Scene scene = new Scene(root, WIDTH, HEIGHT);
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("Keezbord");
-            primaryStage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+  private Pane createInitialPane() {
+    Pane pane = new Pane();
+    return pane;
+  }
 
-    private Pane createInitialPane() {
-        Pane pane = new Pane();
-        return pane;
-    }
-
-
-    @Override
-    public void update() {
-        loadPrimaryStage(createInitialPane());
-    }
+  @Override
+  public void update() {
+    loadPrimaryStage(createInitialPane());
+  }
 }
