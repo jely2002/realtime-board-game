@@ -1,8 +1,7 @@
 package nl.hsleiden.ipsene.models;
 
-import nl.hsleiden.ipsene.views.View;
-
 import java.util.HashMap;
+import nl.hsleiden.ipsene.views.View;
 
 interface Playable {
   void play(Player player, Pawn pawn, Card card);
@@ -30,6 +29,7 @@ public class Card implements Model {
 
   /**
    * calls the appropriate method for this card to be played
+   *
    * @param player the player playing this card
    * @param pawn the pawn the card was used on
    */
@@ -62,7 +62,8 @@ public class Card implements Model {
   }
 
   /** types: "spawn": 0 "sub": 1 "spawn_step_1": 2 "step_7": 3 "step_4": 4 "step_n": 5 */
-  private static final HashMap<CardType, Playable> onPlayActions = new HashMap<CardType, Playable>();
+  private static final HashMap<CardType, Playable> onPlayActions =
+      new HashMap<CardType, Playable>();
 
   static {
     onPlayActions.put(CardType.SPAWN, Card::playSpawnCard);
