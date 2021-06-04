@@ -15,6 +15,8 @@ public class CardController implements Controller {
   // all possible values for n cards
   private static final int[] POSSIBLE_N_CARDS = {2, 3, 5, 6, 8, 9, 10, 12};
 
+  public CardController() {}
+
   /**
    * generate a shuffled deck of integers, used to create cards
    *
@@ -78,6 +80,14 @@ public class CardController implements Controller {
       }
       this.deck.add(new Card(deck[i], steps));
     }
+  }
+
+  public static CardController getInstance() {
+    CardController cardController = null;
+    if (cardController == null) {
+      cardController = new CardController();
+    }
+    return cardController;
   }
 
   /**
