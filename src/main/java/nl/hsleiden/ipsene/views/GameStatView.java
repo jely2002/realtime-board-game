@@ -26,15 +26,12 @@ public class GameStatView implements View {
     primaryStage = s;
     loadPrimaryStage(createInitialPane());
     gameStatController = GameStatController.getInstance();
-    // PASS IT TO THE CONTROLLER WHO WILL PASS IT TO THE MODEL
     gameStatController.registerObserver(this);
-    // gameStatView = this;
   }
 
   private void loadPrimaryStage(Pane pane) {
     try {
-      Pane root = pane;
-      Scene scene = new Scene(root, WIDTH, HEIGHT);
+      Scene scene = new Scene(pane, WIDTH, HEIGHT);
       primaryStage.setScene(scene);
       primaryStage.setTitle("Keezbord-Stat");
       primaryStage.show();
@@ -84,12 +81,12 @@ public class GameStatView implements View {
   }
 
   EventHandler<MouseEvent> timerStartButtonClicked =
-      new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent e) {
-          gameStatController.startTurnTimer();
-        }
-      };
+          new EventHandler<>() {
+            @Override
+            public void handle(MouseEvent e) {
+              gameStatController.startTurnTimer();
+            }
+          };
 
   @Override
   public void update() throws FileNotFoundException {

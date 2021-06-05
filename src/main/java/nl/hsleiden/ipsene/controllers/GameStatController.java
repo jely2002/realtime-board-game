@@ -13,6 +13,7 @@ public class GameStatController implements Controller {
     gameStat = new GameStat();
   }
 
+  @Override
   public void update(DocumentSnapshot ds) {}
 
   @Override

@@ -11,8 +11,7 @@ public class GameStat implements Model {
 
   static long turnStartTime;
   static GameStatView gameStatView;
-  // List of all Observers of this Observable Objects
-  private List<View> observers = new ArrayList<View>();
+  private List<View> observers = new ArrayList<>();
 
   public GameStat() {
     gameStatView = GameStatView.getInstance();
@@ -25,8 +24,7 @@ public class GameStat implements Model {
   public int getCurrentTurnTime() {
     double nanoFactor = Math.pow(10, 9);
     long remainingNano = (long) (60 * nanoFactor - (System.nanoTime() - turnStartTime));
-    int remainingSecs = (int) (remainingNano / nanoFactor);
-    return remainingSecs;
+    return (int) (remainingNano / nanoFactor);
   }
 
   /**
@@ -43,8 +41,10 @@ public class GameStat implements Model {
     observers.add(v);
   }
 
+  @Override
   public void unregisterObserver(View v) {}
 
+  @Override
   public void notifyObservers() {
     for (View v : observers) {
       try {
@@ -59,8 +59,8 @@ public class GameStat implements Model {
 class CountDownTimer extends Thread {
   static final double nanoFactor = Math.pow(10, 9);
   static final long maxTurnTime = (long) (60 * nanoFactor);
-  private long turnStartTime;
-  private GameStat gameStat;
+  private final long turnStartTime;
+  private final GameStat gameStat;
 
   CountDownTimer(long turnStartTime, GameStat gameStat) {
     this.turnStartTime = turnStartTime;
@@ -75,13 +75,7 @@ class CountDownTimer extends Thread {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      Platform.runLater(
-          new Runnable() {
-            @Override
-            public void run() {
-              gameStat.notifyObservers();
-            }
-          });
+      Platform.runLater(gameStat::notifyObservers);
     }
   }
 }
