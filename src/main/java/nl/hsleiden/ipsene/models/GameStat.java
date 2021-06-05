@@ -18,6 +18,10 @@ public class GameStat implements Model {
     gameStatView = GameStatView.getInstance();
   }
 
+  /**
+   * Returns the remaining amount of seconds of a turn
+   * @return remaining amount of seconds
+   */
   public int getCurrentTurnTime() {
     double nanoFactor = Math.pow(10, 9);
     long remainingNano = (long) (60 * nanoFactor - (System.nanoTime() - turnStartTime));
@@ -25,6 +29,9 @@ public class GameStat implements Model {
     return remainingSecs;
   }
 
+  /**
+   * Starts the turnTimer
+   */
   public void startTurnTimer() {
     turnStartTime = System.nanoTime();
     CountDownTimer countDownTimer = new CountDownTimer(turnStartTime, this);
