@@ -19,6 +19,7 @@ public class GameStat implements Model {
 
   /**
    * Returns the remaining amount of seconds of a turn
+   *
    * @return remaining amount of seconds
    */
   public int getCurrentTurnTime() {
@@ -27,9 +28,7 @@ public class GameStat implements Model {
     return (int) (remainingNano / nanoFactor);
   }
 
-  /**
-   * Starts the turnTimer
-   */
+  /** Starts the turnTimer */
   public void startTurnTimer() {
     turnStartTime = System.nanoTime();
     CountDownTimer countDownTimer = new CountDownTimer(turnStartTime, this);

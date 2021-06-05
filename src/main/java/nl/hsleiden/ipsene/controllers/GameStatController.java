@@ -30,15 +30,14 @@ public class GameStatController implements Controller {
 
   /**
    * Returns the remaining amount of seconds of a turn from the model
+   *
    * @return remaining amount of seconds
    */
   public int getCurrentTime() {
     return gameStat.getCurrentTurnTime();
   }
 
-  /**
-   * Starts the turnTimer by calling the model
-   */
+  /** Starts the turnTimer by calling the model */
   public void startTurnTimer() {
     gameStat.startTurnTimer();
   }

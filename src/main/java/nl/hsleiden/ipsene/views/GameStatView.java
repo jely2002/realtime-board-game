@@ -81,12 +81,12 @@ public class GameStatView implements View {
   }
 
   EventHandler<MouseEvent> timerStartButtonClicked =
-          new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent e) {
-              gameStatController.startTurnTimer();
-            }
-          };
+      new EventHandler<>() {
+        @Override
+        public void handle(MouseEvent e) {
+          gameStatController.startTurnTimer();
+        }
+      };
 
   @Override
   public void update() throws FileNotFoundException {
