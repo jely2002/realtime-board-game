@@ -3,7 +3,6 @@ package nl.hsleiden.ipsene.controllers;
 import com.google.cloud.firestore.DocumentSnapshot;
 import javafx.application.Platform;
 import nl.hsleiden.ipsene.models.Menu;
-import nl.hsleiden.ipsene.views.MenuView;
 import nl.hsleiden.ipsene.views.View;
 
 public class MenuController implements Controller {
@@ -26,9 +25,7 @@ public class MenuController implements Controller {
     Platform.exit();
   }
 
-  public void update(DocumentSnapshot ds) {
-
-  }
+  public void update(DocumentSnapshot ds) {}
 
   @Override
   public void registerObserver(View v) {

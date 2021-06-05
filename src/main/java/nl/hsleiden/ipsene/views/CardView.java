@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.CardController;
-import nl.hsleiden.ipsene.models.Model;
 
 public class CardView implements View {
 
