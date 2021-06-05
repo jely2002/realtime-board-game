@@ -33,7 +33,7 @@ public class GameStatController implements Controller {
    *
    * @return remaining amount of seconds
    */
-  public int getCurrentTime() {
+  public int getCurrentTurnTime() {
     return gameStat.getCurrentTurnTime();
   }
 
