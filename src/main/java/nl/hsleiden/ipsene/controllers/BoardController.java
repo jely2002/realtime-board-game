@@ -1,8 +1,10 @@
 package nl.hsleiden.ipsene.controllers;
 
+import com.google.cloud.firestore.DocumentSnapshot;
 import nl.hsleiden.ipsene.models.CardType;
+import nl.hsleiden.ipsene.views.View;
 
-public class BoardController {
+public class BoardController implements Controller {
 
   private CardController cardController;
   private TeamController teamController;
@@ -43,4 +45,10 @@ public class BoardController {
     CardType[] cards = CardController.generateDeck(AMOUNT_OF_PLAYERS);
     cardController = new CardController(cards);
   }
+
+  @Override
+  public void update(DocumentSnapshot ds) {}
+
+  @Override
+  public void registerObserver(View v) {}
 }

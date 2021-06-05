@@ -3,8 +3,9 @@ package nl.hsleiden.ipsene.models;
 import java.util.ArrayList;
 import java.util.HashMap;
 import nl.hsleiden.ipsene.controllers.CardController;
+import nl.hsleiden.ipsene.views.View;
 
-public class Team {
+public class Team implements Model {
   private ArrayList<HashMap<Integer, Pawn>> pawns;
   private Player[] players;
   public static final int PAWNS_PER_PLAYER = 2; // idk
@@ -58,4 +59,13 @@ public class Team {
     if (playerIndex < PLAYERS_PER_TEAM) return pawns.get(playerIndex).get(pawnIndex);
     return null;
   }
+
+  @Override
+  public void registerObserver(View v) {}
+
+  @Override
+  public void unregisterObserver(View v) {}
+
+  @Override
+  public void notifyObservers() {}
 }

@@ -1,5 +1,6 @@
 package nl.hsleiden.ipsene.views;
 
+import java.io.FileNotFoundException;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -41,7 +42,7 @@ public class CardView implements View {
   }
 
   @Override
-  public void update() {
+  public void update() throws FileNotFoundException {
     loadPrimaryStage(createInitialPane());
   }
 }

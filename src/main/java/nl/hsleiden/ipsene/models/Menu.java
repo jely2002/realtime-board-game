@@ -2,7 +2,7 @@ package nl.hsleiden.ipsene.models;
 
 import nl.hsleiden.ipsene.views.View;
 
-public class Lobby implements Model {
+public class Menu implements Model {
 
   @Override
   public void registerObserver(View v) {}

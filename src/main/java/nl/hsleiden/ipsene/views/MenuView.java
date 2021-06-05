@@ -19,12 +19,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.MenuController;
 
-public class Menu implements View {
+public class MenuView implements View {
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
 
   private String labelCSS =
-    "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
+      "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
   private String headerCSS = "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30;";
   private String textFieldCSS = "-fx-font-size: 20";
   private String playerDisplayCSS =
@@ -47,7 +47,7 @@ public class Menu implements View {
 
   private MenuController menuController;
 
-  public Menu(Stage primaryStage) {
+  public MenuView(Stage primaryStage) {
     this.primaryStage = primaryStage;
     try {
       loadPrimaryStage(createPane());
@@ -244,6 +244,5 @@ public class Menu implements View {
         }
       };
 
-  @Override
   public void update() {}
 }
