@@ -4,6 +4,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.CardController;
+import nl.hsleiden.ipsene.models.GameStat;
+import nl.hsleiden.ipsene.models.Model;
+
+import java.io.FileNotFoundException;
 
 public class CardView implements View {
 
@@ -41,7 +45,7 @@ public class CardView implements View {
   }
 
   @Override
-  public void update() {
+  public void update(Model m) throws FileNotFoundException {
     loadPrimaryStage(createInitialPane());
   }
 }

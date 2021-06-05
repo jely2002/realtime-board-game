@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class Lobby implements View{
+public class LobbyView{
     private final int WIDTH = 1600;
     private final int HEIGHT = 900;
     private Stage primaryStage;
@@ -27,7 +27,7 @@ public class Lobby implements View{
 
     private Label waitingForPlayersLabel;
 
-    public Lobby(Stage primaryStage) throws FileNotFoundException {
+    public LobbyView(Stage primaryStage) throws FileNotFoundException {
         this.primaryStage = primaryStage;
         loadPrimaryStage(createPane());
     }
@@ -44,34 +44,34 @@ public class Lobby implements View{
 
 
         Label title = lobbyHeaderLabelBuilder(lobbyID);
-        Menu.setNodeCoordinates(title, 10, 10);
+        MenuView.setNodeCoordinates(title, 10, 10);
 
         Label player1Display = playerDisplayLabel("Player 1", player1Available, RED);
-        Menu.setNodeCoordinates(player1Display, 10, 150);
+        MenuView.setNodeCoordinates(player1Display, 10, 150);
 
         Label player2Display = playerDisplayLabel("Player 2", player2Available, BLUE);
-        Menu.setNodeCoordinates(player2Display, 10, 295);
+        MenuView.setNodeCoordinates(player2Display, 10, 295);
 
         Label player3Display = playerDisplayLabel("Player 3", player3Available, GREEN);
-        Menu.setNodeCoordinates(player3Display, 10, 520);
+        MenuView.setNodeCoordinates(player3Display, 10, 520);
 
         Label player4Display = playerDisplayLabel("Player 4", player4Available, YELLOW);
-        Menu.setNodeCoordinates(player4Display, 10, 660);
+        MenuView.setNodeCoordinates(player4Display, 10, 660);
 
         this.player1Join = buttonBuilder("Join", player1Available);
-        Menu.setNodeCoordinates(player1Join, 220, 150);
+        MenuView.setNodeCoordinates(player1Join, 220, 150);
 
         this.player2Join = buttonBuilder("Join", player2Available);
-        Menu.setNodeCoordinates(player2Join, 220, 295);
+        MenuView.setNodeCoordinates(player2Join, 220, 295);
 
         this.player3Join = buttonBuilder("Join", player3Available);
-        Menu.setNodeCoordinates(player3Join, 220, 520);
+        MenuView.setNodeCoordinates(player3Join, 220, 520);
 
         this.player4Join = buttonBuilder("Join", player4Available);
-        Menu.setNodeCoordinates(player4Join, 220, 660);
+        MenuView.setNodeCoordinates(player4Join, 220, 660);
 
         this.waitingForPlayersLabel = WaitingForPlayersLabelBuilder("Waiting for players");
-        Menu.setNodeCoordinates(waitingForPlayersLabel, 10, 790);
+        MenuView.setNodeCoordinates(waitingForPlayersLabel, 10, 790);
         WaitingForPlayersThread wfpt = new WaitingForPlayersThread(waitingForPlayersLabel);
         Thread wfptThread = new Thread(wfpt);
         wfptThread.setDaemon(true); // Zorgt ervoor dat deze thread samen afsluit met de View
@@ -81,8 +81,8 @@ public class Lobby implements View{
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(400);
-        Menu.applyDropShadow(imageView);
-        Menu.setNodeCoordinates(imageView, 600, 200);
+        MenuView.applyDropShadow(imageView);
+        MenuView.setNodeCoordinates(imageView, 600, 200);
 
         pane.getChildren().addAll(title, player1Display, player2Display, player3Display, player4Display);
         pane.getChildren().addAll(player1Join, player2Join, player3Join, player4Join);
@@ -108,7 +108,7 @@ public class Lobby implements View{
 
         lbl.setText("LobbyID: " + lobbyID);
         lbl.setStyle("-fx-font-size: 75; -fx-font-family: 'Comic Sans MS'");
-        Menu.applyDropShadow(lbl);
+        MenuView.applyDropShadow(lbl);
 
         return lbl;
     }
@@ -118,7 +118,7 @@ public class Lobby implements View{
 
         lbl.setText(txt);
         lbl.setStyle("-fx-font-size: 75; -fx-font-family: 'Comic Sans MS'");
-        Menu.applyDropShadow(lbl);
+        MenuView.applyDropShadow(lbl);
 
         return lbl;
     }
@@ -169,13 +169,13 @@ public class Lobby implements View{
         btn.setPrefHeight(125);
         btn.setText(txt);
         btn.setStyle("-fx-font-size: 20; -fx-background-color: " + bgColor);
-        Menu.applyDropShadow(btn);
+        MenuView.applyDropShadow(btn);
 
         return btn;
     }
 
 
-    @Override
+
     public void update() throws FileNotFoundException {
         loadPrimaryStage(createPane());
     }

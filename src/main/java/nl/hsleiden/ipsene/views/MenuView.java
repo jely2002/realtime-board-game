@@ -19,7 +19,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.MenuController;
 
-public class Menu implements View {
+public class MenuView {
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
 
@@ -47,7 +47,7 @@ public class Menu implements View {
 
   private MenuController menuController;
 
-  public Menu(Stage primaryStage) {
+  public MenuView(Stage primaryStage) {
     this.primaryStage = primaryStage;
     try {
       loadPrimaryStage(createPane());
@@ -244,6 +244,7 @@ public class Menu implements View {
         }
       };
 
-  @Override
-  public void update() {}
+  public void update() {
+
+  }
 }

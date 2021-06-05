@@ -2,10 +2,8 @@ package nl.hsleiden.ipsene.application;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import nl.hsleiden.ipsene.models.*;
-import nl.hsleiden.ipsene.views.CardView;
-import nl.hsleiden.ipsene.views.Lobby;
-import nl.hsleiden.ipsene.views.Menu;
+import nl.hsleiden.ipsene.views.GameStatView;
+import nl.hsleiden.ipsene.views.LobbyView;
 
 import java.io.FileNotFoundException;
 
@@ -17,14 +15,16 @@ public class GameController extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    try {
-//    Menu menu = new Menu(primaryStage);
-//    CardView cardView = new CardView(primaryStage);
-      Lobby lobby = new Lobby(primaryStage);
-      // BoardController boardController = new BoardController(4, 2);
-      // boardController.doGameLoop();
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
+    GameStatView gameStatView = new GameStatView(primaryStage);
+//    try {
+////    Menu menu = new Menu(primaryStage);
+////    CardView cardView = new CardView(primaryStage);
+//      //LobbyView lobbyView = new LobbyView(primaryStage);
+//      // BoardController boardController = new BoardController(4, 2);
+//      // boardController.doGameLoop();
+//
+//    } catch (FileNotFoundException e) {
+//      e.printStackTrace();
+//    }
   }
 }
