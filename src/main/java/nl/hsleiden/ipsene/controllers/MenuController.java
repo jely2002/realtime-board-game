@@ -29,7 +29,5 @@ public class MenuController {
     Platform.exit();
   }
 
-  public void update(DocumentSnapshot ds) {
-
-  }
+  public void update(DocumentSnapshot ds) {}
 }

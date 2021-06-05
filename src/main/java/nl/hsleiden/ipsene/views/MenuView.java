@@ -24,7 +24,7 @@ public class MenuView {
   private final int HEIGHT = 900;
 
   private String labelCSS =
-    "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
+      "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
   private String headerCSS = "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30;";
   private String textFieldCSS = "-fx-font-size: 20";
   private String playerDisplayCSS =
@@ -244,7 +244,5 @@ public class MenuView {
         }
       };
 
-  public void update() {
-
-  }
+  public void update() {}
 }

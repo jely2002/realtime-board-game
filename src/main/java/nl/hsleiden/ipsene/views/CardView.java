@@ -1,13 +1,11 @@
 package nl.hsleiden.ipsene.views;
 
+import java.io.FileNotFoundException;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.CardController;
-import nl.hsleiden.ipsene.models.GameStat;
 import nl.hsleiden.ipsene.models.Model;
-
-import java.io.FileNotFoundException;
 
 public class CardView implements View {
 
