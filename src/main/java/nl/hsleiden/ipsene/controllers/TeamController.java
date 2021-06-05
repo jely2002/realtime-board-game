@@ -1,9 +1,11 @@
 package nl.hsleiden.ipsene.controllers;
 
+import com.google.cloud.firestore.DocumentSnapshot;
 import nl.hsleiden.ipsene.models.Team;
 import nl.hsleiden.ipsene.models.TeamType;
+import nl.hsleiden.ipsene.views.View;
 
-public class TeamController {
+public class TeamController implements Controller {
   public Team[] teams;
   public static final int AMOUNT_OF_TEAMS = 2;
   private int cardsPerPlayerNextRound = 0;
@@ -30,5 +32,15 @@ public class TeamController {
 
   public void setCardsToBeDrawnNextTurn(int amount) {
     cardsPerPlayerNextRound = amount;
+  }
+
+  @Override
+  public void update(DocumentSnapshot ds) {
+
+  }
+
+  @Override
+  public void registerObserver(View v) {
+
   }
 }

@@ -3,8 +3,11 @@ package nl.hsleiden.ipsene.controllers;
 import com.google.cloud.firestore.DocumentSnapshot;
 import nl.hsleiden.ipsene.models.GameStat;
 import nl.hsleiden.ipsene.views.GameStatView;
+import nl.hsleiden.ipsene.views.View;
 
-public class GameStatController {
+import javax.naming.ldap.Control;
+
+public class GameStatController implements Controller {
 
     static GameStatController gameStatController = null;
     GameStat gameStat;
@@ -17,7 +20,8 @@ public class GameStatController {
 
     }
 
-    public void registerObserver(GameStatView v) {
+    @Override
+    public void registerObserver(View v) {
         gameStat.registerObserver(v);
     }
 
@@ -26,6 +30,10 @@ public class GameStatController {
             gameStatController = new GameStatController();
         }
         return gameStatController;
+    }
+
+    public int getCurrentTime() {
+        return gameStat.getCurrentTurnTime();
     }
 
     public void startTurnTimer() {

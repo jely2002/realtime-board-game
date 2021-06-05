@@ -9,10 +9,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.GameStatController;
 import nl.hsleiden.ipsene.models.GameStat;
+import nl.hsleiden.ipsene.models.Model;
 
 import java.io.FileNotFoundException;
 
-public class GameStatView{
+public class GameStatView implements View{
 
     private final int WIDTH = 200;
     private final int HEIGHT = 650;
@@ -62,10 +63,10 @@ public class GameStatView{
         return pane;
     }
 
-    private Pane createUpdatedPane(GameStat gameStat) {
+    private Pane createUpdatedPane() {
         Pane pane = new Pane();
         Text timeAsText = new Text("########");
-        String currentTurnTimeStr = String.valueOf(gameStat.getCurrentTurnTime());
+        String currentTurnTimeStr = String.valueOf(gameStatController.getCurrentTime());
         timeAsText.setText(currentTurnTimeStr);
         timeAsText.setTranslateX(100);
         timeAsText.setTranslateY(50);
@@ -93,7 +94,10 @@ public class GameStatView{
     };
 
 
-    public void update(GameStat gamestat) throws FileNotFoundException {
-        loadPrimaryStage(createUpdatedPane(gamestat));
+
+
+    @Override
+    public void update() throws FileNotFoundException {
+        loadPrimaryStage(createUpdatedPane());
     }
 }

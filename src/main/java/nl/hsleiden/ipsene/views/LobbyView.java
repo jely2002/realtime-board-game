@@ -7,11 +7,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import nl.hsleiden.ipsene.models.Model;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class LobbyView{
+public class LobbyView implements View{
     private final int WIDTH = 1600;
     private final int HEIGHT = 900;
     private Stage primaryStage;
@@ -174,8 +175,7 @@ public class LobbyView{
         return btn;
     }
 
-
-
+    @Override
     public void update() throws FileNotFoundException {
         loadPrimaryStage(createPane());
     }

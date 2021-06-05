@@ -19,7 +19,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.MenuController;
 
-public class MenuView {
+public class MenuView implements View {
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
 

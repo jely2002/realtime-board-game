@@ -45,7 +45,7 @@ public class CardView implements View {
   }
 
   @Override
-  public void update(Model m) throws FileNotFoundException {
+  public void update() throws FileNotFoundException {
     loadPrimaryStage(createInitialPane());
   }
 }

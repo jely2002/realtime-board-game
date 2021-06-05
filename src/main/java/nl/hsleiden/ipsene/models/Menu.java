@@ -2,12 +2,23 @@ package nl.hsleiden.ipsene.models;
 
 
 import nl.hsleiden.ipsene.views.MenuView;
+import nl.hsleiden.ipsene.views.View;
 
-public class Menu {
+public class Menu implements Model {
 
-  public void registerObserver(MenuView v) {}
 
-  public void unregisterObserver(MenuView v) {}
+  @Override
+  public void registerObserver(View v) {
 
-  public void notifyObservers() {}
+  }
+
+  @Override
+  public void unregisterObserver(View v) {
+
+  }
+
+  @Override
+  public void notifyObservers() {
+
+  }
 }

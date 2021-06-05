@@ -8,12 +8,12 @@ import java.lang.Math;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameStat {
+public class GameStat implements Model {
 
     static long turnStartTime;
     static GameStatView gameStatView;
     // List of all Observers of this Observable Objects
-    private List<GameStatView> observers = new ArrayList<GameStatView>();
+    private List<View> observers = new ArrayList<View>();
 
     public GameStat(){
         gameStatView = GameStatView.getInstance();
@@ -31,7 +31,9 @@ public class GameStat {
         CountDownTimer countDownTimer = new CountDownTimer(turnStartTime, this);
         countDownTimer.start();
     }
-    public void registerObserver(GameStatView v) {
+
+    @Override
+    public void registerObserver(View v) {
         observers.add(v);
     }
 
@@ -40,9 +42,9 @@ public class GameStat {
     }
 
     public void notifyObservers() {
-        for (GameStatView v : observers) {
+        for (View v : observers) {
             try {
-                v.update(this);
+                v.update();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
