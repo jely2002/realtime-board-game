@@ -1,6 +1,5 @@
 package nl.hsleiden.ipsene.models;
 
-
 import nl.hsleiden.ipsene.views.MenuView;
 import nl.hsleiden.ipsene.views.View;
 
