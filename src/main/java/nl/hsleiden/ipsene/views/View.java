@@ -1,6 +1,5 @@
 package nl.hsleiden.ipsene.views;
 
-
 import java.io.FileNotFoundException;
 
 public interface View {

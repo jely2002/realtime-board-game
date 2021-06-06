@@ -1,8 +1,6 @@
 package nl.hsleiden.ipsene.models;
 
 import java.util.ArrayList;
-
-import nl.hsleiden.ipsene.application.GameController;
 import nl.hsleiden.ipsene.views.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,6 @@
 package nl.hsleiden.ipsene.controllers;
 
 import com.google.cloud.firestore.DocumentSnapshot;
-import nl.hsleiden.ipsene.application.GameController;
 import nl.hsleiden.ipsene.models.Account;
 import nl.hsleiden.ipsene.views.View;
 import org.slf4j.Logger;
@@ -10,7 +9,6 @@ import org.slf4j.LoggerFactory;
 public class AccountController implements Controller {
 
   private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
-
 
   Account a = new Account();
 

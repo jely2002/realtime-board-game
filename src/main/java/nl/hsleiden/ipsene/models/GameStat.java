@@ -17,8 +17,9 @@ public class GameStat implements Model {
     gameStatView = GameStatView.getInstance();
   }
 
-   /**
+  /**
    * Returns the remaining amount of seconds of a turn
+   *
    * @return remaining amount of seconds
    */
   public int getCurrentTurnTime() {

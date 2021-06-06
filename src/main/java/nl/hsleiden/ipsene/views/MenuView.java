@@ -17,7 +17,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import nl.hsleiden.ipsene.application.GameController;
 import nl.hsleiden.ipsene.controllers.MenuController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

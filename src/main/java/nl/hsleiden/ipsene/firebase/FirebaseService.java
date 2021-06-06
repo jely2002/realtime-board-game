@@ -5,7 +5,6 @@ import com.google.cloud.firestore.*;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
 import nl.hsleiden.ipsene.controllers.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
