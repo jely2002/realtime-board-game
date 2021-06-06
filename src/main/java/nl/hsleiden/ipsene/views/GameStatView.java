@@ -60,7 +60,8 @@ public class GameStatView implements View {
   private Pane createUpdatedPane() {
     Pane pane = new Pane();
     Text timeAsText = new Text("########");
-    String currentTurnTimeStr = String.valueOf(gameStatController.getCurrentTime());
+    String currentTurnTimeStr = String.valueOf(gameStatController.getCurrentTurnTime());
+
     timeAsText.setText(currentTurnTimeStr);
     timeAsText.setTranslateX(100);
     timeAsText.setTranslateY(50);
@@ -81,12 +82,12 @@ public class GameStatView implements View {
   }
 
   EventHandler<MouseEvent> timerStartButtonClicked =
-          new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent e) {
-              gameStatController.startTurnTimer();
-            }
-          };
+      new EventHandler<>() {
+        @Override
+        public void handle(MouseEvent e) {
+          gameStatController.startTurnTimer();
+        }
+      };
 
   @Override
   public void update() throws FileNotFoundException {

@@ -4,11 +4,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
-import nl.hsleiden.ipsene.application.GameController;
 import nl.hsleiden.ipsene.views.GameStatView;
 import nl.hsleiden.ipsene.views.View;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class GameStat implements Model {
 
@@ -20,7 +17,7 @@ public class GameStat implements Model {
     gameStatView = GameStatView.getInstance();
   }
 
-  /**
+   /**
    * Returns the remaining amount of seconds of a turn
    * @return remaining amount of seconds
    */
@@ -30,9 +27,7 @@ public class GameStat implements Model {
     return (int) (remainingNano / nanoFactor);
   }
 
-  /**
-   * Starts the turnTimer
-   */
+  /** Starts the turnTimer */
   public void startTurnTimer() {
     turnStartTime = System.nanoTime();
     CountDownTimer countDownTimer = new CountDownTimer(turnStartTime, this);
