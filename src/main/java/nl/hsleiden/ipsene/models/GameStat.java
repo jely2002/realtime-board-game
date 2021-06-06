@@ -4,8 +4,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
+import nl.hsleiden.ipsene.application.GameController;
 import nl.hsleiden.ipsene.views.GameStatView;
 import nl.hsleiden.ipsene.views.View;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GameStat implements Model {
 
