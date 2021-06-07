@@ -1,29 +1,29 @@
 package nl.hsleiden.ipsene.models;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import nl.hsleiden.ipsene.controllers.CardController;
 import nl.hsleiden.ipsene.views.View;
 
 public class Team implements Model {
-  private ArrayList<HashMap<Integer, Pawn>> pawns;
+
   private Player[] players;
   public static final int PAWNS_PER_PLAYER = 2; // idk
   public static final int PLAYERS_PER_TEAM = 2;
 
   /** @param teamtype the type of the team, given to the pawns created in the constructor */
   public Team(TeamType teamtype) {
-    pawns = new ArrayList<>();
+    int pawnNumber = 0;
     players = new Player[PLAYERS_PER_TEAM];
-    int pawnNum = 0;
-    // create pawns and player
+
     for (int i = 0; i < PLAYERS_PER_TEAM; i++) {
-      pawns.add(new HashMap<>());
+      ArrayList<Pawn> pawns = new ArrayList<>(PAWNS_PER_PLAYER);
+
       for (int j = 0; j < PAWNS_PER_PLAYER; j++) {
-        pawns.get(i).put(pawnNum, new Pawn(teamtype, pawnNum));
-        ++pawnNum;
+        pawns.add(new Pawn(teamtype, pawnNumber));
+        ++pawnNumber;
       }
-      players[i] = new Player(this, i);
+
+      players[i] = new Player(this, i, pawns);
     }
   }
 
@@ -56,7 +56,7 @@ public class Team implements Model {
    * @return the corresponding pawn
    */
   public Pawn getPawn(int playerIndex, int pawnIndex) {
-    if (playerIndex < PLAYERS_PER_TEAM) return pawns.get(playerIndex).get(pawnIndex);
+    if (playerIndex < PLAYERS_PER_TEAM) return players[playerIndex].getPawn(pawnIndex);
     return null;
   }
 

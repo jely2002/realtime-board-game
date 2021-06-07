@@ -38,6 +38,7 @@ public class BoardController implements Controller {
       teamController.doTurns();
       // todo more game logic stuff
       // todo check if game has ended and set gameHasEnded
+      // gameHasEnded = true;
     }
   }
 

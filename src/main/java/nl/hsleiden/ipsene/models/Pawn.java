@@ -3,9 +3,10 @@ package nl.hsleiden.ipsene.models;
 import nl.hsleiden.ipsene.views.View;
 
 public class Pawn implements Model {
-  private int boardPos;
+  private int boardPosition;
   private final TeamType team;
-  private final int pawnNum;
+  private Player player;
+  private int pawnNumber;
 
   /**
    * @param team - the 'type' of the team, from enum TeamType used to get team info and calculate
@@ -15,28 +16,32 @@ public class Pawn implements Model {
    */
   public Pawn(TeamType team, int pawnNum) {
     this.team = team;
-    this.pawnNum = pawnNum;
-    boardPos = pawnNum;
+    boardPosition = pawnNum;
+    pawnNumber = pawnNum;
+  }
+
+  public void setOwningPlayer(Player player) {
+    this.player = player;
   }
 
   public int getPawnNumber() {
-    return pawnNum;
+    return pawnNumber;
   }
 
   public int getAbsoluteBoardPosition() {
-    return Board.boardOffset.get(team) + boardPos;
+    return Board.boardOffset.get(team) + boardPosition;
   }
 
   public int getRelativeBoardPosition() {
-    return boardPos;
+    return boardPosition;
   }
 
   public void setRelativeBoardposition(int pos) {
-    boardPos = pos;
+    boardPosition = pos;
   }
 
   public void addRelativeBoardPosition(int amount) {
-    setRelativeBoardposition(boardPos + amount);
+    setRelativeBoardposition(boardPosition + amount);
   }
 
   @Override
