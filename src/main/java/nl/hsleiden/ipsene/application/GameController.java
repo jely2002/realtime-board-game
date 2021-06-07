@@ -2,7 +2,6 @@ package nl.hsleiden.ipsene.application;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import nl.hsleiden.ipsene.controllers.BoardController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +20,8 @@ public class GameController extends Application {
     // Menu menu = new Menu(primaryStage);
     // CardView cardView = new CardView(primaryStage);
     // LobbyView lobbyView = new LobbyView(primaryStage);
-//     BoardController boardController = new BoardController(4, 2);
-//     boardController.doGameLoop();
+    //     BoardController boardController = new BoardController(4, 2);
+    //     boardController.doGameLoop();
 
   }
 }

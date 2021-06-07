@@ -2,8 +2,6 @@ package nl.hsleiden.ipsene.controllers;
 
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
-import nl.hsleiden.ipsene.models.Card;
-import nl.hsleiden.ipsene.models.CardType;
 import nl.hsleiden.ipsene.models.Deck;
 import nl.hsleiden.ipsene.views.View;
 

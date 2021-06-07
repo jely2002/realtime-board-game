@@ -20,7 +20,8 @@ public enum CardType {
   }
 
   /**
-   * @return the amount of steps the card allows the pawn to take, returns 0 for N, spawn and sub cards
+   * @return the amount of steps the card allows the pawn to take, returns 0 for N, spawn and sub
+   *     cards
    */
   public int getSteps() {
     if (code == CardType.SPAWN_STEP_1.code) return 1;
@@ -28,6 +29,7 @@ public enum CardType {
     if (code == CardType.STEP_4.code) return 4;
     return 0;
   }
+
   public static CardType get(int code) {
     return lookup.get(code);
   }
@@ -41,5 +43,4 @@ public enum CardType {
   private CardType(int code) {
     this.code = code;
   }
-
 }
