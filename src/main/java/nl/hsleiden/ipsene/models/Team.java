@@ -1,7 +1,6 @@
 package nl.hsleiden.ipsene.models;
 
 import java.util.ArrayList;
-import nl.hsleiden.ipsene.controllers.CardController;
 import nl.hsleiden.ipsene.views.View;
 
 public class Team implements Model {
@@ -38,12 +37,12 @@ public class Team implements Model {
    * draws a number of cards per player
    *
    * @param amountOfCardsPerPlayer the amount off cards drawn per player
-   * @param controller the card controller drawn from
+   * @param deck the deck to be drawn from
    */
-  public void distributeCards(int amountOfCardsPerPlayer, CardController controller) {
+  public void distributeCards(int amountOfCardsPerPlayer, Deck deck) {
     for (int i = 0; i < players.length; i++) {
       for (int j = 0; j < amountOfCardsPerPlayer; j++) {
-        players[i].addCard(controller.drawCard());
+        players[i].addCard(deck.drawCard());
       }
     }
   }

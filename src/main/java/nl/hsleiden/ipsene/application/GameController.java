@@ -20,8 +20,8 @@ public class GameController extends Application {
     // Menu menu = new Menu(primaryStage);
     // CardView cardView = new CardView(primaryStage);
     // LobbyView lobbyView = new LobbyView(primaryStage);
-    // BoardController boardController = new BoardController(4, 2);
-    // boardController.doGameLoop();
+    //     BoardController boardController = new BoardController(4, 2);
+    //     boardController.doGameLoop();
 
   }
 }

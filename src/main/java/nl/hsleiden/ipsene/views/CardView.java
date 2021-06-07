@@ -18,10 +18,10 @@ public class CardView implements View {
   public CardView(Stage s) {
     primaryStage = s;
     loadPrimaryStage(createInitialPane());
-    cardController = CardController.getInstance();
-
-    // PASS IT TO THE CONTROLLER WHO WILL PASS IT TO THE MODEL
-    cardController.registerObserver(this);
+    //    cardController = CardController.getInstance();
+    //
+    //    // PASS IT TO THE CONTROLLER WHO WILL PASS IT TO THE MODEL
+    //    cardController.registerObserver(this);
   }
 
   private void loadPrimaryStage(Pane pane) {
