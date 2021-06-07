@@ -1,6 +1,10 @@
 package nl.hsleiden.ipsene.models;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
 import nl.hsleiden.ipsene.views.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +13,9 @@ interface Playable {
   void play(Player player, Pawn pawn, Card card);
 }
 
-public class Card implements Model {
+public class Card implements Model, FirebaseSerializable<Map<String, Object>> {
 
-  private static final Logger logger = LoggerFactory.getLogger(Card.class);
+  private static final Logger logger = LoggerFactory.getLogger(Card.class.getName());
 
   public final int steps;
 
@@ -86,4 +90,12 @@ public class Card implements Model {
 
   @Override
   public void notifyObservers() {}
+
+  @Override
+  public Map<String, Object> serialize() {
+    LinkedHashMap<String, Object> serializedCard = new LinkedHashMap<>();
+    serializedCard.put("type",  this.type.toString());
+    serializedCard.put("value",  this.steps);
+    return serializedCard;
+  }
 }

@@ -2,7 +2,10 @@ package nl.hsleiden.ipsene.models;
 
 import nl.hsleiden.ipsene.views.View;
 
-public class Pawn implements Model {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Pawn implements Model, FirebaseSerializable<Map<String, Object>> {
   private int boardPosition;
   private final TeamType team;
   private Player player;
@@ -52,4 +55,9 @@ public class Pawn implements Model {
 
   @Override
   public void notifyObservers() {}
+
+  @Override
+  public Map<String, Object> serialize() {
+    return null;
+  }
 }

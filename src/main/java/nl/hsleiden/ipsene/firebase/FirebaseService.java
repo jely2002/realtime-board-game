@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 public class FirebaseService {
 
-  private static final Logger logger = LoggerFactory.getLogger(FirebaseService.class);
+  private static final Logger logger = LoggerFactory.getLogger(FirebaseService.class.getName());
 
   private Firestore firestore;
   private CollectionReference colRef;

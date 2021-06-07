@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 public class MenuView implements View {
 
-  private static final Logger logger = LoggerFactory.getLogger(MenuView.class);
+  private static final Logger logger = LoggerFactory.getLogger(MenuView.class.getName());
 
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;

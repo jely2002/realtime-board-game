@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 public class AccountController implements Controller {
 
-  private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
+  private static final Logger logger = LoggerFactory.getLogger(AccountController.class.getName());
 
   Account a = new Account();
 

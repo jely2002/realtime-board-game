@@ -1,12 +1,12 @@
 package nl.hsleiden.ipsene.models;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import nl.hsleiden.ipsene.views.View;
 
-public class Deck {
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class Deck implements Model, FirebaseSerializable<List<Map<String, Object>>> {
   private ArrayList<Card> cards = new ArrayList<Card>();
   // all possible values for nCards filled by generateDeck, slowly emptied over the course of the
   // game
@@ -58,6 +58,10 @@ public class Deck {
     nCardDeck = generateNCardDeck(amountOfPlayers);
     cards = new ArrayList<>(Arrays.asList(generateDeck(amountOfPlayers, nCardDeck)));
   }
+
+  public Deck(ArrayList<Card> cards) {
+    this.cards = cards;
+  }
   /**
    * take a card from the top of the deck
    *
@@ -82,5 +86,26 @@ public class Deck {
       val = nCardDeck.remove(nCardDeck.size() - 1);
     }
     return val;
+  }
+
+  @Override
+  public void registerObserver(View v) {
+
+  }
+
+  @Override
+  public void unregisterObserver(View v) {
+
+  }
+
+  @Override
+  public void notifyObservers() {
+
+  }
+
+  @Override
+  public List<Map<String, Object>> serialize() {
+    List<Map<String, Object>> serializedCards = cards.stream().map(Card::serialize).collect(Collectors.toList());
+    return serializedCards;
   }
 }
