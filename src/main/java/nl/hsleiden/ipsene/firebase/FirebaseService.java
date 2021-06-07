@@ -6,8 +6,12 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import nl.hsleiden.ipsene.controllers.Controller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FirebaseService {
+
+  private static final Logger logger = LoggerFactory.getLogger(FirebaseService.class);
 
   private Firestore firestore;
   private CollectionReference colRef;
@@ -31,7 +35,7 @@ public class FirebaseService {
     docRef.addSnapshotListener(
         (snapshot, e) -> {
           if (e != null) {
-            System.err.println("Listen failed: " + e);
+            logger.error("listen failed", e);
             return;
           }
 
@@ -39,9 +43,9 @@ public class FirebaseService {
 
             controller.update(snapshot);
 
-            System.out.println("Current data: " + snapshot.getData());
+            logger.debug("listener received data: {}", snapshot.getData());
           } else {
-            System.out.print("Current data: null");
+            logger.warn("listener received null data");
           }
         });
   }
@@ -54,15 +58,11 @@ public class FirebaseService {
    * @param documentId
    */
   public void set(String documentId, Map<String, Object> docData) {
-
     ApiFuture<WriteResult> future = this.colRef.document(documentId).set(docData);
-
     try {
-      System.out.println("Update time : " + future.get().getUpdateTime());
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
+      logger.debug("time to update: {}", future.get().getUpdateTime());
+    } catch (InterruptedException | ExecutionException e) {
+      logger.error(e.getMessage(), e);
     }
   }
 
@@ -84,15 +84,10 @@ public class FirebaseService {
       if (document.exists()) {
         return document;
       } else {
-
-        System.out.println("No such document!");
+        logger.warn("document with Id {} does not exist", documentId);
       }
-    } catch (InterruptedException e) {
-
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-
-      e.printStackTrace();
+    } catch (InterruptedException | ExecutionException e) {
+      logger.error(e.getMessage(), e);
     }
     return null;
   }

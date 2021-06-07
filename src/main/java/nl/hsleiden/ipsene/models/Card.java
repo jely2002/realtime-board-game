@@ -2,12 +2,16 @@ package nl.hsleiden.ipsene.models;
 
 import java.util.HashMap;
 import nl.hsleiden.ipsene.views.View;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 interface Playable {
   void play(Player player, Pawn pawn, Card card);
 }
 
 public class Card implements Model {
+
+  private static final Logger logger = LoggerFactory.getLogger(Card.class);
 
   public final int steps;
 
@@ -38,27 +42,27 @@ public class Card implements Model {
   }
 
   private static void playSpawnCard(Player player, Pawn pawn, Card card) {
-    System.out.println("spawn");
+    logger.debug("spawn card played");
   }
 
   private static void playSubCard(Player player, Pawn pawn, Card card) {
-    System.out.println("sub");
+    logger.debug("sub card played");
   }
 
   private static void playSpawnStep1Card(Player player, Pawn pawn, Card card) {
-    System.out.println("step1");
+    logger.debug("step1 card played");
   }
 
   private static void playStep7Card(Player player, Pawn pawn, Card card) {
-    System.out.println("step7");
+    logger.debug("step7 card played");
   }
 
   private static void playStep4Card(Player player, Pawn pawn, Card card) {
-    System.out.println("step4");
+    logger.debug("step4 card played");
   }
 
   private static void playStepNCard(Player player, Pawn pawn, Card card) {
-    System.out.println("n val: " + card.steps);
+    logger.debug("n card played with value: {}", card.steps);
   }
 
   /** types: "spawn": 0 "sub": 1 "spawn_step_1": 2 "step_7": 3 "step_4": 4 "step_n": 5 */

@@ -18,8 +18,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.MenuController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MenuView implements View {
+
+  private static final Logger logger = LoggerFactory.getLogger(MenuView.class);
+
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
 
@@ -238,7 +243,7 @@ public class MenuView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-          System.out.println("quit button pressed");
+          logger.debug("Quit button has been pressed");
           // Platform.exit();
           menuController.quitGame();
         }

@@ -2,8 +2,13 @@ package nl.hsleiden.ipsene.models;
 
 import java.util.ArrayList;
 import nl.hsleiden.ipsene.views.View;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Player implements Model {
+
+  private static final Logger logger = LoggerFactory.getLogger(Player.class);
+
   private ArrayList<Card> cards;
   /** index of the player in its team */
   private int playerIndex;
@@ -32,13 +37,12 @@ public class Player implements Model {
     Pawn selectedPawn = team.getPawn(playerIndex, selectedPawnIndex);
     if (selectedPawn != null) playCard(selectedPawn);
     else {
-      System.out.println("pawn not selected!!!");
+      logger.warn("Player#doTurn failed. No pawn selected.");
     }
   }
 
   public void addCard(Card card) {
-    if (card == null)
-      System.out.println("Warning, card given to player with Player#addCard is null!!!");
+    if (card == null) logger.warn("card given to player with Player#addCard is null");
     cards.add(card);
   }
 
