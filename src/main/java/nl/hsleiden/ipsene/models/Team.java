@@ -1,7 +1,6 @@
 package nl.hsleiden.ipsene.models;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import nl.hsleiden.ipsene.controllers.CardController;
 import nl.hsleiden.ipsene.views.View;
 
