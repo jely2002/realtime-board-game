@@ -2,18 +2,19 @@ package nl.hsleiden.ipsene.controllers;
 
 import com.google.cloud.firestore.DocumentSnapshot;
 import nl.hsleiden.ipsene.models.CardType;
+import nl.hsleiden.ipsene.models.Deck;
 import nl.hsleiden.ipsene.views.View;
 
 public class BoardController implements Controller {
 
-  private CardController cardController;
+  private Deck cards;
   private TeamController teamController;
   private boolean gameHasEnded = false;
   private final int AMOUNT_OF_PLAYERS;
 
   public BoardController(int amountOfPlayers, int amountOfTeams) {
     AMOUNT_OF_PLAYERS = amountOfPlayers;
-    generateDeck();
+
     // todo sent cards array to firebase
     teamController = new TeamController();
   }
@@ -21,6 +22,7 @@ public class BoardController implements Controller {
   public void doGameLoop() {
     int cardsToBeDrawn = 5;
     int roundNum = 1;
+    cards = CardController.generateDeck(AMOUNT_OF_PLAYERS);
     while (gameHasEnded == false) {
       // 5, 4, 4, shuffle, repeat
       if (roundNum == 2 || roundNum == 3) cardsToBeDrawn = 4;
@@ -29,22 +31,17 @@ public class BoardController implements Controller {
         roundNum = 1;
         // todo make new deck, and reshuffle cards
         // temp to avoid crash should normally be sent to firebase too... .. .
-        generateDeck();
+        cards = CardController.generateDeck(AMOUNT_OF_PLAYERS);
       }
       ++roundNum;
       // todo check if there are enough cards left in the deck
       teamController.setCardsToBeDrawnNextTurn(cardsToBeDrawn);
-      teamController.distributeCards(cardController);
+      teamController.distributeCards(cards);
       teamController.doTurns();
       // todo more game logic stuff
       // todo check if game has ended and set gameHasEnded
       // gameHasEnded = true;
     }
-  }
-
-  private void generateDeck() {
-    CardType[] cards = CardController.generateDeck(AMOUNT_OF_PLAYERS);
-    cardController = new CardController(cards);
   }
 
   @Override
