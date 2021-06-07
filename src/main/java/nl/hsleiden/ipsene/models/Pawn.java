@@ -5,7 +5,7 @@ import nl.hsleiden.ipsene.views.View;
 public class Pawn implements Model {
   private int boardPosition;
   private final TeamType team;
-  private final int pawnNumber;
+  private int pawnNumber;
 
   /**
    * @param team - the 'type' of the team, from enum TeamType used to get team info and calculate
@@ -15,8 +15,8 @@ public class Pawn implements Model {
    */
   public Pawn(TeamType team, int pawnNum) {
     this.team = team;
-    this.pawnNumber = pawnNum;
     boardPosition = pawnNum;
+    pawnNumber = pawnNum;
   }
 
   public int getPawnNumber() {
@@ -38,7 +38,6 @@ public class Pawn implements Model {
   public void addRelativeBoardPosition(int amount) {
     setRelativeBoardposition(boardPosition + amount);
   }
-
   @Override
   public void registerObserver(View v) {}
 

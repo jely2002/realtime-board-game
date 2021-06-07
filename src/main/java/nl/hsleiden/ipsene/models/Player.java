@@ -14,6 +14,7 @@ public class Player implements Model {
   private int playerIndex;
 
   private Team team;
+  private ArrayList<Pawn> pawns;
 
   private int selectedPawnIndex = 0;
   private int selectedCardIndex = 0;
@@ -24,12 +25,15 @@ public class Player implements Model {
    * @param team the players team
    * @param index the players index within its team
    */
-  public Player(Team team, int index) {
+  public Player(Team team, int index, ArrayList<Pawn> pawns) {
     cards = new ArrayList<Card>();
     this.team = team;
     this.playerIndex = index;
+    this.pawns = pawns;
   }
-
+  public Pawn getPawn(int pawnIndex) {
+    return pawns.get(pawnIndex);
+  }
   public void doTurn() {
     // just zero for now, should use a callback from the view to get the clicked pawns index or
     // something
