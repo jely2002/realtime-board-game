@@ -19,6 +19,7 @@ public class Pawn implements Model {
     boardPosition = pawnNum;
     pawnNumber = pawnNum;
   }
+
   public void setOwningPlayer(Player player) {
     this.player = player;
   }
