@@ -15,13 +15,13 @@ public class Team implements Model {
   public Team(TeamType teamtype) {
     pawns = new ArrayList<>();
     players = new Player[PLAYERS_PER_TEAM];
-    int pawnNum = 0;
+    int pawnNumber = 0;
     // create pawns and player
     for (int i = 0; i < PLAYERS_PER_TEAM; i++) {
       pawns.add(new HashMap<>());
       for (int j = 0; j < PAWNS_PER_PLAYER; j++) {
-        pawns.get(i).put(pawnNum, new Pawn(teamtype, pawnNum));
-        ++pawnNum;
+        pawns.get(i).put(pawnNumber, new Pawn(teamtype, pawnNumber));
+        ++pawnNumber;
       }
       players[i] = new Player(this, i);
     }
