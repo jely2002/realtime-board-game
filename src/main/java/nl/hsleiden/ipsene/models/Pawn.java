@@ -38,6 +38,7 @@ public class Pawn implements Model {
   public void addRelativeBoardPosition(int amount) {
     setRelativeBoardposition(boardPosition + amount);
   }
+
   @Override
   public void registerObserver(View v) {}
 

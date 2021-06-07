@@ -31,9 +31,11 @@ public class Player implements Model {
     this.playerIndex = index;
     this.pawns = pawns;
   }
+
   public Pawn getPawn(int pawnIndex) {
     return pawns.get(pawnIndex);
   }
+
   public void doTurn() {
     // just zero for now, should use a callback from the view to get the clicked pawns index or
     // something
