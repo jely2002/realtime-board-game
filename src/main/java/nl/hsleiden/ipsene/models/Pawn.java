@@ -5,6 +5,7 @@ import nl.hsleiden.ipsene.views.View;
 public class Pawn implements Model {
   private int boardPosition;
   private final TeamType team;
+  private Player player;
   private int pawnNumber;
 
   /**
@@ -17,6 +18,9 @@ public class Pawn implements Model {
     this.team = team;
     boardPosition = pawnNum;
     pawnNumber = pawnNum;
+  }
+  public void setOwningPlayer(Player player) {
+    this.player = player;
   }
 
   public int getPawnNumber() {

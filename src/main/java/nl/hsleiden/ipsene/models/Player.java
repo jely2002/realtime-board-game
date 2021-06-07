@@ -30,6 +30,9 @@ public class Player implements Model {
     this.team = team;
     this.playerIndex = index;
     this.pawns = pawns;
+    for (Pawn p : pawns) {
+      p.setOwningPlayer(this);
+    }
   }
   public Pawn getPawn(int pawnIndex) {
     return pawns.get(pawnIndex);
