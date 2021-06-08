@@ -3,7 +3,6 @@ package nl.hsleiden.ipsene.models;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
-
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import nl.hsleiden.ipsene.interfaces.Model;
@@ -88,7 +87,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serializedGame = new LinkedHashMap<>();
 
-    //LinkedHashMap<String, Object> serializedteams = new LinkedHashMap<>();
+    // LinkedHashMap<String, Object> serializedteams = new LinkedHashMap<>();
     HashMap<String, Object> serializedteams = new HashMap<String, Object>();
     for (Team team : teams) {
       serializedteams.put(String.valueOf(team.teamIndex), team.serialize());
