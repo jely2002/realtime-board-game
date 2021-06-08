@@ -1,10 +1,9 @@
 package nl.hsleiden.ipsene.models;
 
 import com.google.cloud.firestore.DocumentSnapshot;
-import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
-
 import java.util.*;
 import java.util.stream.Collectors;
+import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 
 public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
   private ArrayList<Card> cards = new ArrayList<Card>();
@@ -14,7 +13,6 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
   private ArrayList<Integer> nCardDeck = new ArrayList<Integer>();
   // all possible values for n cards
   private static final int[] POSSIBLE_N_CARDS = {2, 3, 5, 6, 8, 9, 10, 12};
-
 
   public Deck(int amountOfPlayers, Game game) {
     this.game = game;
@@ -95,12 +93,11 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
 
   @Override
   public List<Map<String, Object>> serialize() {
-    List<Map<String, Object>> serializedCards = cards.stream().map(Card::serialize).collect(Collectors.toList());
+    List<Map<String, Object>> serializedCards =
+        cards.stream().map(Card::serialize).collect(Collectors.toList());
     return serializedCards;
   }
 
   @Override
-  public void update(DocumentSnapshot document) {
-
-  }
+  public void update(DocumentSnapshot document) {}
 }

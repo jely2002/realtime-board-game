@@ -1,6 +1,7 @@
 package nl.hsleiden.ipsene.controllers;
 
 import com.google.cloud.firestore.DocumentSnapshot;
+import java.util.concurrent.ExecutionException;
 import javafx.application.Platform;
 import nl.hsleiden.ipsene.exceptions.GameNotFoundException;
 import nl.hsleiden.ipsene.exceptions.ServerConnectionException;
@@ -11,42 +12,40 @@ import nl.hsleiden.ipsene.models.Game;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.ExecutionException;
-
 public class GameController implements Controller {
 
-    private static final Logger logger = LoggerFactory.getLogger(GameController.class.getName());
+  private static final Logger logger = LoggerFactory.getLogger(GameController.class.getName());
 
-    static GameController gameController;
-    private final Game game;
-    private final FirebaseService firebaseService;
+  static GameController gameController;
+  private final Game game;
+  private final FirebaseService firebaseService;
 
-    private GameController(FirebaseService firebaseService) {
+  private GameController(FirebaseService firebaseService) {
         this.game = new Game();
         this.firebaseService = firebaseService;
-    }
+  }
 
-    public static GameController getInstance(FirebaseService firebaseService) {
-        if (gameController == null) {
-            gameController = new GameController(firebaseService);
-        }
-        return gameController;
+  public static GameController getInstance(FirebaseService firebaseService) {
+    if (gameController == null) {
+      gameController = new GameController(firebaseService);
     }
+    return gameController;
+  }
 
-    @Override
-    public void update(DocumentSnapshot document) {
-        logger.info("Received update from firebase");
-        game.update(document);
-    }
+  @Override
+  public void update(DocumentSnapshot document) {
+    logger.info("Received update from firebase");
+    game.update(document);
+  }
 
-    @Override
-    public void registerObserver(View v) {
-        game.registerObserver(v);
-    }
+  @Override
+  public void registerObserver(View v) {
+    game.registerObserver(v);
+  }
 
-    public String getToken() {
+   public String getToken() {
        return game.getToken();
-    }
+   }
 
     /**
      * Join an already existing game with a token
@@ -67,7 +66,7 @@ public class GameController implements Controller {
             logger.error(e.getMessage(), e);
             throw new ServerConnectionException();
         }
-    }
+   }
 
     /**
      * Host/start a new empty game
@@ -85,7 +84,8 @@ public class GameController implements Controller {
         }
     }
 
-    public void quit() {
-        Platform.exit();
-    }
+  public void quit() {
+    Platform.exit();
+  }
+      
 }

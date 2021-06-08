@@ -197,5 +197,4 @@ public class LobbyView implements View {
   public void update() {
       loadPrimaryStage(createPane());
   }
-
 }

@@ -1,12 +1,11 @@
 package nl.hsleiden.ipsene.models;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
 import nl.hsleiden.ipsene.interfaces.Model;
-import nl.hsleiden.ipsene.views.GameStatView;
 import nl.hsleiden.ipsene.interfaces.View;
+import nl.hsleiden.ipsene.views.GameStatView;
 
 public class GameStat implements Model {
 
