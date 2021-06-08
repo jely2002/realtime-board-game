@@ -5,7 +5,7 @@ import com.google.cloud.firestore.*;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import nl.hsleiden.ipsene.controllers.Controller;
+import nl.hsleiden.ipsene.interfaces.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,21 +33,21 @@ public class FirebaseService {
     DocumentReference docRef = this.colRef.document(documentId);
 
     docRef.addSnapshotListener(
-        (snapshot, e) -> {
-          if (e != null) {
-            logger.error("listen failed", e);
-            return;
-          }
+            (snapshot, e) -> {
+              if (e != null) {
+                logger.error("listen failed", e);
+                return;
+              }
 
-          if (snapshot != null && snapshot.exists()) {
+              if (snapshot != null && snapshot.exists()) {
 
-            controller.update(snapshot);
+                controller.update(snapshot);
 
-            logger.debug("listener received data: {}", snapshot.getData());
-          } else {
-            logger.warn("listener received null data");
-          }
-        });
+                logger.debug("listener received data: {}", snapshot.getData());
+              } else {
+                logger.warn("listener received null data");
+              }
+            });
   }
 
   /**
@@ -57,13 +57,9 @@ public class FirebaseService {
    * @param docData
    * @param documentId
    */
-  public void set(String documentId, Map<String, Object> docData) {
+  public void set(String documentId, Map<String, Object> docData) throws ExecutionException, InterruptedException {
     ApiFuture<WriteResult> future = this.colRef.document(documentId).set(docData);
-    try {
-      logger.debug("time to update: {}", future.get().getUpdateTime());
-    } catch (InterruptedException | ExecutionException e) {
-      logger.error(e.getMessage(), e);
-    }
+    logger.debug("time to update: {}", future.get().getUpdateTime());
   }
 
   /**
@@ -72,23 +68,18 @@ public class FirebaseService {
    * @param documentId
    * @return
    */
-  public DocumentSnapshot get(String documentId) {
+  public DocumentSnapshot get(String documentId) throws ExecutionException, InterruptedException {
 
     DocumentReference docRef = this.colRef.document(documentId);
     ApiFuture<DocumentSnapshot> future = docRef.get();
     DocumentSnapshot document;
 
-    try {
-      document = future.get();
+    document = future.get();
 
-      if (document.exists()) {
-        return document;
-      } else {
-        logger.warn("document with Id {} does not exist", documentId);
-      }
-    } catch (InterruptedException | ExecutionException e) {
-      logger.error(e.getMessage(), e);
+    if (document.exists()) {
+      return document;
     }
+    logger.warn("document with Id {} does not exist", documentId);
     return null;
   }
 

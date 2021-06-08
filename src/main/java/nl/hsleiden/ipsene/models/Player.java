@@ -3,13 +3,16 @@ package nl.hsleiden.ipsene.models;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import nl.hsleiden.ipsene.views.View;
+import com.google.cloud.firestore.DocumentSnapshot;
+import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Player implements Model, FirebaseSerializable<Map<String, Object>> {
+public class Player implements FirebaseSerializable<Map<String, Object>> {
 
   private static final Logger logger = LoggerFactory.getLogger(Player.class.getName());
+
+  private final Game game;
 
   private ArrayList<Card> cards;
   /** index of the player in its team */
@@ -29,8 +32,9 @@ public class Player implements Model, FirebaseSerializable<Map<String, Object>> 
    * @param team the players team
    * @param index the players index within its team
    */
-  public Player(Team team, int id, int index, ArrayList<Pawn> pawns) {
+  public Player(Team team, int id, int index, ArrayList<Pawn> pawns, Game game) {
     cards = new ArrayList<Card>();
+    this.game = game;
     this.id = id;
     this.team = team;
     this.playerIndex = index;
@@ -65,7 +69,7 @@ public class Player implements Model, FirebaseSerializable<Map<String, Object>> 
     c.play(this, pawn);
     cards.remove(c);
     // removed a card so call observers
-    notifyObservers();
+    game.notifyObservers();
   }
 
   public int getId() {
@@ -73,20 +77,19 @@ public class Player implements Model, FirebaseSerializable<Map<String, Object>> 
   }
 
   @Override
-  public void registerObserver(View v) {}
-
-  @Override
-  public void unregisterObserver(View v) {}
-
-  @Override
-  public void notifyObservers() {}
-
-  @Override
   public Map<String, Object> serialize() {
     List<Map<String, Object>> serializedCards = cards.stream().map(card -> card.serialize()).collect(Collectors.toList());
+    List<Map<String, Object>> serializedPawns = cards.stream().map(card -> card.serialize()).collect(Collectors.toList());
     LinkedHashMap<String, Object> serializedPlayer = new LinkedHashMap<>();
     serializedPlayer.put("cards", serializedCards);
+    serializedPlayer.put("pawns", serializedPawns);
     serializedPlayer.put("selected", false);
     return serializedPlayer;
+  }
+
+  @Override
+  public void update(DocumentSnapshot document) {
+    cards.forEach(card -> card.update(document));
+    pawns.forEach(card -> card.update(document));
   }
 }

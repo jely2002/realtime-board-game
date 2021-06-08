@@ -4,8 +4,9 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
+import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.views.GameStatView;
-import nl.hsleiden.ipsene.views.View;
+import nl.hsleiden.ipsene.interfaces.View;
 
 public class GameStat implements Model {
 
@@ -41,17 +42,13 @@ public class GameStat implements Model {
   }
 
   @Override
-  public void unregisterObserver(View v) {}
+  public void unregisterObserver(View v) {
+    observers.remove(v);
+  }
 
   @Override
   public void notifyObservers() {
-    for (View v : observers) {
-      try {
-        v.update();
-      } catch (FileNotFoundException e) {
-        e.printStackTrace();
-      }
-    }
+    observers.forEach(View::update);
   }
 }
 

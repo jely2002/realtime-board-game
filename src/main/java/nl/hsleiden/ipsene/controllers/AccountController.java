@@ -1,11 +1,13 @@
 package nl.hsleiden.ipsene.controllers;
 
 import com.google.cloud.firestore.DocumentSnapshot;
+import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.models.Account;
-import nl.hsleiden.ipsene.views.View;
+import nl.hsleiden.ipsene.interfaces.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Deprecated
 public class AccountController implements Controller {
 
   private static final Logger logger = LoggerFactory.getLogger(AccountController.class.getName());

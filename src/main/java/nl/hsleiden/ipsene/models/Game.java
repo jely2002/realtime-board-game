@@ -2,60 +2,54 @@ package nl.hsleiden.ipsene.models;
 
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
-import nl.hsleiden.ipsene.views.View;
+import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
+import nl.hsleiden.ipsene.interfaces.Model;
+import nl.hsleiden.ipsene.interfaces.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class Game implements Model {
+public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
     private static final Logger logger = LoggerFactory.getLogger(Game.class.getName());
 
-    private final UUID id;
-    private final String token;
+    private static final int AMOUNT_OF_TEAMS = 2;
+    private static final int TOKEN_LENGTH = 5;
+
+    private final ArrayList<View> observers = new ArrayList<>();
+    private final ArrayList<Team> teams;
+
+    private String token;
+    private final Deck deck;
 
     private int doingTurn;
     private int round;
     private Timestamp turnStartTime;
-
-    public static final int AMOUNT_OF_TEAMS = 2;
     private int cardsPerPlayerNextRound = 0;
 
-    private final Deck deck;
-    private final ArrayList<Team> teams;
-
-    // When game is updated
-    public Game(UUID id, String token, ArrayList<Team> teams, ArrayList<Card> cards) {
-        this.id = id;
-        this.token = token;
-        this.teams = teams;
-        this.deck = new Deck(cards);
-    }
-
-    // When new game is created
     public Game() {
-        this.id = UUID.randomUUID();
-        this.token = generateToken();
+        this.token = generateToken(TOKEN_LENGTH);
         this.round = 0;
         this.teams = generateTeams();
-        this.deck = new Deck(4);
+        this.deck = new Deck(4, this);
     }
 
     private ArrayList<Team> generateTeams() {
         ArrayList<Team> teams = new ArrayList<>();
         TeamType[] types = {TeamType.RED, TeamType.GREEN, TeamType.BLUE, TeamType.YELLOW};
         for (int i = 0; i < AMOUNT_OF_TEAMS; i++) {
-            teams.add(new Team(types[i], i));
+            teams.add(new Team(types[i], i, this));
         }
         return teams;
     }
 
-    private String generateToken() {
-        byte[] array = new byte[5];
-        new Random().nextBytes(array);
-        return new String(array, StandardCharsets.UTF_8);
+    private String generateToken(int length) {
+        StringBuilder sb = new StringBuilder(length);
+        Random random = new Random();
+        for(int i=0; i < length; i++)
+            sb.append((char)('0' + random.nextInt(10)));
+        return sb.toString();
     }
 
     public void doTurns() {
@@ -74,6 +68,21 @@ public class Game implements Model {
         cardsPerPlayerNextRound = amount;
     }
 
+    @Override
+    public void update(DocumentSnapshot document) {
+
+        doingTurn = Math.toIntExact(document.getLong("doingTurn"));
+        round = Math.toIntExact(document.getLong("round"));
+        turnStartTime = document.getTimestamp("turnStartTime");
+        token = document.getId();
+
+        teams.forEach(team -> update(document));
+        deck.update(document);
+
+        notifyObservers();
+    }
+
+    @Override
     public Map<String, Object> serialize() {
         LinkedHashMap<String, Object> serializedGame = new LinkedHashMap<>();
 
@@ -89,35 +98,6 @@ public class Game implements Model {
         serializedGame.put("doingTurn", doingTurn);
 
         return serializedGame;
-    }
-
-    public static Game deserialize(DocumentSnapshot document) {
-        //UUID id = UUID.fromString(document.getId());
-        logger.info(document.getId());
-        String token = document.getString("token");
-        logger.info(token);
-        HashMap<String, Object> serializedPlayers = (HashMap<String, Object>) document.get("players");
-        for(String key : serializedPlayers.keySet()) {
-            HashMap<String, Object> serializedPlayer = (HashMap<String, Object>) serializedPlayers.get(key);
-            logger.info(serializedPlayer.get("selected").toString());
-            ArrayList<Object> cardList = (ArrayList<Object>) serializedPlayer.get("cards");
-            logger.info(cardList.toString());
-            for(Object cardObject : cardList) {
-
-                HashMap<String, Object> serializedCard = (HashMap<String, Object>) cardObject;
-                logger.info(serializedCard.toString());
-                String type = (String) serializedCard.get("type");
-                Long value = (Long) serializedCard.get("value");
-                logger.info(type);
-                logger.info(String.valueOf(value));
-            }
-        }
-
-        return null;
-    }
-
-    public UUID getId() {
-        return id;
     }
 
     public ArrayList<Team> getTeams() {
@@ -154,16 +134,16 @@ public class Game implements Model {
 
     @Override
     public void registerObserver(View v) {
-
+        this.observers.add(v);
     }
 
     @Override
     public void unregisterObserver(View v) {
-
+        this.observers.remove(v);
     }
 
     @Override
     public void notifyObservers() {
-
+        observers.forEach(View::update);
     }
 }

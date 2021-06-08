@@ -1,8 +1,9 @@
 package nl.hsleiden.ipsene.controllers;
 
 import com.google.cloud.firestore.DocumentSnapshot;
+import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.models.Deck;
-import nl.hsleiden.ipsene.views.View;
+import nl.hsleiden.ipsene.interfaces.View;
 
 public class BoardController implements Controller {
 
@@ -19,7 +20,9 @@ public class BoardController implements Controller {
   }
 
   @Override
-  public void update(DocumentSnapshot ds) {}
+  public void update(DocumentSnapshot ds) {
+
+  }
 
   @Override
   public void registerObserver(View v) {}

@@ -1,18 +1,31 @@
 package nl.hsleiden.ipsene.models;
 
-
-import nl.hsleiden.ipsene.views.View;
+import com.google.cloud.firestore.DocumentSnapshot;
+import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Deck implements Model, FirebaseSerializable<List<Map<String, Object>>> {
+public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
   private ArrayList<Card> cards = new ArrayList<Card>();
+  private final Game game;
   // all possible values for nCards filled by generateDeck, slowly emptied over the course of the
   // game
   private ArrayList<Integer> nCardDeck = new ArrayList<Integer>();
   // all possible values for n cards
   private static final int[] POSSIBLE_N_CARDS = {2, 3, 5, 6, 8, 9, 10, 12};
+
+
+  public Deck(int amountOfPlayers, Game game) {
+    this.game = game;
+    nCardDeck = generateNCardDeck(amountOfPlayers);
+    cards = new ArrayList<>(Arrays.asList(generateDeck(amountOfPlayers, nCardDeck)));
+  }
+
+  public Deck(ArrayList<Card> cards, Game game) {
+    this.game = game;
+    this.cards = cards;
+  }
 
   private Card[] generateDeck(int amountOfPlayers, ArrayList<Integer> nCardDeck) {
 
@@ -54,14 +67,6 @@ public class Deck implements Model, FirebaseSerializable<List<Map<String, Object
     return nDeck;
   }
 
-  public Deck(int amountOfPlayers) {
-    nCardDeck = generateNCardDeck(amountOfPlayers);
-    cards = new ArrayList<>(Arrays.asList(generateDeck(amountOfPlayers, nCardDeck)));
-  }
-
-  public Deck(ArrayList<Card> cards) {
-    this.cards = cards;
-  }
   /**
    * take a card from the top of the deck
    *
@@ -89,23 +94,13 @@ public class Deck implements Model, FirebaseSerializable<List<Map<String, Object
   }
 
   @Override
-  public void registerObserver(View v) {
-
-  }
-
-  @Override
-  public void unregisterObserver(View v) {
-
-  }
-
-  @Override
-  public void notifyObservers() {
-
-  }
-
-  @Override
   public List<Map<String, Object>> serialize() {
     List<Map<String, Object>> serializedCards = cards.stream().map(Card::serialize).collect(Collectors.toList());
     return serializedCards;
+  }
+
+  @Override
+  public void update(DocumentSnapshot document) {
+
   }
 }
