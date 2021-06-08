@@ -88,7 +88,6 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serializedGame = new LinkedHashMap<>();
 
-    //LinkedHashMap<String, Object> serializedteams = new LinkedHashMap<>();
     HashMap<String, Object> serializedteams = new HashMap<String, Object>();
     for (Team team : teams) {
       serializedteams.put(String.valueOf(team.teamIndex), team.serialize());
