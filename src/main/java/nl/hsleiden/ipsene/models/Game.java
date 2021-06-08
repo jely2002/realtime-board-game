@@ -76,7 +76,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
         turnStartTime = document.getTimestamp("turnStartTime");
         token = document.getId();
 
-        teams.forEach(team -> update(document));
+        teams.forEach(team -> team.update(document));
         deck.update(document);
 
         notifyObservers();

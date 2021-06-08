@@ -24,11 +24,6 @@ public class GameController implements Controller {
     private GameController(FirebaseService firebaseService) {
         this.game = new Game();
         this.firebaseService = firebaseService;
-        try {
-            join("56532");
-        } catch(ServerConnectionException | GameNotFoundException e) {
-            logger.error(e.getMessage(), e);
-        }
     }
 
     public static GameController getInstance(FirebaseService firebaseService) {
@@ -49,6 +44,10 @@ public class GameController implements Controller {
         game.registerObserver(v);
     }
 
+    public String getToken() {
+       return game.getToken();
+    }
+
     /**
      * Join an already existing game with a token
      * @param token The token that the user has provided
@@ -63,7 +62,6 @@ public class GameController implements Controller {
             } else {
                 game.update(document);
                 firebaseService.listen(game.getToken(), this);
-                // TODO Switch view to lobby (do this in view or controller?)
             }
         } catch (ExecutionException | InterruptedException e) {
             logger.error(e.getMessage(), e);
@@ -82,6 +80,7 @@ public class GameController implements Controller {
             firebaseService.listen(game.getToken(), this);
             return game.getToken();
         } catch (ExecutionException | InterruptedException e) {
+            logger.error(e.getMessage(), e);
             throw new ServerConnectionException();
         }
     }

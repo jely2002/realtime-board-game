@@ -18,6 +18,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.GameController;
+import nl.hsleiden.ipsene.exceptions.GameNotFoundException;
+import nl.hsleiden.ipsene.exceptions.ServerConnectionException;
 import nl.hsleiden.ipsene.interfaces.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,9 +101,11 @@ public class MenuView implements View {
 
     this.joinButton = buttonBuilder("JOIN");
     setNodeCoordinates(joinButton, 1110, 250);
+    this.joinButton.addEventFilter(MouseEvent.MOUSE_CLICKED, joinButtonClicked);
 
     this.hostButton = buttonBuilder("HOST");
     setNodeCoordinates(hostButton, 1110, 550);
+    this.hostButton.addEventFilter(MouseEvent.MOUSE_CLICKED, hostButtonClicked);
 
     this.quitButton = quitButtonBuilder();
     setNodeCoordinates(quitButton, 500, 800);
@@ -248,6 +252,40 @@ public class MenuView implements View {
           gameController.quit();
         }
       };
+
+  EventHandler<MouseEvent> joinButtonClicked =
+          new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+              String token = joinLobbyIDInput.getText();
+              logger.debug("Join has been clicked");
+              try {
+                gameController.join(token);
+                switchToLobby();
+              } catch (GameNotFoundException | ServerConnectionException e) {
+                logger.warn(e.getMessage(), e);
+                joinInputErrorLabel.setText(e.getMessage());
+              }
+            }
+          };
+
+  EventHandler<MouseEvent> hostButtonClicked =
+          new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+              logger.debug("Host has been clicked");
+              try {
+                gameController.host();
+                switchToLobby();
+              } catch (ServerConnectionException e) {
+                hostInputErrorLabel.setText(e.getMessage());
+              }
+            }
+          };
+
+  private void switchToLobby() {
+    LobbyView lobbyView = new LobbyView(primaryStage, gameController);
+  }
 
   public void update() {}
 }
