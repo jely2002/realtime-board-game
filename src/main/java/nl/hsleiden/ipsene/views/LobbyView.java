@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.interfaces.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,8 @@ import org.slf4j.LoggerFactory;
 public class LobbyView implements View {
 
   private static final Logger logger = LoggerFactory.getLogger(LobbyView.class.getName());
+
+  private final GameController gameController;
 
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
@@ -32,12 +35,13 @@ public class LobbyView implements View {
 
   private Label waitingForPlayersLabel;
 
-  public LobbyView(Stage primaryStage) throws FileNotFoundException {
+  public LobbyView(Stage primaryStage, GameController gameController) {
+    this.gameController = gameController;
     this.primaryStage = primaryStage;
     loadPrimaryStage(createPane());
   }
 
-  private Pane createPane() throws FileNotFoundException {
+  private Pane createPane() {
     Pane pane = new Pane();
 
     // TODO: dit koppelen met Firebase voor aansturen van de view op de model
@@ -45,7 +49,7 @@ public class LobbyView implements View {
     boolean player2Available = true;
     boolean player3Available = false;
     boolean player4Available = true;
-    String lobbyID = "123456";
+    String lobbyID = gameController.getToken();
 
     Label title = lobbyHeaderLabelBuilder(lobbyID);
     MenuView.setNodeCoordinates(title, 10, 10);
@@ -81,7 +85,12 @@ public class LobbyView implements View {
     wfptThread.setDaemon(true); // Zorgt ervoor dat deze thread samen afsluit met de View
     wfptThread.start();
 
-    Image image = new Image(new FileInputStream("keez.png"));
+    Image image = null;
+    try {
+      image = new Image(new FileInputStream("keez.png"));
+    } catch (FileNotFoundException e) {
+      logger.error(e.getMessage(), e);
+    }
     ImageView imageView = new ImageView(image);
     imageView.setPreserveRatio(true);
     imageView.setFitHeight(400);
@@ -185,10 +194,6 @@ public class LobbyView implements View {
 
   @Override
   public void update() {
-    try {
-      loadPrimaryStage(createPane());
-    } catch (FileNotFoundException e) {
-      logger.error(e.getMessage(), e);
-    }
+    loadPrimaryStage(createPane());
   }
 }
