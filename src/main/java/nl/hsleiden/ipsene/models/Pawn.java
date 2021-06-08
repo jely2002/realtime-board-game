@@ -1,8 +1,12 @@
 package nl.hsleiden.ipsene.models;
 
-import nl.hsleiden.ipsene.views.View;
+import com.google.cloud.firestore.DocumentSnapshot;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 
-public class Pawn implements Model {
+public class Pawn implements FirebaseSerializable<Map<String, Object>> {
+  private final Game game;
   private int boardPosition;
   private final TeamType team;
   private Player player;
@@ -10,11 +14,12 @@ public class Pawn implements Model {
 
   /**
    * @param team - the 'type' of the team, from enum TeamType used to get team info and calculate
-   *     pos
+   *     position
    * @param pawnNum - the number of the pawn, acts as an id and is used to determine initial board
    *     position
    */
-  public Pawn(TeamType team, int pawnNum) {
+  public Pawn(TeamType team, int pawnNum, Game game) {
+    this.game = game;
     this.team = team;
     boardPosition = pawnNum;
     pawnNumber = pawnNum;
@@ -45,11 +50,13 @@ public class Pawn implements Model {
   }
 
   @Override
-  public void registerObserver(View v) {}
+  public Map<String, Object> serialize() {
+    LinkedHashMap<String, Object> serializedPawn = new LinkedHashMap<>();
+    serializedPawn.put("location", boardPosition);
+    serializedPawn.put("owner", player.getId());
+    return serializedPawn;
+  }
 
   @Override
-  public void unregisterObserver(View v) {}
-
-  @Override
-  public void notifyObservers() {}
+  public void update(DocumentSnapshot document) {}
 }

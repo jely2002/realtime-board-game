@@ -1,18 +1,29 @@
 package nl.hsleiden.ipsene.models;
 
+import com.google.cloud.firestore.DocumentSnapshot;
+import java.util.*;
+import java.util.stream.Collectors;
+import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-public class Deck {
+public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
   private ArrayList<Card> cards = new ArrayList<Card>();
+  private final Game game;
   // all possible values for nCards filled by generateDeck, slowly emptied over the course of the
   // game
   private ArrayList<Integer> nCardDeck = new ArrayList<Integer>();
   // all possible values for n cards
   private static final int[] POSSIBLE_N_CARDS = {2, 3, 5, 6, 8, 9, 10, 12};
+
+  public Deck(int amountOfPlayers, Game game) {
+    this.game = game;
+    nCardDeck = generateNCardDeck(amountOfPlayers);
+    cards = new ArrayList<>(Arrays.asList(generateDeck(amountOfPlayers, nCardDeck)));
+  }
+
+  public Deck(ArrayList<Card> cards, Game game) {
+    this.game = game;
+    this.cards = cards;
+  }
 
   private Card[] generateDeck(int amountOfPlayers, ArrayList<Integer> nCardDeck) {
 
@@ -54,10 +65,6 @@ public class Deck {
     return nDeck;
   }
 
-  public Deck(int amountOfPlayers) {
-    nCardDeck = generateNCardDeck(amountOfPlayers);
-    cards = new ArrayList<>(Arrays.asList(generateDeck(amountOfPlayers, nCardDeck)));
-  }
   /**
    * take a card from the top of the deck
    *
@@ -83,4 +90,14 @@ public class Deck {
     }
     return val;
   }
+
+  @Override
+  public List<Map<String, Object>> serialize() {
+    List<Map<String, Object>> serializedCards =
+        cards.stream().map(Card::serialize).collect(Collectors.toList());
+    return serializedCards;
+  }
+
+  @Override
+  public void update(DocumentSnapshot document) {}
 }

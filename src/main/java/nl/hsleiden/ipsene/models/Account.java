@@ -1,7 +1,9 @@
 package nl.hsleiden.ipsene.models;
 
-import nl.hsleiden.ipsene.views.View;
+import nl.hsleiden.ipsene.interfaces.Model;
+import nl.hsleiden.ipsene.interfaces.View;
 
+@Deprecated
 public class Account implements Model {
 
   private final String uid = "";

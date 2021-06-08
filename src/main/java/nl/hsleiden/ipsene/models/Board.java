@@ -1,7 +1,8 @@
 package nl.hsleiden.ipsene.models;
 
 import java.util.HashMap;
-import nl.hsleiden.ipsene.views.View;
+import nl.hsleiden.ipsene.interfaces.Model;
+import nl.hsleiden.ipsene.interfaces.View;
 
 public class Board implements Model {
   public static final int STEPS_BETWEEN_TEAMS = 14;

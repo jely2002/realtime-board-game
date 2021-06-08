@@ -1,7 +1,6 @@
-package nl.hsleiden.ipsene.controllers;
+package nl.hsleiden.ipsene.interfaces;
 
 import com.google.cloud.firestore.DocumentSnapshot;
-import nl.hsleiden.ipsene.views.View;
 
 public interface Controller {
   public void update(DocumentSnapshot ds);

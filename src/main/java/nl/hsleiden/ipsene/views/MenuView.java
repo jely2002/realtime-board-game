@@ -17,13 +17,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import nl.hsleiden.ipsene.controllers.MenuController;
+import nl.hsleiden.ipsene.controllers.GameController;
+import nl.hsleiden.ipsene.interfaces.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MenuView implements View {
 
-  private static final Logger logger = LoggerFactory.getLogger(MenuView.class);
+  private static final Logger logger = LoggerFactory.getLogger(MenuView.class.getName());
 
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
@@ -50,17 +51,17 @@ public class MenuView implements View {
   private Label joinInputErrorLabel;
   private Label hostInputErrorLabel;
 
-  private MenuController menuController;
+  private final GameController gameController;
 
-  public MenuView(Stage primaryStage) {
+  public MenuView(Stage primaryStage, GameController gameController) {
     this.primaryStage = primaryStage;
+    this.gameController = gameController;
     try {
       loadPrimaryStage(createPane());
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
-    menuController = MenuController.getInstance();
-    menuController.registerObserver(this);
+    gameController.registerObserver(this);
   }
 
   private void loadPrimaryStage(Pane pane) {
@@ -244,8 +245,7 @@ public class MenuView implements View {
         @Override
         public void handle(MouseEvent e) {
           logger.debug("Quit button has been pressed");
-          // Platform.exit();
-          menuController.quitGame();
+          gameController.quit();
         }
       };
 

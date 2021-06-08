@@ -9,8 +9,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import nl.hsleiden.ipsene.interfaces.View;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LobbyView implements View {
+
+  private static final Logger logger = LoggerFactory.getLogger(LobbyView.class.getName());
+
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
   private Stage primaryStage;
@@ -178,7 +184,11 @@ public class LobbyView implements View {
   }
 
   @Override
-  public void update() throws FileNotFoundException {
-    loadPrimaryStage(createPane());
+  public void update() {
+    try {
+      loadPrimaryStage(createPane());
+    } catch (FileNotFoundException e) {
+      logger.error(e.getMessage(), e);
+    }
   }
 }

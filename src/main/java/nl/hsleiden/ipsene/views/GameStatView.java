@@ -1,6 +1,5 @@
 package nl.hsleiden.ipsene.views;
 
-import java.io.FileNotFoundException;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.GameStatController;
+import nl.hsleiden.ipsene.interfaces.View;
 
 public class GameStatView implements View {
 
@@ -90,7 +90,7 @@ public class GameStatView implements View {
       };
 
   @Override
-  public void update() throws FileNotFoundException {
+  public void update() {
     loadPrimaryStage(createUpdatedPane());
   }
 }

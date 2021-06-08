@@ -1,16 +1,25 @@
 package nl.hsleiden.ipsene.models;
 
+import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.ArrayList;
-import nl.hsleiden.ipsene.views.View;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 
-public class Team implements Model {
+public class Team implements FirebaseSerializable<Map<String, Object>> {
+
+  private final Game game;
 
   private Player[] players;
   public static final int PAWNS_PER_PLAYER = 2; // idk
   public static final int PLAYERS_PER_TEAM = 2;
+  public final int teamIndex;
 
   /** @param teamtype the type of the team, given to the pawns created in the constructor */
-  public Team(TeamType teamtype) {
+  public Team(TeamType teamtype, int teamIndex, Game game) {
+    this.game = game;
+    this.teamIndex = teamIndex;
     int pawnNumber = 0;
     players = new Player[PLAYERS_PER_TEAM];
 
@@ -18,11 +27,12 @@ public class Team implements Model {
       ArrayList<Pawn> pawns = new ArrayList<>(PAWNS_PER_PLAYER);
 
       for (int j = 0; j < PAWNS_PER_PLAYER; j++) {
-        pawns.add(new Pawn(teamtype, pawnNumber));
+        pawns.add(new Pawn(teamtype, pawnNumber, game));
         ++pawnNumber;
       }
 
-      players[i] = new Player(this, i, pawns);
+      int absolutePlayerId = (i + 1) * teamIndex + 1;
+      players[i] = new Player(this, i, absolutePlayerId, pawns, game);
     }
   }
 
@@ -60,11 +70,16 @@ public class Team implements Model {
   }
 
   @Override
-  public void registerObserver(View v) {}
+  public Map<String, Object> serialize() {
+    LinkedHashMap<String, Object> serialized = new LinkedHashMap<>();
+    for (Player player : players) {
+      serialized.put(String.valueOf(player.getId()), player.serialize());
+    }
+    return serialized;
+  }
 
   @Override
-  public void unregisterObserver(View v) {}
-
-  @Override
-  public void notifyObservers() {}
+  public void update(DocumentSnapshot document) {
+    Arrays.stream(players).forEach(player -> player.update(document));
+  }
 }
