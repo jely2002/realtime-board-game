@@ -61,7 +61,6 @@ public class FirebaseService {
    */
   public void set(String documentId, Map<String, Object> docData)
           throws ExecutionException, InterruptedException {
-    System.out.println("in set");
     ApiFuture<WriteResult> future = this.colRef.document(documentId).set(docData);
     logger.debug("time to update: {}", future.get().getUpdateTime());
   }
