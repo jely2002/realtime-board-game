@@ -1,11 +1,10 @@
 package nl.hsleiden.ipsene.models;
 
+import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import com.google.cloud.firestore.DocumentSnapshot;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 
 public class Team implements FirebaseSerializable<Map<String, Object>> {
@@ -73,7 +72,7 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
   @Override
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serialized = new LinkedHashMap<>();
-    for(Player player : players) {
+    for (Player player : players) {
       serialized.put(String.valueOf(player.getId()), player.serialize());
     }
     return serialized;

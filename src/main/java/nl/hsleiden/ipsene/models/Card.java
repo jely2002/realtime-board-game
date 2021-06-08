@@ -1,10 +1,9 @@
 package nl.hsleiden.ipsene.models;
 
+import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import com.google.cloud.firestore.DocumentSnapshot;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import nl.hsleiden.ipsene.interfaces.Playable;
 import org.slf4j.Logger;
@@ -82,13 +81,11 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
   @Override
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serializedCard = new LinkedHashMap<>();
-    serializedCard.put("type",  this.type.toString());
-    serializedCard.put("value",  this.steps);
+    serializedCard.put("type", this.type.toString());
+    serializedCard.put("value", this.steps);
     return serializedCard;
   }
 
   @Override
-  public void update(DocumentSnapshot document) {
-
-  }
+  public void update(DocumentSnapshot document) {}
 }

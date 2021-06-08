@@ -1,10 +1,9 @@
 package nl.hsleiden.ipsene.models;
 
 import com.google.cloud.firestore.DocumentSnapshot;
-import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
+import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 
 public class Pawn implements FirebaseSerializable<Map<String, Object>> {
   private final Game game;
@@ -59,7 +58,5 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>> {
   }
 
   @Override
-  public void update(DocumentSnapshot document) {
-
-  }
+  public void update(DocumentSnapshot document) {}
 }

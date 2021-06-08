@@ -1,16 +1,13 @@
 package nl.hsleiden.ipsene.application;
 
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
-import nl.hsleiden.ipsene.models.Game;
-import nl.hsleiden.ipsene.views.LobbyView;
 import nl.hsleiden.ipsene.views.MenuView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 public class Main extends Application {
 
@@ -24,13 +21,14 @@ public class Main extends Application {
   public void start(Stage primaryStage) {
 
     try {
-      FirebaseService firebaseService = new FirebaseService("C:\\Users\\jwgle\\Downloads\\firestoretest-5c4e4-52601abc4d0c.json", "games");
+      FirebaseService firebaseService =
+          new FirebaseService(
+              "C:\\Users\\jwgle\\Downloads\\firestoretest-5c4e4-52601abc4d0c.json", "games");
       GameController gameController = GameController.getInstance(firebaseService);
       MenuView menuView = new MenuView(primaryStage, gameController);
-    } catch(IOException e) {
+    } catch (IOException e) {
       logger.error(e.getMessage(), e);
     }
-
 
     // GameStatView gameStatView = new GameStatView(primaryStage);
     // logger.debug("primaryStage has been loaded");
@@ -42,5 +40,4 @@ public class Main extends Application {
     //     boardController.doGameLoop();
 
   }
-
 }
