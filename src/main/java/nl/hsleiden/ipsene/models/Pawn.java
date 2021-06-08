@@ -34,7 +34,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>> {
   }
 
   public int getAbsoluteBoardPosition() {
-    return Board.boardOffset.get(team) + boardPosition;
+    return BoardOLD.boardOffset.get(team) + boardPosition;
   }
 
   public int getRelativeBoardPosition() {

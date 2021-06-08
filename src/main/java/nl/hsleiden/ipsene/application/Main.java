@@ -30,13 +30,13 @@ public class Main extends Application {
       logger.error(e.getMessage(), e);
     }
 
-    // GameStatView gameStatView = new GameStatView(primaryStage);
+    // BoardView gameStatView = new BoardView(primaryStage);
     // logger.debug("primaryStage has been loaded");
     // Menu menu = new Menu(primaryStage);
     // CardView cardView = new CardView(primaryStage);
     // LobbyView lobbyView = new LobbyView(primaryStage);
 
-    //     BoardController boardController = new BoardController(4, 2);
+    //     BoardControllerOLD boardController = new BoardControllerOLD(4, 2);
     //     boardController.doGameLoop();
 
   }
