@@ -253,7 +253,7 @@ public class MenuView implements View {
         }
       };
 
-  EventHandler<MouseEvent> joinButtonClicked =
+  public EventHandler<MouseEvent> joinButtonClicked =
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
@@ -275,8 +275,12 @@ public class MenuView implements View {
         public void handle(MouseEvent event) {
           logger.debug("Host has been clicked");
           try {
+            System.out.println("trying to host");
             gameController.host();
+            System.out.println("hosted");
             switchToLobby();
+            System.out.println("switched lobby");
+
           } catch (ServerConnectionException e) {
             hostInputErrorLabel.setText(e.getMessage());
           }
@@ -288,4 +292,5 @@ public class MenuView implements View {
   }
 
   public void update() {}
+
 }

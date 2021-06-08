@@ -1,15 +1,22 @@
 package nl.hsleiden.ipsene.firebase;
 
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 public class Firebase {
-
+  public static final String CARD_FIELD_NAME = "cards";
+  public static final String TEAM_FIELD_NAME = "teams";
+  public static final String DOING_TURN_FIELD_NAME = "doingTurn";
+  public static final String ROUND_FIELD_NAME = "round";
+  public static final String TURN_START_TIME_FIELD_NAME = "turnStartTime";
   private final Firestore store;
 
   protected Firebase(String privateKeyPath) throws IOException {
@@ -23,4 +30,6 @@ public class Firebase {
   protected Firestore getStore() {
     return store;
   }
+
+
 }

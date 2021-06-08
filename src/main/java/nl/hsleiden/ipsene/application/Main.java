@@ -1,9 +1,14 @@
 package nl.hsleiden.ipsene.application;
 
 import java.io.IOException;
+
+import io.sentry.Sentry;
+import io.sentry.SentryLevel;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.GameController;
+import nl.hsleiden.ipsene.exceptions.GameNotFoundException;
+import nl.hsleiden.ipsene.exceptions.ServerConnectionException;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.views.MenuView;
 import org.slf4j.Logger;
@@ -19,14 +24,15 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-
     try {
       FirebaseService firebaseService =
           new FirebaseService(
-              "C:\\Users\\jwgle\\Downloads\\firestoretest-5c4e4-52601abc4d0c.json", "games");
+              "C:\\Users\\Mace\\Downloads\\firestoretest-5c4e4-52601abc4d0c.json", "games");
+
       GameController gameController = GameController.getInstance(firebaseService);
+      //gameController.join("29316");
       MenuView menuView = new MenuView(primaryStage, gameController);
-    } catch (IOException e) {
+    } catch (IOException e){
       logger.error(e.getMessage(), e);
     }
 
