@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import nl.hsleiden.ipsene.application.Main;
 import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.interfaces.View;
 import org.slf4j.Logger;
@@ -195,6 +194,6 @@ public class LobbyView implements View {
 
   @Override
   public void update() {
-      loadPrimaryStage(createPane());
+    loadPrimaryStage(createPane());
   }
 }

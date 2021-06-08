@@ -254,34 +254,34 @@ public class MenuView implements View {
       };
 
   EventHandler<MouseEvent> joinButtonClicked =
-          new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-              String token = joinLobbyIDInput.getText();
-              logger.debug("Join has been clicked");
-              try {
-                gameController.join(token);
-                switchToLobby();
-              } catch (GameNotFoundException | ServerConnectionException e) {
-                logger.warn(e.getMessage(), e);
-                joinInputErrorLabel.setText(e.getMessage());
-              }
-            }
-          };
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          String token = joinLobbyIDInput.getText();
+          logger.debug("Join has been clicked");
+          try {
+            gameController.join(token);
+            switchToLobby();
+          } catch (GameNotFoundException | ServerConnectionException e) {
+            logger.warn(e.getMessage(), e);
+            joinInputErrorLabel.setText(e.getMessage());
+          }
+        }
+      };
 
   EventHandler<MouseEvent> hostButtonClicked =
-          new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-              logger.debug("Host has been clicked");
-              try {
-                gameController.host();
-                switchToLobby();
-              } catch (ServerConnectionException e) {
-                hostInputErrorLabel.setText(e.getMessage());
-              }
-            }
-          };
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          logger.debug("Host has been clicked");
+          try {
+            gameController.host();
+            switchToLobby();
+          } catch (ServerConnectionException e) {
+            hostInputErrorLabel.setText(e.getMessage());
+          }
+        }
+      };
 
   private void switchToLobby() {
     LobbyView lobbyView = new LobbyView(primaryStage, gameController);

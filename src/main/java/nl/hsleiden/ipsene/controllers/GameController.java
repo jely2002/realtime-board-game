@@ -21,8 +21,8 @@ public class GameController implements Controller {
   private final FirebaseService firebaseService;
 
   private GameController(FirebaseService firebaseService) {
-        this.game = new Game();
-        this.firebaseService = firebaseService;
+    this.game = new Game();
+    this.firebaseService = firebaseService;
   }
 
   public static GameController getInstance(FirebaseService firebaseService) {
@@ -43,49 +43,50 @@ public class GameController implements Controller {
     game.registerObserver(v);
   }
 
-   public String getToken() {
-       return game.getToken();
-   }
+  public String getToken() {
+    return game.getToken();
+  }
 
-    /**
-     * Join an already existing game with a token
-     * @param token The token that the user has provided
-     * @throws GameNotFoundException Gets thrown when no game with the given token was found
-     * @throws ServerConnectionException Gets thrown when no connection with firebase could be made
-     */
-    public void join(String token) throws GameNotFoundException, ServerConnectionException {
-        try {
-            DocumentSnapshot document = firebaseService.get(token);
-            if(document == null) {
-                throw new GameNotFoundException("No game with token " + token + " was found");
-            } else {
-                game.update(document);
-                firebaseService.listen(game.getToken(), this);
-            }
-        } catch (ExecutionException | InterruptedException e) {
-            logger.error(e.getMessage(), e);
-            throw new ServerConnectionException();
-        }
-   }
-
-    /**
-     * Host/start a new empty game
-     * @return Returns the token of the new game
-     * @throws ServerConnectionException Gets thrown when no connection with firebase could be made
-     */
-    public String host() throws ServerConnectionException {
-        try {
-            firebaseService.set(game.getToken(), game.serialize());
-            firebaseService.listen(game.getToken(), this);
-            return game.getToken();
-        } catch (ExecutionException | InterruptedException e) {
-            logger.error(e.getMessage(), e);
-            throw new ServerConnectionException();
-        }
+  /**
+   * Join an already existing game with a token
+   *
+   * @param token The token that the user has provided
+   * @throws GameNotFoundException Gets thrown when no game with the given token was found
+   * @throws ServerConnectionException Gets thrown when no connection with firebase could be made
+   */
+  public void join(String token) throws GameNotFoundException, ServerConnectionException {
+    try {
+      DocumentSnapshot document = firebaseService.get(token);
+      if (document == null) {
+        throw new GameNotFoundException("No game with token " + token + " was found");
+      } else {
+        game.update(document);
+        firebaseService.listen(game.getToken(), this);
+      }
+    } catch (ExecutionException | InterruptedException e) {
+      logger.error(e.getMessage(), e);
+      throw new ServerConnectionException();
     }
+  }
+
+  /**
+   * Host/start a new empty game
+   *
+   * @return Returns the token of the new game
+   * @throws ServerConnectionException Gets thrown when no connection with firebase could be made
+   */
+  public String host() throws ServerConnectionException {
+    try {
+      firebaseService.set(game.getToken(), game.serialize());
+      firebaseService.listen(game.getToken(), this);
+      return game.getToken();
+    } catch (ExecutionException | InterruptedException e) {
+      logger.error(e.getMessage(), e);
+      throw new ServerConnectionException();
+    }
+  }
 
   public void quit() {
     Platform.exit();
   }
-      
 }
