@@ -292,5 +292,4 @@ public class MenuView implements View {
   }
 
   public void update() {}
-
 }

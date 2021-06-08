@@ -3,7 +3,6 @@ package nl.hsleiden.ipsene.models;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import org.slf4j.Logger;
@@ -80,8 +79,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
   @Override
   public Map<String, Object> serialize() {
     List<Map<String, Object>> serializedCards =
-             cards.stream().map(card -> card.serialize()).collect(Collectors.toList());
-
+        cards.stream().map(card -> card.serialize()).collect(Collectors.toList());
 
     List<Map<String, Object>> serializedPawns =
         pawns.stream().map(pawn -> pawn.serialize()).collect(Collectors.toList());
@@ -95,29 +93,31 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
 
   @Override
   public void update(DocumentSnapshot document) {
-    //cards.forEach(card -> card.update(document));
-    //pawns.forEach(pawn -> pawn.update(document));
+    // cards.forEach(card -> card.update(document));
+    // pawns.forEach(pawn -> pawn.update(document));
 
     HashMap<String, Object> serializedTeam =
-            (HashMap<String, Object>) document.get(Firebase.TEAM_FIELD_NAME);
+        (HashMap<String, Object>) document.get(Firebase.TEAM_FIELD_NAME);
 
-    HashMap<String, HashMap<String, Object>> serializedPlayers
-            = (HashMap<String, HashMap<String, Object>>) serializedTeam.get(String.valueOf(this.getId()));
+    HashMap<String, HashMap<String, Object>> serializedPlayers =
+        (HashMap<String, HashMap<String, Object>>) serializedTeam.get(String.valueOf(this.getId()));
 
     HashMap<String, Object> ourPlayer = serializedPlayers.get(String.valueOf(getId()));
-    ArrayList<HashMap<String, Object>> pawns = (ArrayList<HashMap<String, Object>>) ourPlayer.get("pawns");
-    ArrayList<HashMap<String, Object>> cards = (ArrayList<HashMap<String, Object>>) ourPlayer.get("cards");
+    ArrayList<HashMap<String, Object>> pawns =
+        (ArrayList<HashMap<String, Object>>) ourPlayer.get("pawns");
+    ArrayList<HashMap<String, Object>> cards =
+        (ArrayList<HashMap<String, Object>>) ourPlayer.get("cards");
     // update pawns
     for (int i = 0; i < pawns.size(); i++) {
       HashMap<String, Object> pawn = pawns.get(i);
-      this.pawns.get(i).update((int)(long)pawn.get("location"));
+      this.pawns.get(i).update((int) (long) pawn.get("location"));
     }
     // update cards
     this.cards.clear();
     for (int i = 0; i < cards.size(); i++) {
       HashMap<String, Object> card = cards.get(i);
       CardType cardType = CardType.valueOf((String) card.get("type"));
-      int step = (int)(long)card.get("value");
+      int step = (int) (long) card.get("value");
       this.cards.add(new Card(cardType, step));
     }
   }

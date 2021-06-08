@@ -5,8 +5,6 @@ import com.google.cloud.firestore.*;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
-import com.google.firestore.v1.Document;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +57,8 @@ public class FirebaseService {
    * @param docData
    * @param documentId
    */
-  public void set(String documentId, Map<String, Object> docData) throws ExecutionException, InterruptedException {
+  public void set(String documentId, Map<String, Object> docData)
+      throws ExecutionException, InterruptedException {
     System.out.println("in set");
     ApiFuture<WriteResult> future = this.colRef.document(documentId).set(docData);
     logger.debug("time to update: {}", future.get().getUpdateTime());
