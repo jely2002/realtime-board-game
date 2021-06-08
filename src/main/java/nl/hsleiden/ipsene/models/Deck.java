@@ -3,7 +3,6 @@ package nl.hsleiden.ipsene.models;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 
@@ -104,29 +103,15 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
   public void update(DocumentSnapshot document) {
     List<HashMap<String, Object>> serializedCards;
     // unchecked cast because we must
-    serializedCards = ( List<HashMap<String, Object>>) document.get(Firebase.CARD_FIELD_NAME);
+    serializedCards = (List<HashMap<String, Object>>) document.get(Firebase.CARD_FIELD_NAME);
 
     ArrayList<Card> newCards = new ArrayList<Card>();
     for (HashMap<String, Object> c : serializedCards) {
       CardType type = CardType.valueOf((String) c.get("type"));
       // comes out as 64 bit long, must be 32 bit int
-      int steps = (int)(long) c.get("value");
+      int steps = (int) (long) c.get("value");
       newCards.add(new Card(type, steps));
     }
     cards = newCards;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

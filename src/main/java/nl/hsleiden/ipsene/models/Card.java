@@ -87,7 +87,5 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
   }
 
   @Override
-  public void update(DocumentSnapshot document) {
-
-  }
+  public void update(DocumentSnapshot document) {}
 }
