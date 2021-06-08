@@ -9,7 +9,7 @@ import nl.hsleiden.ipsene.models.Deck;
 public class BoardController implements Controller {
 
   static BoardController boardController = null;
-  Board board;
+  private Board board;
 
   private Deck cards;
   private TeamController teamController;
@@ -19,13 +19,12 @@ public class BoardController implements Controller {
   private BoardController(int amountOfPlayers, int amountOfTeams) {
     board = new Board();
     AMOUNT_OF_PLAYERS = amountOfPlayers;
-
     // todo sent cards array to firebase
     teamController = new TeamController();
   }
 
   public BoardController(int amount_of_players) {
-
+    this.board = new Board();
     AMOUNT_OF_PLAYERS = amount_of_players;
   }
 

@@ -14,8 +14,7 @@ public class Board implements Model {
   public static final HashMap<TeamType, Integer> boardOffset = new HashMap<TeamType, Integer>();
 
   static long turnStartTime;
-  static BoardView boardView;
-  private List<View> observers = new ArrayList<>();
+  private ArrayList<View> observers = new ArrayList<>();
 
   static {
     boardOffset.put(TeamType.RED, 0);
@@ -25,7 +24,7 @@ public class Board implements Model {
   }
 
   public Board() {
-    boardView = BoardView.getInstance();
+
   }
 
   /**

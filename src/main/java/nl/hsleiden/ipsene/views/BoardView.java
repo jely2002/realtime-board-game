@@ -25,7 +25,7 @@ public class BoardView implements View {
   public BoardView(Stage s) {
     primaryStage = s;
     loadPrimaryStage(createInitialPane());
-    //boardController = BoardController.getInstance();
+    this.boardController = new BoardController(4);
     boardController.registerObserver(this);
   }
 
