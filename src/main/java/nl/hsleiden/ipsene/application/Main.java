@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
+import nl.hsleiden.ipsene.views.BoardView;
 import nl.hsleiden.ipsene.views.MenuView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +22,11 @@ public class Main extends Application {
   public void start(Stage primaryStage) {
     try {
       FirebaseService firebaseService =
-          new FirebaseService("firestoretest-5c4e4-52601abc4d0c.json", "games");
+          new FirebaseService("C:\\Users\\Tim\\Downloads\\firestoretest-5c4e4-52601abc4d0c.json", "games");
 
       GameController gameController = GameController.getInstance(firebaseService);
       // gameController.join("29316");
-      MenuView menuView = new MenuView(primaryStage, gameController);
+        BoardView brd = new BoardView(primaryStage);
     } catch (IOException e) {
       logger.error(e.getMessage(), e);
     }
