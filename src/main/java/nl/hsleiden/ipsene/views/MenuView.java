@@ -82,47 +82,47 @@ public class MenuView implements View {
     Pane pane = new Pane();
 
     Rectangle joinRect = rectangleBuilder();
-    setNodeCoordinates(joinRect, 500, 200);
+    ViewHelper.setNodeCoordinates(joinRect, 500, 200);
 
     Rectangle hostRect = rectangleBuilder();
-    setNodeCoordinates(hostRect, 500, 500);
+    ViewHelper.setNodeCoordinates(hostRect, 500, 500);
 
     this.hostLobbyIDDisplay = lobbyIDLabelBuilder("-");
-    setNodeCoordinates(hostLobbyIDDisplay, 510, 560);
+    ViewHelper.setNodeCoordinates(hostLobbyIDDisplay, 510, 560);
 
     this.joinLobbyIDInput = textFieldBuilder();
-    setNodeCoordinates(joinLobbyIDInput, 510, 260);
+    ViewHelper.setNodeCoordinates(joinLobbyIDInput, 510, 260);
 
     Label joinLobbyIDHeader = inputHeaderBuilder("JOIN: LobbyID");
-    setNodeCoordinates(joinLobbyIDHeader, 510, 210);
+    ViewHelper.setNodeCoordinates(joinLobbyIDHeader, 510, 210);
 
     Label hostLobbyIDHeader = inputHeaderBuilder("HOST");
-    setNodeCoordinates(hostLobbyIDHeader, 510, 510);
+    ViewHelper.setNodeCoordinates(hostLobbyIDHeader, 510, 510);
 
     this.joinButton = buttonBuilder("JOIN");
-    setNodeCoordinates(joinButton, 1110, 250);
+    ViewHelper.setNodeCoordinates(joinButton, 1110, 250);
     this.joinButton.addEventFilter(MouseEvent.MOUSE_CLICKED, joinButtonClicked);
 
     this.hostButton = buttonBuilder("HOST");
-    setNodeCoordinates(hostButton, 1110, 550);
+    ViewHelper.setNodeCoordinates(hostButton, 1110, 550);
     this.hostButton.addEventFilter(MouseEvent.MOUSE_CLICKED, hostButtonClicked);
 
     this.quitButton = quitButtonBuilder();
-    setNodeCoordinates(quitButton, 500, 800);
+    ViewHelper.setNodeCoordinates(quitButton, 500, 800);
     this.quitButton.addEventFilter(MouseEvent.MOUSE_CLICKED, quitButtonClicked);
 
     Image image = new Image(new FileInputStream("keez.png"));
     ImageView imageView = new ImageView(image);
     imageView.setPreserveRatio(true);
     imageView.setFitHeight(150);
-    applyDropShadow(imageView);
-    setNodeCoordinates(imageView, 677, 20);
+    ViewHelper.applyDropShadow(imageView);
+    ViewHelper.setNodeCoordinates(imageView, 677, 20);
 
     this.joinInputErrorLabel = errorLabelBuilder();
-    setNodeCoordinates(joinInputErrorLabel, 520, 320);
+    ViewHelper.setNodeCoordinates(joinInputErrorLabel, 520, 320);
 
     this.hostInputErrorLabel = errorLabelBuilder();
-    setNodeCoordinates(hostInputErrorLabel, 520, 620);
+    ViewHelper.setNodeCoordinates(hostInputErrorLabel, 520, 620);
 
     pane.getChildren()
         .addAll(joinRect, hostRect, joinLobbyIDInput, hostLobbyIDDisplay, joinLobbyIDHeader);
@@ -131,10 +131,6 @@ public class MenuView implements View {
     return pane;
   }
 
-  public static void setNodeCoordinates(Node node, int x, int y) {
-    node.setTranslateX(x);
-    node.setTranslateY(y);
-  }
 
   private Rectangle rectangleBuilder() {
     Rectangle rect = new Rectangle();
@@ -202,7 +198,7 @@ public class MenuView implements View {
     btn.setPrefHeight(100);
     btn.setText(txt);
     btn.setStyle("-fx-font-size: 20; -fx-background-color: #00FF00");
-    applyDropShadow(btn);
+    ViewHelper.applyDropShadow(btn);
 
     return btn;
   }
@@ -219,22 +215,13 @@ public class MenuView implements View {
     return btn;
   }
 
-  public static void applyDropShadow(Node node) {
-    DropShadow shadow = new DropShadow();
-    shadow.setColor(Color.BLACK);
-    shadow.setRadius(2);
-    shadow.setOffsetX(1);
-    shadow.setOffsetX(1);
-    node.setEffect(shadow);
-  }
-
   private Label errorLabelBuilder() {
     Label lbl = new Label();
 
     lbl.setTextFill(Color.RED);
     lbl.setStyle("-fx-font-size: 15");
     lbl.setText("PLACEHOLDER -> set de text van deze label om een error aan de user weer te geven");
-    applyDropShadow(lbl);
+    ViewHelper.applyDropShadow(lbl);
 
     return lbl;
   }
