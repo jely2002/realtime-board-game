@@ -3,7 +3,6 @@ package nl.hsleiden.ipsene.models;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
 

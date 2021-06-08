@@ -15,7 +15,6 @@ public class BoardController implements Controller {
 
   Board board;
 
-
   public BoardController(int amountOfPlayers, int amountOfTeams) {
     AMOUNT_OF_PLAYERS = amountOfPlayers;
 
