@@ -253,7 +253,7 @@ public class MenuView implements View {
         }
       };
 
-  EventHandler<MouseEvent> joinButtonClicked =
+  public EventHandler<MouseEvent> joinButtonClicked =
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {

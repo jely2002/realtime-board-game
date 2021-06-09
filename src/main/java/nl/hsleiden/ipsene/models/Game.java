@@ -3,8 +3,6 @@ package nl.hsleiden.ipsene.models;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
-
-import nl.hsleiden.ipsene.exceptions.PlayerNotFoundException;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
@@ -35,6 +33,8 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     this.round = 0;
     this.teams = generateTeams();
     this.deck = new Deck(4, this);
+    setCardsToBeDrawnNextTurn(5);
+    distributeCards(deck);
   }
 
   private ArrayList<Team> generateTeams() {
@@ -87,16 +87,17 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serializedGame = new LinkedHashMap<>();
 
-    LinkedHashMap<String, Object> serializedPlayers = new LinkedHashMap<>();
+    // LinkedHashMap<String, Object> serializedteams = new LinkedHashMap<>();
+    HashMap<String, Object> serializedteams = new HashMap<String, Object>();
     for (Team team : teams) {
-      serializedPlayers.putAll(team.serialize());
+      serializedteams.put(String.valueOf(team.teamIndex), team.serialize());
     }
 
-    serializedGame.put("players", serializedPlayers);
-    serializedGame.put("cards", deck.serialize());
-    serializedGame.put("round", round);
-    serializedGame.put("turnStartTime", turnStartTime);
-    serializedGame.put("doingTurn", doingTurn);
+    serializedGame.put(Firebase.TEAM_FIELD_NAME, serializedteams);
+    serializedGame.put(Firebase.CARD_FIELD_NAME, deck.serialize());
+    serializedGame.put(Firebase.ROUND_FIELD_NAME, round);
+    serializedGame.put(Firebase.TURN_START_TIME_FIELD_NAME, turnStartTime);
+    serializedGame.put(Firebase.DOING_TURN_FIELD_NAME, doingTurn);
 
     return serializedGame;
   }

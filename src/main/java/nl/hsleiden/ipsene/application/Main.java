@@ -19,11 +19,8 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-
     try {
-      FirebaseService firebaseService =
-          new FirebaseService(
-              "C:\\Users\\jwgle\\Downloads\\firestoretest-5c4e4-52601abc4d0c.json", "games");
+      FirebaseService firebaseService = new FirebaseService("firestoretest-5c4e4-52601abc4d0c.json", "games");
       GameController gameController = new GameController(firebaseService);
       MenuView menuView = new MenuView(primaryStage, gameController);
     } catch (IOException e) {
