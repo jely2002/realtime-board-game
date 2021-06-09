@@ -1,31 +1,33 @@
 package nl.hsleiden.ipsene.views;
 
-import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Text;
 import nl.hsleiden.ipsene.application.Main;
-import org.apache.batik.transcoder.TranscoderException;
-import org.apache.batik.transcoder.TranscoderInput;
+import nl.hsleiden.ipsene.models.CardType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ViewHelper {
-    private static ArrayList<ArrayList<Integer>> coordinates = new ArrayList<>();
-
+    private static final ArrayList<ArrayList<Integer>> coordinates = new ArrayList<>();
+    private static final String RED = "#FF0000";
+    private static final String BLUE = "#0000FF";
+    private static final String GREEN = "#00FF00";
+    private static final String YELLOW = "#FFFF00";
     private static final Logger logger = LoggerFactory.getLogger(Main.class.getName());
 
     /**
@@ -96,10 +98,122 @@ public class ViewHelper {
     }
 
     /**
+     * Creates a label formatted as a header
+     *
+     * @param txt Text in the label
+     * @return returns label formatted as header with text
+     */
+    public static Label headerLabelBuilder(String txt) {
+        Label lbl = new Label();
+
+        lbl.setPrefWidth(580);
+        lbl.setPrefHeight(50);
+        lbl.setText(txt);
+        lbl.setStyle("-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-text-fill: #000000");
+
+        return lbl;
+    }
+
+    /**
+     * Creates a label to display the player who's turn it currently is with appropriate formatting
+     *
+     * @param player player number who's turn it is currently
+     * @return returns label with formatted player number and color
+     */
+    public static Label playersTurnDisplay(int player){
+        String playerColor = null;
+        String playerText = "Player ";
+        String suffix = "'s turn";
+
+        Label lbl = new Label();
+
+        try {
+            switch (player) {
+                case 0 -> {
+                    playerColor = RED;
+                    playerText += "1" + suffix;
+                }
+                case 1 -> {
+                    playerColor = BLUE;
+                    playerText += "2" + suffix;
+                }
+                case 2 -> {
+                    playerColor = GREEN;
+                    playerText += "3" + suffix;
+                }
+                case 3 -> {
+                    playerColor = YELLOW;
+                    playerText += "4" + suffix;
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + player);
+            }
+        } catch (IllegalStateException e) {
+            logger.error(e.getMessage(), e);
+        }
+        lbl.setText(playerText);
+        lbl.setStyle("" +
+                " -fx-font-family: 'Comic Sans MS';" +
+                " -fx-text-fill: #000000;" +
+                " -fx-background-color: grey;" +
+                " -fx-font-size: 30;" +
+                " -fx-label-padding: 15;" +
+                " -fx-border-width: 5;" +
+                " -fx-border-color: " + playerColor + ";");
+        lbl.setMaxWidth(250);
+        lbl.setMinWidth(250);
+
+        return lbl;
+    }
+
+    /**
+     * Creates a label to display the round number in a more human-readable format with appropriate styling
+     *
+     * @param roundNumber the current round number
+     * @param startOffset set to 0 if round counting starts at 1, set to 0 if counting starts at 1
+     * @return returns label with formatted round number
+     */
+    public static Label roundNumberDisplayBuilder(int roundNumber, int startOffset){
+        String display;
+        roundNumber = roundNumber + startOffset;
+
+        Label lbl = new Label();
+        display = ((roundNumber / 3) + 1) + "." + roundNumber % 3;
+        lbl.setStyle("-fx-font-family: 'Comic Sans MS'; -fx-font-size: 120; -fx-text-fill: #000000");
+        lbl.setText(display);
+
+        return lbl;
+    }
+
+    /**
+     * Creates the vertical text display for the CARDS text in the gameboard
+     *
+     * @param text Text to make vertically displayed
+     * @return returns vbox with vertical text
+     */
+    public static VBox verticalTextDisplayBuilder(String text){
+        String[] chars = text.split("(?!^)");
+        ArrayList<String> charsAsStrings = new ArrayList<>();
+        Collections.addAll(charsAsStrings, chars);
+
+        VBox vbx = new VBox();
+
+        for (String charsAsString : charsAsStrings) {
+            Text txt = new Text();
+            txt.setText(charsAsString);
+            txt.setStyle(" -fx-text-fill: #000000;" +
+                    " -fx-font-size: 27.5;" +
+                    " -fx-font-family: 'Comic Sans MS';");
+            vbx.getChildren().add(txt);
+        }
+
+        return vbx;
+    }
+
+    /**
      * Draws the game board for the Boardview class
      *
      * @param img Pass a null Image object
-     * @return
+     * @return returns ImageView with gameboard image.
      */
     public static ImageView drawGameBoard(Image img){
         try {
@@ -114,11 +228,47 @@ public class ViewHelper {
         return imageView;
     }
 
+    public static ImageView showCard(CardType type, int steps){
+        String path = "src/main/resources/assets/cards/";
+        Image img = null;
+
+        switch (type){
+            case SPAWN_STEP_1 -> path += "spawnor1.png";
+            case SPAWN -> path += "spawn.png";
+            case SUB -> path += "trade.png";
+            case STEP_4 -> path += "4.png";
+            case STEP_7 -> path += "7.png";
+            case STEP_N -> {
+                switch (steps){
+                    case 2 -> path += "2.png";
+                    case 3 -> path += "3.png";
+                    case 5 -> path += "5.png";
+                    case 6 -> path += "6.png";
+                    case 8 -> path += "8.png";
+                    case 9 -> path += "9.png";
+                    case 10 -> path += "10.png";
+                    case 12 -> path += "12.png";
+                    default -> throw new IllegalStateException("Unexpected value: " + steps);
+                }
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        }
+        try {
+            img = new Image(new FileInputStream(path));
+        } catch (FileNotFoundException e) {
+            logger.error(e.getMessage(), e);
+        }
+        ImageView imageView = new ImageView(img);
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(190);
+        return imageView;
+    }
+
     /**
      * Creates a JavaFX Polygon in the shape of a pawn
      *
      * @param color Infill color of the pawn
-     * @return
+     * @return returns polygon with specified infill color in the shape of a pawn
      */
     public static Polygon createPawn(String color){
         Polygon poly = new Polygon();
@@ -274,6 +424,7 @@ public class ViewHelper {
         ArrayList<Integer> coords = coordinates.get(index);
         return coords.get(0);
     }
+
     /**
      * Returns the Y coordinate of the specified index in the coordinates ArrayList
      *
