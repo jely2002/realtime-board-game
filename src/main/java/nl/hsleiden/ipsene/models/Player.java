@@ -24,6 +24,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
   private int selectedCardIndex = 0;
 
   private int id;
+  private boolean available;
 
   /**
    * should not be called manually, call through Team#createPlayers
@@ -38,6 +39,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
     this.team = team;
     this.playerIndex = index;
     this.pawns = pawns;
+    this.available = true;
     for (Pawn p : pawns) {
       p.setOwningPlayer(this);
     }
@@ -67,8 +69,14 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
     Card c = cards.get(selectedCardIndex);
     c.play(this, pawn);
     cards.remove(c);
-    // removed a card so call observers
-    game.notifyObservers();
+  }
+
+  public boolean isAvailable() {
+    return available;
+  }
+
+  public void setAvailable(boolean selected) {
+    this.available = selected;
   }
 
   public int getId() {
@@ -84,12 +92,16 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
     LinkedHashMap<String, Object> serializedPlayer = new LinkedHashMap<>();
     serializedPlayer.put("cards", serializedCards);
     serializedPlayer.put("pawns", serializedPawns);
-    serializedPlayer.put("selected", false);
+    serializedPlayer.put("selected", !available);
     return serializedPlayer;
   }
 
   @Override
   public void update(DocumentSnapshot document) {
+    HashMap<String, Object> players = (HashMap<String, Object>) document.get("players");
+    HashMap<String, Object> player = (HashMap<String, Object>) players.get(String.valueOf(id));
+    available = !(boolean) player.get("selected");
+    logger.info("Updated, player {}", available);
     cards.forEach(card -> card.update(document));
     pawns.forEach(card -> card.update(document));
   }

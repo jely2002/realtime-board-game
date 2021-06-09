@@ -61,7 +61,7 @@ public class MenuView implements View {
     try {
       loadPrimaryStage(createPane());
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      logger.error(e.getMessage(), e);
     }
     gameController.registerObserver(this);
   }
@@ -233,7 +233,7 @@ public class MenuView implements View {
 
     lbl.setTextFill(Color.RED);
     lbl.setStyle("-fx-font-size: 15");
-    lbl.setText("PLACEHOLDER -> set de text van deze label om een error aan de user weer te geven");
+    lbl.setText("");
     applyDropShadow(lbl);
 
     return lbl;
@@ -261,7 +261,7 @@ public class MenuView implements View {
           logger.debug("Join has been clicked");
           try {
             gameController.join(token);
-            switchToLobby();
+            toLobby();
           } catch (GameNotFoundException | ServerConnectionException e) {
             logger.warn(e.getMessage(), e);
             joinInputErrorLabel.setText(e.getMessage());
@@ -276,15 +276,15 @@ public class MenuView implements View {
           logger.debug("Host has been clicked");
           try {
             gameController.host();
-            switchToLobby();
+            toLobby();
           } catch (ServerConnectionException e) {
             hostInputErrorLabel.setText(e.getMessage());
           }
         }
       };
 
-  private void switchToLobby() {
-    LobbyView lobbyView = new LobbyView(primaryStage, gameController);
+  private void toLobby() {
+    new LobbyView(primaryStage, gameController);
   }
 
   public void update() {}

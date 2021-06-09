@@ -43,7 +43,7 @@ public class FirebaseService {
 
             controller.update(snapshot);
 
-            logger.debug("listener received data: {}", snapshot.getData());
+            logger.info("listener received data: {}", snapshot.getData());
           } else {
             logger.warn("listener received null data");
           }

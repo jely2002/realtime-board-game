@@ -24,7 +24,7 @@ public class Main extends Application {
       FirebaseService firebaseService =
           new FirebaseService(
               "C:\\Users\\jwgle\\Downloads\\firestoretest-5c4e4-52601abc4d0c.json", "games");
-      GameController gameController = GameController.getInstance(firebaseService);
+      GameController gameController = new GameController(firebaseService);
       MenuView menuView = new MenuView(primaryStage, gameController);
     } catch (IOException e) {
       logger.error(e.getMessage(), e);

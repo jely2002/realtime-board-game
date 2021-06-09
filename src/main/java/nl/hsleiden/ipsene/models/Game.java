@@ -3,6 +3,8 @@ package nl.hsleiden.ipsene.models;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
+
+import nl.hsleiden.ipsene.exceptions.PlayerNotFoundException;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
@@ -22,6 +24,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   private String token;
   private final Deck deck;
 
+  private Integer ownPlayer;
   private int doingTurn;
   private int round;
   private Timestamp turnStartTime;
@@ -98,8 +101,27 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     return serializedGame;
   }
 
+  public Integer getOwnPlayer() {
+    return ownPlayer;
+  }
+
+  public void setOwnPlayer(Integer ownPlayer) {
+    this.ownPlayer = ownPlayer;
+  }
+
   public ArrayList<Team> getTeams() {
     return teams;
+  }
+
+  public Player getPlayer(int absolutePlayerId) {
+    int playerIndex = absolutePlayerId;
+    int teamIndex = 0;
+    if(absolutePlayerId >= 2) {
+      playerIndex = (int) (Math.round((double) absolutePlayerId / (double) AMOUNT_OF_TEAMS) - (AMOUNT_OF_TEAMS - 1));
+      teamIndex = absolutePlayerId - playerIndex - 1;
+    }
+    Team team = teams.get(teamIndex);
+    return team.getPlayer(playerIndex);
   }
 
   public String getToken() {
