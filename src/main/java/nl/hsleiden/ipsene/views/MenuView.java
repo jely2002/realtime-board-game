@@ -1,16 +1,11 @@
 package nl.hsleiden.ipsene.views;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -33,11 +28,7 @@ public class MenuView implements View {
 
   private String labelCSS =
       "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
-  private String headerCSS = "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30;";
   private String textFieldCSS = "-fx-font-size: 20";
-  private String playerDisplayCSS =
-      "-fx-background-color: #444444; -fx-border-color: #111111; -fx-border-width: 5;"
-          + " -fx-border-style: solid; -fx-font-size: 20; -fx-padding: 11 9";
   private String quitButtonCSS =
       "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #808080;"
           + " -fx-padding: 10 255";
@@ -93,10 +84,10 @@ public class MenuView implements View {
     this.joinLobbyIDInput = textFieldBuilder();
     ViewHelper.setNodeCoordinates(joinLobbyIDInput, 510, 260);
 
-    Label joinLobbyIDHeader = inputHeaderBuilder("JOIN: LobbyID");
+    Label joinLobbyIDHeader = ViewHelper.headerLabelBuilder("JOIN: LobbyID");
     ViewHelper.setNodeCoordinates(joinLobbyIDHeader, 510, 210);
 
-    Label hostLobbyIDHeader = inputHeaderBuilder("HOST");
+    Label hostLobbyIDHeader = ViewHelper.headerLabelBuilder("HOST");
     ViewHelper.setNodeCoordinates(hostLobbyIDHeader, 510, 510);
 
     this.joinButton = buttonBuilder("JOIN");
@@ -111,10 +102,7 @@ public class MenuView implements View {
     ViewHelper.setNodeCoordinates(quitButton, 500, 800);
     this.quitButton.addEventFilter(MouseEvent.MOUSE_CLICKED, quitButtonClicked);
 
-    Image image = new Image(new FileInputStream("keez.png"));
-    ImageView imageView = new ImageView(image);
-    imageView.setPreserveRatio(true);
-    imageView.setFitHeight(150);
+    ImageView imageView = ViewHelper.createLogo(null, 150);
     ViewHelper.applyDropShadow(imageView);
     ViewHelper.setNodeCoordinates(imageView, 677, 20);
 
@@ -155,20 +143,6 @@ public class MenuView implements View {
     return txtFld;
   }
 
-  private PasswordField passwordFieldBuilder() {
-    PasswordField pwdFld = new PasswordField();
-    final int HEIGHT = 50;
-    final int WIDTH = 580;
-
-    pwdFld.setPrefWidth(WIDTH);
-    pwdFld.setMaxWidth(WIDTH);
-    pwdFld.setPrefHeight(HEIGHT);
-    pwdFld.setMaxHeight(HEIGHT);
-    pwdFld.setStyle(textFieldCSS);
-
-    return pwdFld;
-  }
-
   private Label lobbyIDLabelBuilder(String txt) {
     Label lbl = new Label();
 
@@ -176,17 +150,6 @@ public class MenuView implements View {
     lbl.setPrefWidth(580);
     lbl.setPrefHeight(50);
     lbl.setText(txt);
-
-    return lbl;
-  }
-
-  private Label inputHeaderBuilder(String txt) {
-    Label lbl = new Label();
-
-    lbl.setPrefWidth(580);
-    lbl.setPrefHeight(50);
-    lbl.setText(txt);
-    lbl.setStyle(headerCSS);
 
     return lbl;
   }
@@ -224,11 +187,6 @@ public class MenuView implements View {
     ViewHelper.applyDropShadow(lbl);
 
     return lbl;
-  }
-
-  public Button getQuitButton() {
-    Button quitButton = this.quitButton;
-    return quitButton;
   }
 
   EventHandler<MouseEvent> quitButtonClicked =
