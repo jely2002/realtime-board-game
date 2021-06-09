@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class Firebase {
   public static final String CARD_FIELD_NAME = "cards";
-  public static final String TEAM_FIELD_NAME = "teams";
+  public static final String PLAYER_FIELD_NAME = "players";
   public static final String DOING_TURN_FIELD_NAME = "doingTurn";
   public static final String ROUND_FIELD_NAME = "round";
   public static final String TURN_START_TIME_FIELD_NAME = "turnStartTime";

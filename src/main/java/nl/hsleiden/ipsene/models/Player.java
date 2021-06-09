@@ -101,14 +101,11 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
 
   @Override
   public void update(DocumentSnapshot document) {
-    HashMap<String, Object> serializedTeam =
-        (HashMap<String, Object>) document.get(Firebase.TEAM_FIELD_NAME);
-
     HashMap<String, HashMap<String, Object>> serializedPlayers =
-        (HashMap<String, HashMap<String, Object>>) serializedTeam.get(String.valueOf(this.getId()));
+        (HashMap<String, HashMap<String, Object>>) document.get("players");
 
     HashMap<String, Object> ourPlayer = serializedPlayers.get(String.valueOf(getId()));
-    available = !(boolean) player.get("selected");
+    available = !(boolean) ourPlayer.get("selected");
     ArrayList<HashMap<String, Object>> pawns =
         (ArrayList<HashMap<String, Object>>) ourPlayer.get("pawns");
     ArrayList<HashMap<String, Object>> cards =
@@ -120,8 +117,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
     }
     // update cards
     this.cards.clear();
-    for (int i = 0; i < cards.size(); i++) {
-      HashMap<String, Object> card = cards.get(i);
+    for (HashMap<String, Object> card : cards) {
       CardType cardType = CardType.valueOf((String) card.get("type"));
       int step = (int) (long) card.get("value");
       this.cards.add(new Card(cardType, step));
