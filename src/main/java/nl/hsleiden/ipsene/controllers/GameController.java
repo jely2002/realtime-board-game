@@ -1,10 +1,8 @@
 package nl.hsleiden.ipsene.controllers;
 
 import com.google.cloud.firestore.DocumentSnapshot;
-
 import java.util.concurrent.ExecutionException;
 import javafx.application.Platform;
-import javafx.stage.Stage;
 import nl.hsleiden.ipsene.exceptions.GameNotFoundException;
 import nl.hsleiden.ipsene.exceptions.ServerConnectionException;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
@@ -12,8 +10,6 @@ import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.Game;
 import nl.hsleiden.ipsene.models.Player;
-import nl.hsleiden.ipsene.views.LobbyView;
-import nl.hsleiden.ipsene.views.MenuView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +42,7 @@ public class GameController implements Controller {
 
   /**
    * Sets the availability of a player slot.
+   *
    * @param id The ID of the slot to set.
    * @param value Whether to set this slot to available or not.
    */
@@ -56,6 +53,7 @@ public class GameController implements Controller {
 
   /**
    * Gets if the given player is available (can be joined).
+   *
    * @param id The player ID to check the availability for.
    * @return A boolean indicating if the player is available.
    */
@@ -65,8 +63,9 @@ public class GameController implements Controller {
   }
 
   /**
-   * Checks if the user has already chosen a player.
-   * Always check with this method before getting a selected player.
+   * Checks if the user has already chosen a player. Always check with this method before getting a
+   * selected player.
+   *
    * @return Boolean which is true when the user has selected a player.
    */
   public boolean hasSelectedPlayer() {
@@ -75,6 +74,7 @@ public class GameController implements Controller {
 
   /**
    * Gets the ID of the player the user has selected.
+   *
    * @return The ID of the selected player.
    */
   public Integer getSelectedPlayer() {
@@ -83,6 +83,7 @@ public class GameController implements Controller {
 
   /**
    * Sets the player selected by the user.
+   *
    * @param id The ID to link to the user.
    */
   public void setSelectedPlayer(Integer id) {
@@ -127,9 +128,7 @@ public class GameController implements Controller {
     }
   }
 
-  /**
-   * Pushes new data to firebase. Use this method after changing the model.
-   */
+  /** Pushes new data to firebase. Use this method after changing the model. */
   private void push() {
     try {
       firebaseService.set(game.getToken(), game.serialize());

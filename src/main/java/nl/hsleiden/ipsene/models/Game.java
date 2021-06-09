@@ -117,8 +117,11 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   public Player getPlayer(int absolutePlayerId) {
     int playerIndex = absolutePlayerId;
     int teamIndex = 0;
-    if(absolutePlayerId >= 2) {
-      playerIndex = (int) (Math.round((double) absolutePlayerId / (double) AMOUNT_OF_TEAMS) - (AMOUNT_OF_TEAMS - 1));
+    if (absolutePlayerId >= 2) {
+      playerIndex =
+          (int)
+              (Math.round((double) absolutePlayerId / (double) AMOUNT_OF_TEAMS)
+                  - (AMOUNT_OF_TEAMS - 1));
       teamIndex = absolutePlayerId - playerIndex - 1;
     }
     Team team = teams.get(teamIndex);

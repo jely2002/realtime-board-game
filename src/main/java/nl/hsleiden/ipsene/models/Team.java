@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import nl.hsleiden.ipsene.exceptions.PlayerNotFoundException;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +35,7 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
         ++pawnNumber;
       }
       int absolutePlayerId = i;
-      if(teamIndex > 0) {
+      if (teamIndex > 0) {
         absolutePlayerId = i + (teamIndex + 1);
       }
       players[i] = new Player(this, absolutePlayerId, i, pawns, game);
