@@ -1,15 +1,10 @@
 package nl.hsleiden.ipsene.controllers;
 
 import com.google.cloud.firestore.DocumentSnapshot;
-import java.util.concurrent.ExecutionException;
-import javafx.application.Platform;
-import nl.hsleiden.ipsene.exceptions.GameNotFoundException;
-import nl.hsleiden.ipsene.exceptions.ServerConnectionException;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.Game;
-import nl.hsleiden.ipsene.models.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

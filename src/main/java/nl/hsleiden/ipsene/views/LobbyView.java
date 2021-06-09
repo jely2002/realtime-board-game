@@ -55,7 +55,6 @@ public class LobbyView implements View {
     boolean player3Available = lobbyController.getPlayerAvailable(3);
     boolean player4Available = lobbyController.getPlayerAvailable(4);
 
-
     if (!player1Available && !player2Available && !player3Available && !player4Available) {
       startGame();
     }
@@ -195,8 +194,7 @@ public class LobbyView implements View {
     String bgColor;
     String buttonText;
 
-
-    if(lobbyController.hasSelectedPlayer() && lobbyController.getSelectedPlayer() == id) {
+    if (lobbyController.hasSelectedPlayer() && lobbyController.getSelectedPlayer() == id) {
       bgColor = "#00FFFF";
       buttonText = "Joined";
     } else if (!isAvailable) {
@@ -236,30 +234,30 @@ public class LobbyView implements View {
   }
 
   EventHandler<MouseEvent> playerButtonClicked =
-          new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-              Object source = e.getSource();
-              if(!(source instanceof Button)) return;
-              Button clickedButton = (Button) e.getSource();
-              int playerId = Integer.parseInt(clickedButton.getId());
-              if(clickedButton.getText().equals("Taken")) return;
-              if(lobbyController.hasSelectedPlayer()) {
-                if(clickedButton.getText().equals("Joined")) {
-                  lobbyController.setSelectedPlayer(null);
-                  lobbyController.setPlayerAvailable(playerId, true);
-                } else if(clickedButton.getText().equals("Join")) {
-                  lobbyController.setPlayerAvailable(lobbyController.getSelectedPlayer(), true);
-                  lobbyController.setPlayerAvailable(playerId, false);
-                  lobbyController.setSelectedPlayer(playerId);
-                }
-              } else {
-                if(clickedButton.getText().equals("Join")) {
-                  lobbyController.setSelectedPlayer(playerId);
-                  lobbyController.setPlayerAvailable(playerId, false);
-                }
-              }
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+          Object source = e.getSource();
+          if (!(source instanceof Button)) return;
+          Button clickedButton = (Button) e.getSource();
+          int playerId = Integer.parseInt(clickedButton.getId());
+          if (clickedButton.getText().equals("Taken")) return;
+          if (lobbyController.hasSelectedPlayer()) {
+            if (clickedButton.getText().equals("Joined")) {
+              lobbyController.setSelectedPlayer(null);
+              lobbyController.setPlayerAvailable(playerId, true);
+            } else if (clickedButton.getText().equals("Join")) {
+              lobbyController.setPlayerAvailable(lobbyController.getSelectedPlayer(), true);
+              lobbyController.setPlayerAvailable(playerId, false);
+              lobbyController.setSelectedPlayer(playerId);
             }
+          } else {
+            if (clickedButton.getText().equals("Join")) {
+              lobbyController.setSelectedPlayer(playerId);
+              lobbyController.setPlayerAvailable(playerId, false);
+            }
+          }
+        }
       };
 
   // TODO finetune and check if boardstage really comes after lobbyView
