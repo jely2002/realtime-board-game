@@ -1,6 +1,8 @@
 package nl.hsleiden.ipsene.views;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,12 +10,16 @@ import javafx.scene.paint.Color;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import nl.hsleiden.ipsene.application.Main;
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +29,8 @@ public class ViewHelper {
     private static final Logger logger = LoggerFactory.getLogger(Main.class.getName());
 
     /**
+     * Set location of JavaFX node by passing x and y coordinates
+     *
      * @param node The JavaFX node you want to position
      * @param x Target X Coordinate for your node
      * @param y Target Y Coordinate for your node
@@ -33,6 +41,8 @@ public class ViewHelper {
     }
 
     /**
+     * Apply a JavaFX drop shadow effect to a node
+     *
      * @param node The JavaFX node you want to apply a drop shadow to
      */
     public static void applyDropShadow(Node node) {
@@ -44,6 +54,13 @@ public class ViewHelper {
         node.setEffect(shadow);
     }
 
+    /**
+     * Creates a KeezBoard Logo JavaFX Node
+     *
+     * @param img Pass a null Image object
+     * @param fitHeight Desired height of the logo
+     * @return Returns an ImageView Node of the logo
+     */
     public static ImageView createLogo(Image img, int fitHeight){
 
         try {
@@ -59,6 +76,13 @@ public class ViewHelper {
         return imageView;
     }
 
+    /**
+     * Creates a UI Divider for the GameBoard View to seperate UI elements
+     *
+     * @param width Width of the Divider in pixels
+     * @param height Height of the Divider in pixels
+     * @return Returns a rectangle Node with specified width and height
+     */
     public static Rectangle createUIDividers(int width, int height){
         Rectangle rect = new Rectangle();
 
@@ -71,6 +95,12 @@ public class ViewHelper {
         return rect;
     }
 
+    /**
+     * Draws the game board for the Boardview class
+     *
+     * @param img Pass a null Image object
+     * @return
+     */
     public static ImageView drawGameBoard(Image img){
         try {
             img = new Image(new FileInputStream("board.png"));
@@ -84,6 +114,12 @@ public class ViewHelper {
         return imageView;
     }
 
+    /**
+     * Creates a JavaFX Polygon in the shape of a pawn
+     *
+     * @param color Infill color of the pawn
+     * @return
+     */
     public static Polygon createPawn(String color){
         Polygon poly = new Polygon();
 
@@ -107,6 +143,9 @@ public class ViewHelper {
         return poly;
     }
 
+    /**
+     * Fills the Coordinate Arraylist with coordinates for pawn tiles
+     */
     private static void fillCoordinateList(){
         setIndexCoordinates(0, 0, 0);
         setIndexCoordinates(1, 252, 33);
@@ -210,22 +249,49 @@ public class ViewHelper {
         setIndexCoordinates(99, 271, 162);
         setIndexCoordinates(100, 300, 135);
     }
+
+    /**
+     * Sets the x and y coordinates of the specified index in the coordinates ArrayList
+     *
+     * @param index Target Index of Coordinates ArrayList
+     * @param x X coordinate
+     * @param y Y coordinate
+     */
     private static void setIndexCoordinates(int index, int x, int y){
         ArrayList<Integer> coords = new ArrayList<>();
         coords.add(x);
         coords.add(y);
         coordinates.add(index, coords);
     }
+
+    /**
+     * Returns the X coordinate of the specified index in the coordinates ArrayList
+     *
+     * @param index Target Index of Coordinates ArrayList
+     * @return returns X coordinate integer
+     */
     private static int getCoordinateMapX(int index){
         ArrayList<Integer> coords = coordinates.get(index);
         return coords.get(0);
     }
+    /**
+     * Returns the Y coordinate of the specified index in the coordinates ArrayList
+     *
+     * @param index Target Index
+     * @return returns Y coordinate integer
+     */
     private static int getCoordinateMapY(int index){
         ArrayList<Integer> coords = coordinates.get(index);
         return coords.get(1);
     }
 
-    public static void setPawnPosition(Node pawn, int index){
+    /**
+     * Sets a pawns location to the coordinates of an index in the Coordinates Arraylist
+     *
+     * @param pawn Pawn to set the location of
+     * @param index Target index of Coordinates ArrayList
+     */
+    public static void setPawnPosition(Polygon pawn, int index){
         setNodeCoordinates(pawn, getCoordinateMapX(index), getCoordinateMapY(index));
     }
 }
