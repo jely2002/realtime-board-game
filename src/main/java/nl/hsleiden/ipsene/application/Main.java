@@ -3,10 +3,8 @@ package nl.hsleiden.ipsene.application;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.controllers.LobbyController;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
-import nl.hsleiden.ipsene.views.MenuView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
