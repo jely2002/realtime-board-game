@@ -55,8 +55,7 @@ public class LobbyController implements Controller {
     try {
       game.getPlayer(id - 1).setAvailable(value);
       push();
-    }
-    catch (PlayerIndexNotFoundException e){
+    } catch (PlayerIndexNotFoundException e) {
       logger.error("player not found", e);
     }
   }

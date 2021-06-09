@@ -3,7 +3,6 @@ package nl.hsleiden.ipsene.models;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import nl.hsleiden.ipsene.exceptions.EmptyDeckException;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
@@ -35,7 +34,8 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
    */
   private Card[] generateDeck(int amountOfPlayers, ArrayList<Integer> nCardDeck) {
 
-    // each different card appears once for every player, nCards are added separately so -1 from length of cardtype values
+    // each different card appears once for every player, nCards are added separately so -1 from
+    // length of cardtype values
     final int AMOUNT_NORMAL_CARDS = CardType.values().length - 1;
     // the total amount of cards in the deck to be generated
     final int TOTAL_AMOUNT_OF_CARDS =

@@ -116,11 +116,10 @@ public class LobbyView implements View {
       MenuView.setNodeCoordinates(imageView, 600, 200);
 
       pane.getChildren()
-              .addAll(title, player1Display, player2Display, player3Display, player4Display);
+          .addAll(title, player1Display, player2Display, player3Display, player4Display);
       pane.getChildren().addAll(player1Join, player2Join, player3Join, player4Join);
       pane.getChildren().addAll(waitingForPlayersLabel, imageView);
-    }
-    catch (PlayerIndexNotFoundException e) {
+    } catch (PlayerIndexNotFoundException e) {
       logger.error("player not found", e);
     }
     return pane;

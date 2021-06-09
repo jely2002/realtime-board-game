@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import nl.hsleiden.ipsene.exceptions.EmptyDeckException;
 import nl.hsleiden.ipsene.exceptions.PawnNotFoundException;
 import nl.hsleiden.ipsene.exceptions.PlayerIndexNotFoundException;
@@ -64,8 +63,7 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
       for (int j = 0; j < amountOfCardsPerPlayer; j++) {
         try {
           players[i].addCard(deck.drawCard());
-        }
-        catch (EmptyDeckException e) {
+        } catch (EmptyDeckException e) {
           logger.error(e.getMessage(), e);
         }
       }

@@ -3,7 +3,6 @@ package nl.hsleiden.ipsene.models;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import nl.hsleiden.ipsene.exceptions.PawnNotFoundException;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
@@ -58,8 +57,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
     // todo set selected card and pawn before calling before getting the pawn and playing the card
     try {
       Pawn selectedPawn = team.getPawn(playerIndex, selectedPawnIndex);
-    }
-    catch (PawnNotFoundException e) {
+    } catch (PawnNotFoundException e) {
       logger.warn("selected pawn not found", e);
     }
   }
