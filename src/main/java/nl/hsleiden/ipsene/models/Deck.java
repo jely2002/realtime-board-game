@@ -3,7 +3,6 @@ package nl.hsleiden.ipsene.models;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
 import java.util.stream.Collectors;
-import nl.hsleiden.ipsene.exceptions.EmptyDeckException;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 
@@ -16,28 +15,21 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
   // all possible values for n cards
   private static final int[] POSSIBLE_N_CARDS = {2, 3, 5, 6, 8, 9, 10, 12};
 
-  /**
-   * @param amountOfPlayers the amount of players playing the game
-   * @param game a reference to the Game object
-   */
   public Deck(int amountOfPlayers, Game game) {
     this.game = game;
     nCardDeck = generateNCardDeck(amountOfPlayers);
     cards = new ArrayList<>(Arrays.asList(generateDeck(amountOfPlayers, nCardDeck)));
-    cards = shuffle(cards);
   }
 
-  /**
-   * @param amountOfPlayers the amount of players playing the game
-   * @param nCardDeck the deck containing all n value cards
-   * @return a deck of cards
-   */
+  public Deck(ArrayList<Card> cards, Game game) {
+    this.game = game;
+    this.cards = cards;
+  }
+
   private Card[] generateDeck(int amountOfPlayers, ArrayList<Integer> nCardDeck) {
 
-    // each different card appears once for every player, nCards are added separately so -1 from
-    // length of cardtype values
-    final int AMOUNT_NORMAL_CARDS = CardType.values().length - 1;
-    // the total amount of cards in the deck to be generated
+    // each different card appears once for every player, nCards are added separately
+    final int AMOUNT_NORMAL_CARDS = CardType.values().length;
     final int TOTAL_AMOUNT_OF_CARDS =
         (AMOUNT_NORMAL_CARDS * amountOfPlayers) + (POSSIBLE_N_CARDS.length * amountOfPlayers);
     Card[] cards = new Card[TOTAL_AMOUNT_OF_CARDS];
@@ -56,11 +48,10 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
       ++index;
     }
 
-    return cards;
-  }
-
-  private ArrayList<Card> shuffle(ArrayList<Card> cards) {
-    Collections.shuffle(cards);
+    // shuffle
+    List<Card> shuffled = Arrays.asList(cards);
+    Collections.shuffle(shuffled);
+    shuffled.toArray(cards);
     return cards;
   }
 
@@ -80,9 +71,9 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
    *
    * @return the top card or null if deck is empty
    */
-  public Card drawCard() throws EmptyDeckException {
+  public Card drawCard() {
     if (cards.size() != 0) return cards.remove(cards.size() - 1);
-    else throw new EmptyDeckException("attempted to call drawCard on an empty deck");
+    else return null;
   }
 
   public int getAmountOfCardsInDeck() {
