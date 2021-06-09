@@ -3,9 +3,8 @@ package nl.hsleiden.ipsene.application;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import nl.hsleiden.ipsene.controllers.GameController;
+import nl.hsleiden.ipsene.controllers.LobbyController;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
-import nl.hsleiden.ipsene.views.MenuView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,10 +21,7 @@ public class Main extends Application {
     try {
       FirebaseService firebaseService =
           new FirebaseService("firestoretest-5c4e4-52601abc4d0c.json", "games");
-
-      GameController gameController = GameController.getInstance(firebaseService);
-      // gameController.join("29316");
-      MenuView menuView = new MenuView(primaryStage, gameController);
+      LobbyController lobbyController = new LobbyController(firebaseService, primaryStage);
     } catch (IOException e) {
       logger.error(e.getMessage(), e);
     }

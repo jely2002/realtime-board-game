@@ -25,6 +25,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
   private int selectedCardIndex = 0;
 
   private int id;
+  private boolean available;
 
   /**
    * should not be called manually, call through Team#createPlayers
@@ -39,6 +40,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
     this.team = team;
     this.playerIndex = index;
     this.pawns = pawns;
+    this.available = true;
     for (Pawn p : pawns) {
       p.setOwningPlayer(this);
     }
@@ -68,8 +70,14 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
     Card c = cards.get(selectedCardIndex);
     c.play(this, pawn);
     cards.remove(c);
-    // removed a card so call observers
-    game.notifyObservers();
+  }
+
+  public boolean isAvailable() {
+    return available;
+  }
+
+  public void setAvailable(boolean selected) {
+    this.available = selected;
   }
 
   public int getId() {
@@ -87,22 +95,17 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
     LinkedHashMap<String, Object> serializedPlayer = new LinkedHashMap<>();
     serializedPlayer.put(Firebase.CARD_FIELD_NAME, serializedCards);
     serializedPlayer.put("pawns", serializedPawns);
-    serializedPlayer.put("selected", false);
+    serializedPlayer.put("selected", !available);
     return serializedPlayer;
   }
 
   @Override
   public void update(DocumentSnapshot document) {
-    // cards.forEach(card -> card.update(document));
-    // pawns.forEach(pawn -> pawn.update(document));
-
-    HashMap<String, Object> serializedTeam =
-        (HashMap<String, Object>) document.get(Firebase.TEAM_FIELD_NAME);
-
     HashMap<String, HashMap<String, Object>> serializedPlayers =
-        (HashMap<String, HashMap<String, Object>>) serializedTeam.get(String.valueOf(this.getId()));
+        (HashMap<String, HashMap<String, Object>>) document.get("players");
 
     HashMap<String, Object> ourPlayer = serializedPlayers.get(String.valueOf(getId()));
+    available = !(boolean) ourPlayer.get("selected");
     ArrayList<HashMap<String, Object>> pawns =
         (ArrayList<HashMap<String, Object>>) ourPlayer.get("pawns");
     ArrayList<HashMap<String, Object>> cards =
@@ -114,8 +117,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
     }
     // update cards
     this.cards.clear();
-    for (int i = 0; i < cards.size(); i++) {
-      HashMap<String, Object> card = cards.get(i);
+    for (HashMap<String, Object> card : cards) {
       CardType cardType = CardType.valueOf((String) card.get("type"));
       int step = (int) (long) card.get("value");
       this.cards.add(new Card(cardType, step));

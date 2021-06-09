@@ -2,14 +2,18 @@ package nl.hsleiden.ipsene.views;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.GameController;
+import nl.hsleiden.ipsene.controllers.LobbyController;
 import nl.hsleiden.ipsene.interfaces.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +22,7 @@ public class LobbyView implements View {
 
   private static final Logger logger = LoggerFactory.getLogger(LobbyView.class.getName());
 
-  private final GameController gameController;
+  private final LobbyController lobbyController;
 
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
@@ -35,9 +39,10 @@ public class LobbyView implements View {
 
   private Label waitingForPlayersLabel;
 
-  public LobbyView(Stage primaryStage, GameController gameController) {
-    this.gameController = gameController;
+  public LobbyView(Stage primaryStage, LobbyController gameController) {
+    this.lobbyController = gameController;
     this.primaryStage = primaryStage;
+    gameController.registerObserver(this);
     loadPrimaryStage(createPane());
   }
 
@@ -45,11 +50,16 @@ public class LobbyView implements View {
     Pane pane = new Pane();
 
     // TODO: dit koppelen met Firebase voor aansturen van de view op de model
-    boolean player1Available = true;
-    boolean player2Available = true;
-    boolean player3Available = false;
-    boolean player4Available = true;
-    String lobbyID = gameController.getToken();
+    boolean player1Available = lobbyController.getPlayerAvailable(1);
+    boolean player2Available = lobbyController.getPlayerAvailable(2);
+    boolean player3Available = lobbyController.getPlayerAvailable(3);
+    boolean player4Available = lobbyController.getPlayerAvailable(4);
+
+    if (!player1Available && !player2Available && !player3Available && !player4Available) {
+      startGame();
+    }
+
+    String lobbyID = lobbyController.getToken();
 
     Label title = lobbyHeaderLabelBuilder(lobbyID);
     MenuView.setNodeCoordinates(title, 10, 10);
@@ -66,17 +76,25 @@ public class LobbyView implements View {
     Label player4Display = playerDisplayLabel("Player 4", player4Available, YELLOW);
     MenuView.setNodeCoordinates(player4Display, 10, 660);
 
-    this.player1Join = buttonBuilder("Join", player1Available);
+    this.player1Join = joinButtonBuilder(1, player1Available);
+    player1Join.setId("1");
     MenuView.setNodeCoordinates(player1Join, 220, 150);
+    player1Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
 
-    this.player2Join = buttonBuilder("Join", player2Available);
+    this.player2Join = joinButtonBuilder(2, player2Available);
+    player2Join.setId("2");
     MenuView.setNodeCoordinates(player2Join, 220, 295);
+    player2Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
 
-    this.player3Join = buttonBuilder("Join", player3Available);
+    this.player3Join = joinButtonBuilder(3, player3Available);
+    player3Join.setId("3");
     MenuView.setNodeCoordinates(player3Join, 220, 520);
+    player3Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
 
-    this.player4Join = buttonBuilder("Join", player4Available);
+    this.player4Join = joinButtonBuilder(4, player4Available);
+    player4Join.setId("4");
     MenuView.setNodeCoordinates(player4Join, 220, 660);
+    player4Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
 
     this.waitingForPlayersLabel = WaitingForPlayersLabelBuilder("Waiting for players");
     MenuView.setNodeCoordinates(waitingForPlayersLabel, 10, 790);
@@ -112,11 +130,10 @@ public class LobbyView implements View {
       primaryStage.setTitle("Keezbord");
       primaryStage.show();
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error(e.getMessage(), e);
     }
   }
 
-  // Hier moet je de parameter simpelweg de LobbyID uit firebase meegeven!
   private Label lobbyHeaderLabelBuilder(String lobbyID) {
     Label lbl = new Label();
 
@@ -172,7 +189,31 @@ public class LobbyView implements View {
     return lbl;
   }
 
-  // Stuur de IsAvailable bool aan a.d.h.v data uit firebase
+  private Button joinButtonBuilder(int id, boolean isAvailable) {
+    Button btn = new Button();
+    String bgColor;
+    String buttonText;
+
+    if (lobbyController.hasSelectedPlayer() && lobbyController.getSelectedPlayer() == id) {
+      bgColor = "#00FFFF";
+      buttonText = "Joined";
+    } else if (!isAvailable) {
+      bgColor = "#FF0000";
+      buttonText = "Taken";
+    } else {
+      bgColor = "#00FF00";
+      buttonText = "Join";
+    }
+
+    btn.setPrefWidth(125);
+    btn.setPrefHeight(125);
+    btn.setText(buttonText);
+    btn.setStyle("-fx-font-size: 20; -fx-background-color: " + bgColor);
+    MenuView.applyDropShadow(btn);
+
+    return btn;
+  }
+
   private Button buttonBuilder(String txt, boolean isAvailable) {
     Button btn = new Button();
     String bgColor;
@@ -192,8 +233,41 @@ public class LobbyView implements View {
     return btn;
   }
 
+  EventHandler<MouseEvent> playerButtonClicked =
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+          Object source = e.getSource();
+          if (!(source instanceof Button)) return;
+          Button clickedButton = (Button) e.getSource();
+          int playerId = Integer.parseInt(clickedButton.getId());
+          if (clickedButton.getText().equals("Taken")) return;
+          if (lobbyController.hasSelectedPlayer()) {
+            if (clickedButton.getText().equals("Joined")) {
+              lobbyController.setSelectedPlayer(null);
+              lobbyController.setPlayerAvailable(playerId, true);
+            } else if (clickedButton.getText().equals("Join")) {
+              lobbyController.setPlayerAvailable(lobbyController.getSelectedPlayer(), true);
+              lobbyController.setPlayerAvailable(playerId, false);
+              lobbyController.setSelectedPlayer(playerId);
+            }
+          } else {
+            if (clickedButton.getText().equals("Join")) {
+              lobbyController.setSelectedPlayer(playerId);
+              lobbyController.setPlayerAvailable(playerId, false);
+            }
+          }
+        }
+      };
+
+  // TODO finetune and check if boardstage really comes after lobbyView
+  private void startGame() {
+    GameController gameController = lobbyController.startGame(this);
+    new BoardView(primaryStage, gameController);
+  }
+
   @Override
   public void update() {
-    loadPrimaryStage(createPane());
+    Platform.runLater(() -> loadPrimaryStage(createPane()));
   }
 }
