@@ -27,7 +27,7 @@ public class GameController implements Controller {
 
   @Override
   public void update(DocumentSnapshot document) {
-    logger.info("Received update from firebase"); //TODO Remove in production
+    logger.info("Received update from firebase"); // TODO Remove in production
     game.update(document);
   }
 

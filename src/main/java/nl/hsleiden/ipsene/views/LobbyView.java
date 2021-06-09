@@ -2,8 +2,6 @@ package nl.hsleiden.ipsene.views;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Objects;
-
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -56,7 +54,7 @@ public class LobbyView implements View {
     boolean player3Available = gameController.getPlayerAvailable(3);
     boolean player4Available = gameController.getPlayerAvailable(4);
 
-    if(!player1Available && !player2Available && !player3Available && !player4Available) {
+    if (!player1Available && !player2Available && !player3Available && !player4Available) {
       startGame();
     }
 
@@ -117,7 +115,7 @@ public class LobbyView implements View {
     MenuView.setNodeCoordinates(imageView, 600, 200);
 
     pane.getChildren()
-            .addAll(title, player1Display, player2Display, player3Display, player4Display);
+        .addAll(title, player1Display, player2Display, player3Display, player4Display);
     pane.getChildren().addAll(player1Join, player2Join, player3Join, player4Join);
     pane.getChildren().addAll(waitingForPlayersLabel, imageView);
     return pane;
@@ -180,12 +178,12 @@ public class LobbyView implements View {
     lbl.setPrefWidth(200);
     lbl.setPrefHeight(125);
     lbl.setStyle(
-            "-fx-font-size: 35; -fx-padding: 20; -fx-border-width: 10; "
-                    + "-fx-background-color: #AAAAAA; -fx-border-color: "
-                    + avIndicator
-                    + avIndicator
-                    + avIndicator
-                    + hex);
+        "-fx-font-size: 35; -fx-padding: 20; -fx-border-width: 10; "
+            + "-fx-background-color: #AAAAAA; -fx-border-color: "
+            + avIndicator
+            + avIndicator
+            + avIndicator
+            + hex);
 
     return lbl;
   }
@@ -195,10 +193,10 @@ public class LobbyView implements View {
     String bgColor;
     String buttonText;
 
-    if(gameController.hasSelectedPlayer() && gameController.getSelectedPlayer() == id) {
+    if (gameController.hasSelectedPlayer() && gameController.getSelectedPlayer() == id) {
       bgColor = "#00FFFF";
       buttonText = "Joined";
-    } else if(!isAvailable) {
+    } else if (!isAvailable) {
       bgColor = "#FF0000";
       buttonText = "Taken";
     } else {
@@ -235,31 +233,31 @@ public class LobbyView implements View {
   }
 
   EventHandler<MouseEvent> playerButtonClicked =
-          new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-              Object source = e.getSource();
-              if(!(source instanceof Button)) return;
-              Button clickedButton = (Button) e.getSource();
-              int playerId = Integer.parseInt(clickedButton.getId());
-              if(clickedButton.getText().equals("Taken")) return;
-              if(gameController.hasSelectedPlayer()) {
-                if(clickedButton.getText().equals("Joined")) {
-                  gameController.setSelectedPlayer(null);
-                  gameController.setPlayerAvailable(playerId, true);
-                } else if(clickedButton.getText().equals("Join")) {
-                  gameController.setPlayerAvailable(gameController.getSelectedPlayer(), true);
-                  gameController.setPlayerAvailable(playerId, false);
-                  gameController.setSelectedPlayer(playerId);
-                }
-              } else {
-                if(clickedButton.getText().equals("Join")) {
-                  gameController.setSelectedPlayer(playerId);
-                  gameController.setPlayerAvailable(playerId, false);
-                }
-              }
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+          Object source = e.getSource();
+          if (!(source instanceof Button)) return;
+          Button clickedButton = (Button) e.getSource();
+          int playerId = Integer.parseInt(clickedButton.getId());
+          if (clickedButton.getText().equals("Taken")) return;
+          if (gameController.hasSelectedPlayer()) {
+            if (clickedButton.getText().equals("Joined")) {
+              gameController.setSelectedPlayer(null);
+              gameController.setPlayerAvailable(playerId, true);
+            } else if (clickedButton.getText().equals("Join")) {
+              gameController.setPlayerAvailable(gameController.getSelectedPlayer(), true);
+              gameController.setPlayerAvailable(playerId, false);
+              gameController.setSelectedPlayer(playerId);
             }
-          };
+          } else {
+            if (clickedButton.getText().equals("Join")) {
+              gameController.setSelectedPlayer(playerId);
+              gameController.setPlayerAvailable(playerId, false);
+            }
+          }
+        }
+      };
 
   // TODO finetune and check if boardstage really comes after lobbyView
   private void startGame() {
