@@ -26,6 +26,7 @@ public class BoardView implements View {
   public BoardView(Stage s, GameController gameController) {
     primaryStage = s;
     this.gameController = gameController;
+    gameController.registerObserver(this);
     loadPrimaryStage((Pane) createInitialPane());
   }
 

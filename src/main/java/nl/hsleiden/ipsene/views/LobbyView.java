@@ -264,7 +264,7 @@ public class LobbyView implements View {
 
   // TODO finetune and check if boardstage really comes after lobbyView
   private void startGame() {
-    GameController gameController = lobbyController.startGame();
+    GameController gameController = lobbyController.startGame(this);
     new BoardView(primaryStage, gameController);
   }
 

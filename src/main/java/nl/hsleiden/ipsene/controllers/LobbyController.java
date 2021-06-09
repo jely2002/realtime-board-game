@@ -22,12 +22,11 @@ public class LobbyController implements Controller {
 
     private final Game game;
     private final FirebaseService firebaseService;
-    private View view;
 
     public LobbyController(FirebaseService firebaseService, Stage stage) {
         this.firebaseService = firebaseService;
         this.game = new Game();
-        this.view = new MenuView(stage ,this);
+        new MenuView(stage ,this);
     }
 
     @Override
@@ -133,7 +132,8 @@ public class LobbyController implements Controller {
         }
     }
 
-    public GameController startGame() {
+    public GameController startGame(View view) {
+        game.unregisterObserver(view);
         return new GameController(firebaseService, game);
     }
 
