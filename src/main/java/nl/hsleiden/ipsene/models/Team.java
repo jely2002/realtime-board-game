@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import nl.hsleiden.ipsene.exceptions.EmptyDeckException;
+import nl.hsleiden.ipsene.exceptions.PawnNotFoundException;
+import nl.hsleiden.ipsene.exceptions.PlayerIndexNotFoundException;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +61,11 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
   public void distributeCards(int amountOfCardsPerPlayer, Deck deck) {
     for (int i = 0; i < players.length; i++) {
       for (int j = 0; j < amountOfCardsPerPlayer; j++) {
-        players[i].addCard(deck.drawCard());
+        try {
+          players[i].addCard(deck.drawCard());
+        } catch (EmptyDeckException e) {
+          logger.error(e.getMessage(), e);
+        }
       }
     }
   }
@@ -70,14 +77,14 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
    * @param pawnIndex index of the pawn to get
    * @return the corresponding pawn
    */
-  public Pawn getPawn(int playerIndex, int pawnIndex) {
+  public Pawn getPawn(int playerIndex, int pawnIndex) throws PawnNotFoundException {
     if (playerIndex < PLAYERS_PER_TEAM) return players[playerIndex].getPawn(pawnIndex);
-    return null; // TODO Remove null return
+    else throw new PawnNotFoundException("called Team#getPawn with invalid playerindex");
   }
 
-  public Player getPlayer(int playerIndex) {
+  public Player getPlayer(int playerIndex) throws PlayerIndexNotFoundException {
     if (playerIndex < PLAYERS_PER_TEAM) return players[playerIndex];
-    return null;
+    else throw new PlayerIndexNotFoundException("player with index: " + playerIndex + " not found");
   }
 
   @Override

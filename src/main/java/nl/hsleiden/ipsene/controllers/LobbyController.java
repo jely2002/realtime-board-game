@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.exceptions.GameNotFoundException;
+import nl.hsleiden.ipsene.exceptions.PlayerIndexNotFoundException;
 import nl.hsleiden.ipsene.exceptions.ServerConnectionException;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.interfaces.Controller;
@@ -21,11 +22,12 @@ public class LobbyController implements Controller {
 
   private final Game game;
   private final FirebaseService firebaseService;
+  private MenuView menuView;
 
   public LobbyController(FirebaseService firebaseService, Stage stage) {
     this.firebaseService = firebaseService;
     this.game = new Game();
-    new MenuView(stage, this);
+    this.menuView = new MenuView(stage, this);
   }
 
   @Override
@@ -50,8 +52,12 @@ public class LobbyController implements Controller {
    * @param value Whether to set this slot to available or not.
    */
   public void setPlayerAvailable(int id, boolean value) {
-    game.getPlayer(id - 1).setAvailable(value);
-    push();
+    try {
+      game.getPlayer(id - 1).setAvailable(value);
+      push();
+    } catch (PlayerIndexNotFoundException e) {
+      logger.error("player not found", e);
+    }
   }
 
   /**
@@ -60,7 +66,7 @@ public class LobbyController implements Controller {
    * @param id The player ID to check the availability for.
    * @return A boolean indicating if the player is available.
    */
-  public boolean getPlayerAvailable(int id) {
+  public boolean getPlayerAvailable(int id) throws PlayerIndexNotFoundException {
     Player player = game.getPlayer(id - 1);
     return player.isAvailable();
   }
