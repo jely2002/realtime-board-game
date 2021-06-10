@@ -36,7 +36,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     this.teams = generateTeams();
     this.deck = new Deck(4, this);
     setCardsToBeDrawnNextTurn(5);
-    distributeCards(deck);
+    //distributeCards(deck);
   }
 
   private ArrayList<Team> generateTeams() {
