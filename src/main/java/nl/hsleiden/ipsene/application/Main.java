@@ -22,12 +22,12 @@ public class Main extends Application {
   public void start(Stage primaryStage) {
     try {
       FirebaseService firebaseService =
-          new FirebaseService("C:\\Users\\Tim\\Downloads\\firestoretest-5c4e4-52601abc4d0c.json", "games");
+          new FirebaseService("firestoretest-5c4e4-52601abc4d0c.json", "games");
 
       GameController gameController = GameController.getInstance(firebaseService);
       // gameController.join("29316");
         BoardView brd = new BoardView(primaryStage);
-    } catch (IOException e) {
+    } catch (Throwable e) {
       logger.error(e.getMessage(), e);
     }
 

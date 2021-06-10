@@ -1,5 +1,8 @@
 package nl.hsleiden.ipsene.views;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.sun.javafx.geom.Vec2d;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -8,10 +11,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
@@ -23,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ViewHelper {
-    private static final ArrayList<ArrayList<Integer>> coordinates = new ArrayList<>();
+    private static final ArrayList<Vec2d> coordinates = new ArrayList<>();
     private static final String RED = "#FF0000";
     private static final String BLUE = "#0000FF";
     private static final String GREEN = "#00FF00";
@@ -223,13 +227,18 @@ public class ViewHelper {
         }
         ImageView imageView = new ImageView(img);
         imageView.setPreserveRatio(true);
-        fillCoordinateList();
+        try {
+            fillCoordinateList();
+        } catch (FileNotFoundException e) {
+            logger.error(e.getMessage(), e);
+        }
 
         return imageView;
     }
 
     public static ImageView showCard(CardType type, int steps){
         String path = "src/main/resources/assets/cards/";
+        // TODO This will not work once packaged. Because this path is relative to the project not the jar.
         Image img = null;
 
         switch (type){
@@ -296,122 +305,16 @@ public class ViewHelper {
     /**
      * Fills the Coordinate Arraylist with coordinates for pawn tiles
      */
-    private static void fillCoordinateList(){
-        setIndexCoordinates(0, 0, 0);
-        setIndexCoordinates(1, 252, 33);
-        setIndexCoordinates(2, 292, 33);
-        setIndexCoordinates(3, 252, 71);
-        setIndexCoordinates(4, 292, 71);
-        setIndexCoordinates(5, 338, 128);
-        setIndexCoordinates(6, 339, 165);
-        setIndexCoordinates(7, 337, 202);
-        setIndexCoordinates(8, 339, 240);
-        setIndexCoordinates(9, 330, 275);
-        setIndexCoordinates(10, 937, 40);
-        setIndexCoordinates(11, 977, 40);
-        setIndexCoordinates(12, 937, 75);
-        setIndexCoordinates(13, 977, 75);
-        setIndexCoordinates(14, 918, 151);
-        setIndexCoordinates(15, 880, 160);
-        setIndexCoordinates(16, 848, 185);
-        setIndexCoordinates(17, 813, 160);
-        setIndexCoordinates(18, 775, 181);
-        setIndexCoordinates(19, 1006, 606);
-        setIndexCoordinates(20, 1043, 606);
-        setIndexCoordinates(21, 1006, 643);
-        setIndexCoordinates(22, 1046, 643);
-        setIndexCoordinates(23, 913, 658);
-        setIndexCoordinates(24, 882, 629);
-        setIndexCoordinates(25, 855, 597);
-        setIndexCoordinates(26, 855, 557);
-        setIndexCoordinates(27, 855, 517);
-        setIndexCoordinates(28, 235, 629);
-        setIndexCoordinates(29, 273, 629);
-        setIndexCoordinates(30, 234, 666);
-        setIndexCoordinates(31, 273, 666);
-        setIndexCoordinates(32, 348, 606);
-        setIndexCoordinates(33, 362, 571);
-        setIndexCoordinates(34, 368, 535);
-        setIndexCoordinates(35, 368, 503);
-        setIndexCoordinates(36, 368, 465);
-        setIndexCoordinates(37, 374, 118);
-        setIndexCoordinates(38, 413, 116);
-        setIndexCoordinates(39, 451, 117);
-        setIndexCoordinates(40, 478, 143);
-        setIndexCoordinates(41, 513, 163);
-        setIndexCoordinates(42, 547, 145);
-        setIndexCoordinates(43, 590, 134);
-        setIndexCoordinates(44, 628, 122);
-        setIndexCoordinates(45, 662, 142);
-        setIndexCoordinates(46, 697, 121);
-        setIndexCoordinates(47, 734, 114);
-        setIndexCoordinates(48, 778, 114);
-        setIndexCoordinates(49, 818, 105);
-        setIndexCoordinates(50, 860, 100);
-        setIndexCoordinates(51, 893, 119);
-        setIndexCoordinates(52, 944, 186);
-        setIndexCoordinates(53, 917, 212);
-        setIndexCoordinates(54, 947, 235);
-        setIndexCoordinates(55, 916, 262);
-        setIndexCoordinates(56, 949, 290);
-        setIndexCoordinates(57, 921, 318);
-        setIndexCoordinates(58, 940, 349);
-        setIndexCoordinates(59, 941, 389);
-        setIndexCoordinates(60, 911, 418);
-        setIndexCoordinates(61, 910, 455);
-        setIndexCoordinates(62, 938, 484);
-        setIndexCoordinates(63, 904, 506);
-        setIndexCoordinates(64, 907, 544);
-        setIndexCoordinates(65, 930, 572);
-        setIndexCoordinates(66, 962, 592);
-        setIndexCoordinates(67, 934, 614);
-        setIndexCoordinates(68, 959, 640);
-        setIndexCoordinates(69, 867, 665);
-        setIndexCoordinates(70, 839, 638);
-        setIndexCoordinates(71, 808, 665);
-        setIndexCoordinates(72, 771, 646);
-        setIndexCoordinates(73, 746, 618);
-        setIndexCoordinates(74, 713, 639);
-        setIndexCoordinates(75, 674, 631);
-        setIndexCoordinates(76, 636, 632);
-        setIndexCoordinates(77, 597, 623);
-        setIndexCoordinates(78, 558, 611);
-        setIndexCoordinates(79, 529, 641);
-        setIndexCoordinates(80, 493, 621);
-        setIndexCoordinates(81, 456, 639);
-        setIndexCoordinates(82, 422, 617);
-        setIndexCoordinates(83, 382, 622);
-        setIndexCoordinates(84, 313, 591);
-        setIndexCoordinates(85, 287, 564);
-        setIndexCoordinates(86, 318, 542);
-        setIndexCoordinates(87, 289, 521);
-        setIndexCoordinates(88, 262, 494);
-        setIndexCoordinates(89, 259, 458);
-        setIndexCoordinates(90, 295, 434);
-        setIndexCoordinates(91, 267, 406);
-        setIndexCoordinates(92, 268, 369);
-        setIndexCoordinates(93, 295, 340);
-        setIndexCoordinates(94, 296, 300);
-        setIndexCoordinates(95, 274, 271);
-        setIndexCoordinates(96, 305, 240);
-        setIndexCoordinates(97, 271, 215);
-        setIndexCoordinates(98, 302, 186);
-        setIndexCoordinates(99, 271, 162);
-        setIndexCoordinates(100, 300, 135);
-    }
-
-    /**
-     * Sets the x and y coordinates of the specified index in the coordinates ArrayList
-     *
-     * @param index Target Index of Coordinates ArrayList
-     * @param x X coordinate
-     * @param y Y coordinate
-     */
-    private static void setIndexCoordinates(int index, int x, int y){
-        ArrayList<Integer> coords = new ArrayList<>();
-        coords.add(x);
-        coords.add(y);
-        coordinates.add(index, coords);
+    private static void fillCoordinateList() throws FileNotFoundException {
+        InputStream boardFile = ViewHelper.class.getResourceAsStream("/assets/board/positions.json");
+        if(boardFile == null) throw new FileNotFoundException("The board coordinate file could not be found");
+        Reader reader = new InputStreamReader(boardFile);
+        Type listType = new TypeToken<ArrayList<Vec2d>>() {}.getType();
+        List<Vec2d> points = new Gson().fromJson(reader, listType);
+        for (int i = 0; i < points.size(); i++) {
+            Vec2d point = points.get(i);
+            coordinates.add(i, point);
+        }
     }
 
     /**
@@ -421,8 +324,8 @@ public class ViewHelper {
      * @return returns X coordinate integer
      */
     private static int getCoordinateMapX(int index){
-        ArrayList<Integer> coords = coordinates.get(index);
-        return coords.get(0);
+        Vec2d point = coordinates.get(index);
+        return (int) point.x;
     }
 
     /**
@@ -432,8 +335,8 @@ public class ViewHelper {
      * @return returns Y coordinate integer
      */
     private static int getCoordinateMapY(int index){
-        ArrayList<Integer> coords = coordinates.get(index);
-        return coords.get(1);
+        Vec2d point = coordinates.get(index);
+        return (int) point.y;
     }
 
     /**
