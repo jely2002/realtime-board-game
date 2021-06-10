@@ -22,7 +22,7 @@ public class Main extends Application {
   public void start(Stage primaryStage) {
     try {
       FirebaseService firebaseService =
-          new FirebaseService("firestoretest-5c4e4-52601abc4d0c.json", "games");
+          new FirebaseService("/firestoretest-5c4e4-52601abc4d0c.json", "games");
 
       GameController gameController = GameController.getInstance(firebaseService);
       // gameController.join("29316");
