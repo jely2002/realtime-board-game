@@ -87,7 +87,7 @@ public class LobbyView implements View {
 
     Image image = null;
     try {
-      image = new Image(new FileInputStream("keez.png"));
+      image = new Image(ViewHelper.loadResource("/assets/branding/keez.png"));
     } catch (FileNotFoundException e) {
       logger.error(e.getMessage(), e);
     }

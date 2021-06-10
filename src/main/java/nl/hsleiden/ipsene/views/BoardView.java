@@ -91,10 +91,10 @@ public class BoardView implements View {
     Rectangle cardRect = ViewHelper.createUIDividers(1350, 200);
     ViewHelper.setNodeCoordinates(cardRect, 0, 700);
 
-    ImageView keezBoadLogo = ViewHelper.createLogo(null, 150);
-    ViewHelper.setNodeCoordinates(keezBoadLogo,1350,725);
+    ImageView keezBoardLogo = ViewHelper.createLogo(null, 150);
+    ViewHelper.setNodeCoordinates(keezBoardLogo,1350,725);
 
-    ImageView gameBoard = ViewHelper.drawGameBoard(null);
+    ImageView gameBoard = ViewHelper.drawGameBoard();
     // No coordinates need to be set, as its always at 0,0
 
 //    DEBUG: to draw pawns in all tiles for checking coordinates
@@ -133,7 +133,7 @@ public class BoardView implements View {
     ImageView testcard = ViewHelper.showCard(CardType.STEP_N, 6);
     ViewHelper.setNodeCoordinates(testcard, 50, 705);
 
-    pane.getChildren().addAll(gameBoard ,statRect, cardRect, keezBoadLogo, timerLabel, timerHeader, playersTurnDisplay);
+    pane.getChildren().addAll(gameBoard ,statRect, cardRect, keezBoardLogo, timerLabel, timerHeader, playersTurnDisplay);
     pane.getChildren().addAll(cardsText, roundNumberDisplay, roundNumberHeader, testcard);
     pane.getChildren().addAll(temp);
     return pane;

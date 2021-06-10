@@ -70,7 +70,7 @@ public class ViewHelper {
     public static ImageView createLogo(Image img, int fitHeight){
 
         try {
-            img = new Image(new FileInputStream("keez.png"));
+            img = new Image(loadResource("/assets/branding/keez.png"));
         } catch (FileNotFoundException e) {
             logger.error(e.getMessage(), e);
         }
@@ -116,6 +116,12 @@ public class ViewHelper {
         lbl.setStyle("-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-text-fill: #000000");
 
         return lbl;
+    }
+
+    public static InputStream loadResource(String resourcePath) throws FileNotFoundException {
+        InputStream resourceStream = ViewHelper.class.getResourceAsStream(resourcePath);
+        if(resourceStream == null) throw new FileNotFoundException("The resource at " + resourcePath + " could not be found.");
+        return resourceStream;
     }
 
     /**
@@ -216,12 +222,12 @@ public class ViewHelper {
     /**
      * Draws the game board for the Boardview class
      *
-     * @param img Pass a null Image object
      * @return returns ImageView with gameboard image.
      */
-    public static ImageView drawGameBoard(Image img){
+    public static ImageView drawGameBoard(){
+        Image img = null;
         try {
-            img = new Image(new FileInputStream("board.png"));
+            img = new Image(loadResource("/assets/board/board.png"));
         } catch (FileNotFoundException e) {
             logger.error(e.getMessage(), e);
         }
@@ -237,8 +243,7 @@ public class ViewHelper {
     }
 
     public static ImageView showCard(CardType type, int steps){
-        String path = "src/main/resources/assets/cards/";
-        // TODO This will not work once packaged. Because this path is relative to the project not the jar.
+        String path = "/assets/cards/";
         Image img = null;
 
         switch (type){
@@ -263,7 +268,7 @@ public class ViewHelper {
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }
         try {
-            img = new Image(new FileInputStream(path));
+            img = new Image(loadResource(path));
         } catch (FileNotFoundException e) {
             logger.error(e.getMessage(), e);
         }
@@ -306,9 +311,7 @@ public class ViewHelper {
      * Fills the Coordinate Arraylist with coordinates for pawn tiles
      */
     private static void fillCoordinateList() throws FileNotFoundException {
-        InputStream boardFile = ViewHelper.class.getResourceAsStream("/assets/board/positions.json");
-        if(boardFile == null) throw new FileNotFoundException("The board coordinate file could not be found");
-        Reader reader = new InputStreamReader(boardFile);
+        Reader reader = new InputStreamReader(loadResource("/assets/board/positions.json"));
         Type listType = new TypeToken<ArrayList<Vec2d>>() {}.getType();
         List<Vec2d> points = new Gson().fromJson(reader, listType);
         for (int i = 0; i < points.size(); i++) {
