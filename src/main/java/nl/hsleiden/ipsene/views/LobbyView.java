@@ -36,14 +36,16 @@ public class LobbyView implements View {
   private Button player2Join;
   private Button player3Join;
   private Button player4Join;
+  private Button startButton;
 
   private Label waitingForPlayersLabel;
 
-  public LobbyView(Stage primaryStage, LobbyController gameController) {
-    this.lobbyController = gameController;
+  public LobbyView(Stage primaryStage, LobbyController lobbyController) {
+    this.lobbyController = lobbyController;
     this.primaryStage = primaryStage;
-    gameController.registerObserver(this);
+    lobbyController.registerObserver(this);
     loadPrimaryStage(createPane());
+    //startGame();
   }
 
   private Pane createPane() {
@@ -97,6 +99,10 @@ public class LobbyView implements View {
     ViewHelper.setNodeCoordinates(player4Join, 220, 660);
     player4Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
 
+    this.startButton = startButtonBuilder();
+    ViewHelper.setNodeCoordinates(startButton, 1400, 700);
+    startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, playButtonClicked);
+
     this.waitingForPlayersLabel = WaitingForPlayersLabelBuilder("Waiting for players");
     ViewHelper.setNodeCoordinates(waitingForPlayersLabel, 10, 790);
     WaitingForPlayersThread wfpt = new WaitingForPlayersThread(waitingForPlayersLabel);
@@ -118,7 +124,7 @@ public class LobbyView implements View {
 
     pane.getChildren()
         .addAll(title, player1Display, player2Display, player3Display, player4Display);
-    pane.getChildren().addAll(player1Join, player2Join, player3Join, player4Join);
+    pane.getChildren().addAll(player1Join, player2Join, player3Join, player4Join, startButton);
     pane.getChildren().addAll(waitingForPlayersLabel, imageView);
     return pane;
   }
@@ -199,10 +205,10 @@ public class LobbyView implements View {
       bgColor = "#00FFFF";
       buttonText = "Joined";
     } else if (!isAvailable) {
-      bgColor = "#FF0000";
+      bgColor = RED;
       buttonText = "Taken";
     } else {
-      bgColor = "#00FF00";
+      bgColor = GREEN;
       buttonText = "Join";
     }
 
@@ -213,6 +219,16 @@ public class LobbyView implements View {
     ViewHelper.applyDropShadow(btn);
 
     return btn;
+  }
+
+  private Button startButtonBuilder() {
+    Button button = new Button();
+    button.setText("start game");
+    button.setPrefWidth(125);
+    button.setPrefHeight(125);
+    button.setStyle("-fx-font-size: 20; -fx-background-color: " + RED);
+    ViewHelper.applyDropShadow(button);
+    return button;
   }
 
   private Button buttonBuilder(String txt, boolean isAvailable) {
@@ -260,6 +276,13 @@ public class LobbyView implements View {
           }
         }
       };
+
+  EventHandler<MouseEvent> playButtonClicked = new EventHandler<MouseEvent>() {
+    @Override
+    public void handle(MouseEvent mouseEvent) {
+      startGame();
+    }
+  };
 
   // TODO finetune and check if boardstage really comes after lobbyView
   private void startGame() {

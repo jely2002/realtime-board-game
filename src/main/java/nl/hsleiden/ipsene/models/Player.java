@@ -45,6 +45,8 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
       p.setOwningPlayer(this);
     }
   }
+  public void setSelectedPawnIndex(int i) { selectedPawnIndex = i; }
+  public void setSelectedCardIndex(int i) { selectedCardIndex = i; }
 
   public Pawn getPawn(int pawnIndex) {
     return pawns.get(pawnIndex);
@@ -71,7 +73,9 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
     c.play(this, pawn);
     cards.remove(c);
   }
-
+  public ArrayList<Card> getCards() {
+    return cards;
+  }
   public boolean isAvailable() {
     return available;
   }

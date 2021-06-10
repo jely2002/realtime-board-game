@@ -251,28 +251,7 @@ public class ViewHelper {
     public static ImageView showCard(CardType type, int steps){
         String path = "/assets/cards/";
         Image img = null;
-
-        switch (type){
-            case SPAWN_STEP_1 -> path += "spawnor1.png";
-            case SPAWN -> path += "spawn.png";
-            case SUB -> path += "trade.png";
-            case STEP_4 -> path += "4.png";
-            case STEP_7 -> path += "7.png";
-            case STEP_N -> {
-                switch (steps){
-                    case 2 -> path += "2.png";
-                    case 3 -> path += "3.png";
-                    case 5 -> path += "5.png";
-                    case 6 -> path += "6.png";
-                    case 8 -> path += "8.png";
-                    case 9 -> path += "9.png";
-                    case 10 -> path += "10.png";
-                    case 12 -> path += "12.png";
-                    default -> throw new IllegalStateException("Unexpected value: " + steps);
-                }
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + type);
-        }
+        path += type.getCardBackground(steps);
         try {
             img = new Image(loadResource(path));
         } catch (FileNotFoundException e) {

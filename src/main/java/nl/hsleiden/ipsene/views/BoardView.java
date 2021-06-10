@@ -19,6 +19,8 @@ import nl.hsleiden.ipsene.interfaces.View;
 
 import nl.hsleiden.ipsene.models.Card;
 import nl.hsleiden.ipsene.models.CardType;
+import nl.hsleiden.ipsene.models.Game;
+import nl.hsleiden.ipsene.models.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +31,11 @@ import org.slf4j.LoggerFactory;
 
 public class BoardView implements View {
   private static final Logger logger = LoggerFactory.getLogger(Main.class.getName());
+
+  public static final int CARD_START_X_POSITION = 50;
+  public static final int CARD_SEPERATION_VALUE = 130;
+  private int lastCardX = CARD_START_X_POSITION;
+  private boolean cardSelected = false;
 
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
@@ -48,14 +55,11 @@ public class BoardView implements View {
 
   public BoardView(Stage s, GameController gameController) {
     primaryStage = s;
-    loadPrimaryStage(createInitialPane());
+    this.gameController = gameController;
     this.boardController = new BoardController(4);
     boardController.registerObserver(this);
-    
-    //this.gameController = gameController;
-    //gameController.registerObserver(this);
-    //loadPrimaryStage((Pane) createInitialPane());
-
+    gameController.registerObserver(this);
+    loadPrimaryStage(createInitialPane());
   }
 
   private void loadPrimaryStage(Pane pane) {
@@ -73,17 +77,6 @@ public class BoardView implements View {
   private Pane createInitialPane() {
     Pane pane = new Pane();
 
-    CardType card0Type;
-    int card0steps;
-    CardType card1Type;
-    int card1steps;
-    CardType card2Type;
-    int card2steps;
-    CardType card3Type;
-    int card3steps;
-    CardType card4Type;
-    int card4steps;
-
     // TODO: dit aansturen aan de hand van de model(ik weet niet hoe dit moet!)
     ArrayList<Card> deck;
 
@@ -95,7 +88,6 @@ public class BoardView implements View {
 
     // TODO: de huidige speler die aan de beurt is hier doorgeven
     int turnPlayerNumber = 3;
-
 
     Rectangle statRect = ViewHelper.createUIDividers(250, 700);
     ViewHelper.setNodeCoordinates(statRect, 1350, 0);
@@ -109,13 +101,7 @@ public class BoardView implements View {
     ImageView gameBoard = ViewHelper.drawGameBoard();
     // No coordinates need to be set, as its always at 0,0
 
-//    DEBUG: to draw pawns in all tiles for checking coordinates
-    ArrayList<Node> temp = new ArrayList<>();
-    for(int i = 1; i < 101; i++){
-      Polygon test = ViewHelper.createPawn(BLUE);
-      ViewHelper.setPawnPosition(test, i);
-      temp.add(test);
-    }
+    ArrayList<Node> pawns = buildPawns();
 
     //RIGHT SIDEBAR
     Label timerHeader = ViewHelper.headerLabelBuilder("Time left:");
@@ -138,17 +124,48 @@ public class BoardView implements View {
     Label roundNumberDisplay = ViewHelper.roundNumberDisplayBuilder(roundNumber, 1);
     ViewHelper.setNodeCoordinates(roundNumberDisplay, 1400,300);
 
+    ArrayList<ImageView> cards = buildCards();
+
     //BOTTOM CARD BAR
     VBox cardsText = ViewHelper.verticalTextDisplayBuilder("CARDS");
     ViewHelper.setNodeCoordinates(cardsText, 10, 700);
 
-    ImageView testcard = ViewHelper.showCard(CardType.STEP_N, 6);
-    ViewHelper.setNodeCoordinates(testcard, 50, 705);
-
     pane.getChildren().addAll(gameBoard ,statRect, cardRect, keezBoardLogo, timerLabel, timerHeader, playersTurnDisplay);
-    pane.getChildren().addAll(cardsText, roundNumberDisplay, roundNumberHeader, testcard);
-    pane.getChildren().addAll(temp);
+    pane.getChildren().addAll(cardsText, roundNumberDisplay, roundNumberHeader);
+    pane.getChildren().addAll(pawns);
+    pane.getChildren().addAll(cards);
+
     return pane;
+  }
+  private ArrayList<Node> buildPawns() {
+    Game g = gameController.getGame();
+    // -1 for the player number to player index
+    int p = g.getOwnPlayer() - 1;
+    Player ourPlayer = g.getPlayer(p);
+    ArrayList<Node> temp = new ArrayList<>();
+    for(int i = 1; i < 101; i++){
+      Polygon test = ViewHelper.createPawn(BLUE);
+      ViewHelper.setPawnPosition(test, i);
+      temp.add(test);
+    }
+    return temp;
+  }
+  private ArrayList<ImageView> buildCards() {
+    // show all our players cards
+    cardSelected = false;
+    Game g = gameController.getGame();
+    // -1 for the player number to player index
+    int p = g.getOwnPlayer() - 1;
+    Player ourPlayer = g.getPlayer(p);
+    ArrayList<ImageView> cards = new ArrayList<>();
+    for (Card card : ourPlayer.getCards()) {
+      ImageView cardview = ViewHelper.showCard(card.getType(), card.steps);
+      cardview.addEventFilter(MouseEvent.MOUSE_CLICKED, cardClicked);
+      ViewHelper.setNodeCoordinates(cardview, lastCardX, 705);
+      cards.add(cardview);
+      lastCardX += CARD_SEPERATION_VALUE;
+    }
+    return cards;
   }
 
   EventHandler<MouseEvent> timerStartButtonClicked =
@@ -158,14 +175,33 @@ public class BoardView implements View {
           boardController.startTurnTimer();
         }
       };
-
+  EventHandler<MouseEvent> cardClicked = new EventHandler<MouseEvent>() {
+    @Override
+    public void handle(MouseEvent mouseEvent) {
+      // todo check if this is our turn
+      double mousex = mouseEvent.getSceneX();
+      // get the index of the card we clicked on
+      int clickedCardIndex = (int) ((mousex - CARD_START_X_POSITION) / CARD_SEPERATION_VALUE);
+      gameController.getGame().getPlayer(gameController.getGame().getOwnPlayer()).setSelectedCardIndex(clickedCardIndex);
+      cardSelected = true;
+    }
+  };
+  EventHandler<MouseEvent> pawnClickedEvent = new EventHandler<MouseEvent>() {
+    @Override
+    public void handle(MouseEvent mouseEvent) {
+      if (cardSelected) {
+        int i = 0;
+      }
+    }
+  };
   @Override
   public void update() {
     try {
-      timerThread.interrupt();
+      //timerThread.interrupt();
     } catch (Exception e) {
       logger.error(e.getMessage(), e);
     }
     loadPrimaryStage(createInitialPane());
   }
+
 }

@@ -29,6 +29,39 @@ public enum CardType {
     if (code == CardType.STEP_4.code) return 4;
     return 0;
   }
+  public String getCardBackground(int steps) {
+    String path = "";
+    switch (this) {
+      case SPAWN_STEP_1: {
+        path += "spawnor1.png"; break;
+      }
+      case SPAWN: {
+        path += "spawn.png";
+        break;
+      }
+      case SUB: {
+        path += "trade.png";
+        break;
+      }
+      case STEP_4: {
+        path += "4.png";
+        break;
+      }
+      case STEP_7: {
+        path += "7.png";
+        break;
+      }
+      case STEP_N: {
+        path += String.valueOf(code) + ".png";
+        break;
+      }
+      default: {
+        throw new IllegalStateException("Unexpected value: " + steps);
+      }
+    }
+    return path;
+  }
+
 
   public static CardType get(int code) {
     return lookup.get(code);

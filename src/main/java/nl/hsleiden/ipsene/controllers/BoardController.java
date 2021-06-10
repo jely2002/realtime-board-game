@@ -16,13 +16,6 @@ public class BoardController implements Controller {
   private boolean gameHasEnded = false;
   private final int AMOUNT_OF_PLAYERS;
 
-  private BoardController(int amountOfPlayers, int amountOfTeams) {
-    board = new Board();
-    AMOUNT_OF_PLAYERS = amountOfPlayers;
-    // todo sent cards array to firebase
-    teamController = new TeamController();
-  }
-
   public BoardController(int amount_of_players) {
     this.board = new Board();
     AMOUNT_OF_PLAYERS = amount_of_players;

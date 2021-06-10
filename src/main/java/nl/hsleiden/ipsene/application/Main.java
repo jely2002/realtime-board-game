@@ -32,15 +32,5 @@ public class Main extends Application {
     } catch (IOException e) {
       logger.error(e.getMessage(), e);
     }
-
-    // BoardView gameStatView = new BoardView(primaryStage);
-    // logger.debug("primaryStage has been loaded");
-    // Menu menu = new Menu(primaryStage);
-    // CardView cardView = new CardView(primaryStage);
-    // LobbyView lobbyView = new LobbyView(primaryStage);
-
-    //     BoardControllerOLD boardController = new BoardControllerOLD(4, 2);
-    //     boardController.doGameLoop();
-
   }
 }

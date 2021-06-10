@@ -35,7 +35,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     this.teams = generateTeams();
     this.deck = new Deck(4, this);
     setCardsToBeDrawnNextTurn(5);
-    distributeCards(deck);
+    distributeCards();
   }
 
   private ArrayList<Team> generateTeams() {
@@ -54,13 +54,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     return sb.toString();
   }
 
-  public void doTurns() {
-    for (Team team : this.teams) {
-      team.doTurn();
-    }
-  }
-
-  public void distributeCards(Deck deck) {
+  public void distributeCards() {
     for (Team team : this.teams) {
       team.distributeCards(cardsPerPlayerNextRound, deck);
     }
@@ -134,10 +128,6 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
   public int getDoingTurn() {
     return doingTurn;
-  }
-
-  public void setDoingTurn(int doingTurn) {
-    this.doingTurn = doingTurn;
   }
 
   public int getRound() {

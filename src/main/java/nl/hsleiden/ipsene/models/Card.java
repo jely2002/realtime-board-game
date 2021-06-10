@@ -77,7 +77,7 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
     onPlayActions.put(CardType.STEP_4, Card::playStep4Card);
     onPlayActions.put(CardType.STEP_N, Card::playStepNCard);
   }
-
+  public CardType getType() { return type; }
   @Override
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serializedCard = new LinkedHashMap<>();

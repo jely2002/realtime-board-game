@@ -19,6 +19,7 @@ public class GameController implements Controller {
     this.game = game;
     this.firebaseService = firebaseService;
   }
+  public Game getGame() { return game; }
 
   @Override
   public void update(DocumentSnapshot document) {

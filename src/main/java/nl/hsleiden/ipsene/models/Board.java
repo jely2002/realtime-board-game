@@ -10,21 +10,33 @@ import nl.hsleiden.ipsene.views.BoardView;
 
 public class Board implements Model {
 
-  public static final int STEPS_BETWEEN_TEAMS = 14;
-  public static final HashMap<TeamType, Integer> boardOffset = new HashMap<TeamType, Integer>();
+  public static final int STEPS_BETWEEN_TEAMS = 15;
+  public static final int START_POSITION_INDEX = 35;
+  public static final int POOL_PLUS_END_SIZE = 9;
+
+  private static final HashMap<TeamType, Integer> boardOffset = new HashMap<TeamType, Integer>();
 
   static long turnStartTime;
   private ArrayList<View> observers = new ArrayList<>();
 
   static {
-    boardOffset.put(TeamType.RED, 0);
-    boardOffset.put(TeamType.GREEN, STEPS_BETWEEN_TEAMS);
-    boardOffset.put(TeamType.BLUE, STEPS_BETWEEN_TEAMS * 2);
-    boardOffset.put(TeamType.YELLOW, STEPS_BETWEEN_TEAMS * 3);
+    boardOffset.put(TeamType.RED, 1);
+    boardOffset.put(TeamType.GREEN, 2);
+    boardOffset.put(TeamType.BLUE, 3);
+    boardOffset.put(TeamType.YELLOW, 4);
   }
 
   public Board() {
 
+  }
+  public static int getFirstPoolPosition(TeamType team) {
+    return POOL_PLUS_END_SIZE * boardOffset.get(team);
+  }
+  public static int getFirstBoardPosition(TeamType team) {
+    return START_POSITION_INDEX + (STEPS_BETWEEN_TEAMS * boardOffset.get(team));
+  }
+  public static int getAbsolutePosition(int pos, TeamType team) {
+    return getFirstBoardPosition(team) + pos;
   }
 
   /**
