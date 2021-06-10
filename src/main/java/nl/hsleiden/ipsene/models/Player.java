@@ -47,10 +47,10 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
   }
   public void setSelectedPawnIndex(int i) { selectedPawnIndex = i; }
   public void setSelectedCardIndex(int i) { selectedCardIndex = i; }
-
   public Pawn getPawn(int pawnIndex) {
     return pawns.get(pawnIndex);
   }
+  public final ArrayList<Pawn> getPawns() { return pawns; }
 
   public void doTurn() {
     // just zero for now, should use a callback from the view to get the clicked pawns index or

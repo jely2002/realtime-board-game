@@ -20,10 +20,10 @@ public class Board implements Model {
   private ArrayList<View> observers = new ArrayList<>();
 
   static {
-    boardOffset.put(TeamType.RED, 1);
-    boardOffset.put(TeamType.GREEN, 2);
-    boardOffset.put(TeamType.BLUE, 3);
-    boardOffset.put(TeamType.YELLOW, 4);
+    boardOffset.put(TeamType.GREEN, 0);
+    boardOffset.put(TeamType.BLUE, 1);
+    boardOffset.put(TeamType.YELLOW, 2);
+    boardOffset.put(TeamType.RED, 3);
   }
 
   public Board() {
@@ -35,8 +35,8 @@ public class Board implements Model {
   public static int getFirstBoardPosition(TeamType team) {
     return START_POSITION_INDEX + (STEPS_BETWEEN_TEAMS * boardOffset.get(team));
   }
-  public static int getAbsolutePosition(int pos, TeamType team) {
-    return getFirstBoardPosition(team) + pos;
+  public static boolean isInsidePool(TeamType team, int position) {
+    return (position < getFirstBoardPosition(team));
   }
 
   /**

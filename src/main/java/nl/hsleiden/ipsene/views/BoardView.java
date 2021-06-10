@@ -17,10 +17,7 @@ import nl.hsleiden.ipsene.controllers.BoardController;
 import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.interfaces.View;
 
-import nl.hsleiden.ipsene.models.Card;
-import nl.hsleiden.ipsene.models.CardType;
-import nl.hsleiden.ipsene.models.Game;
-import nl.hsleiden.ipsene.models.Player;
+import nl.hsleiden.ipsene.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,16 +136,22 @@ public class BoardView implements View {
   }
   private ArrayList<Node> buildPawns() {
     Game g = gameController.getGame();
+    int ourPlayersIndex = g.getOwnPlayer() - 1;
     // -1 for the player number to player index
-    int p = g.getOwnPlayer() - 1;
-    Player ourPlayer = g.getPlayer(p);
-    ArrayList<Node> temp = new ArrayList<>();
-    for(int i = 1; i < 101; i++){
-      Polygon test = ViewHelper.createPawn(BLUE);
-      ViewHelper.setPawnPosition(test, i);
-      temp.add(test);
+    ArrayList<Node> allpawns = new ArrayList<>();
+    for (Team t : gameController.getGame().getTeams()) {
+      for (int i = 0; i < Team.PLAYERS_PER_TEAM; i++) {
+        Player p = t.getPlayer(i);
+        for(final Pawn pawn : p.getPawns()) {
+          Polygon poly = ViewHelper.createPawn(pawn.getTeamType().getCode());
+          ViewHelper.setPawnPosition(poly, pawn.getBoardPosition());
+          System.out.println("color: " + pawn.getTeamType().getCode() + " pos: " + pawn.getBoardPosition() );
+
+          allpawns.add(poly);
+        }
+      }
     }
-    return temp;
+    return allpawns;
   }
   private ArrayList<ImageView> buildCards() {
     // show all our players cards

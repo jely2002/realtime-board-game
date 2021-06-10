@@ -10,7 +10,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>> {
   private final TeamType team;
   private Player player;
   private int pawnNumber;
-
+  private boolean isInsidePool = true;
   /**
    * @param team - the 'type' of the team, from enum TeamType used to get team info and calculate
    *     position
@@ -23,6 +23,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>> {
     boardPosition = pawnNum;
     pawnNumber = pawnNum;
   }
+  public TeamType getTeamType() { return team; }
 
   public void setOwningPlayer(Player player) {
     this.player = player;
@@ -32,16 +33,24 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>> {
     return pawnNumber;
   }
 
-  public int getAbsoluteBoardPosition() {
-    return Board.getAbsolutePosition(boardPosition, team);
+  public int getBoardPosition() {
+    if (isInsidePool) {
+      System.out.println("got pool pos");
+      return Board.getFirstPoolPosition(team) + boardPosition + 1;
+    }
+    System.out.println("got board pos");
+    return Board.getFirstBoardPosition(team) + boardPosition + 1;
   }
 
-  public int getRelativeBoardPosition() {
+  public int getRelativeRealBoardPosition() {
     return boardPosition;
   }
 
   public void setRelativeBoardposition(int pos) {
+    // if pos has changed then pawn is now outside pool
+    isInsidePool = (Board.isInsidePool(team, pos));
     boardPosition = pos;
+
   }
 
   public void addRelativeBoardPosition(int amount) {
@@ -60,6 +69,6 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>> {
   public void update(DocumentSnapshot document) {}
 
   public void update(int position) {
-    this.boardPosition = position;
+    this.setRelativeBoardposition(position);
   }
 }
