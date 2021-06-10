@@ -139,23 +139,29 @@ public class ViewHelper {
 
         try {
             switch (player) {
-                case 0 -> {
+                case 0: {
                     playerColor = RED;
                     playerText += "1" + suffix;
+                    break;
                 }
-                case 1 -> {
+                case 1: {
                     playerColor = BLUE;
                     playerText += "2" + suffix;
+                    break;
                 }
-                case 2 -> {
+                case 2: {
                     playerColor = GREEN;
                     playerText += "3" + suffix;
+                    break;
                 }
-                case 3 -> {
+                case 3: {
                     playerColor = YELLOW;
                     playerText += "4" + suffix;
+                    break;
                 }
-                default -> throw new IllegalStateException("Unexpected value: " + player);
+                default: {
+                    throw new IllegalStateException("Unexpected value: " + player);
+                }
             }
         } catch (IllegalStateException e) {
             logger.error(e.getMessage(), e);
