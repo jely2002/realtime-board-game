@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import nl.hsleiden.ipsene.controllers.GameController;
+import nl.hsleiden.ipsene.controllers.LobbyController;
 import nl.hsleiden.ipsene.exceptions.GameNotFoundException;
 import nl.hsleiden.ipsene.exceptions.ServerConnectionException;
 import nl.hsleiden.ipsene.interfaces.View;
@@ -44,17 +44,17 @@ public class MenuView implements View {
   private Label joinInputErrorLabel;
   private Label hostInputErrorLabel;
 
-  private final GameController gameController;
+  private final LobbyController lobbyController;
 
-  public MenuView(Stage primaryStage, GameController gameController) {
+  public MenuView(Stage primaryStage, LobbyController lobbyController) {
     this.primaryStage = primaryStage;
-    this.gameController = gameController;
+    this.lobbyController = lobbyController;
     try {
       loadPrimaryStage(createPane());
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      logger.error(e.getMessage(), e);
     }
-    gameController.registerObserver(this);
+    lobbyController.registerObserver(this);
   }
 
   private void loadPrimaryStage(Pane pane) {
@@ -183,8 +183,10 @@ public class MenuView implements View {
 
     lbl.setTextFill(Color.RED);
     lbl.setStyle("-fx-font-size: 15");
-    lbl.setText("PLACEHOLDER -> set de text van deze label om een error aan de user weer te geven");
-    ViewHelper.applyDropShadow(lbl);
+    
+    lbl.setText("");
+    applyDropShadow(lbl);
+
 
     return lbl;
   }
@@ -194,7 +196,7 @@ public class MenuView implements View {
         @Override
         public void handle(MouseEvent e) {
           logger.debug("Quit button has been pressed");
-          gameController.quit();
+          lobbyController.quit();
         }
       };
 
@@ -205,8 +207,8 @@ public class MenuView implements View {
           String token = joinLobbyIDInput.getText();
           logger.debug("Join has been clicked");
           try {
-            gameController.join(token);
-            switchToLobby();
+            lobbyController.join(token);
+            toLobby();
           } catch (GameNotFoundException | ServerConnectionException e) {
             logger.warn(e.getMessage(), e);
             joinInputErrorLabel.setText(e.getMessage());
@@ -220,16 +222,16 @@ public class MenuView implements View {
         public void handle(MouseEvent event) {
           logger.debug("Host has been clicked");
           try {
-            gameController.host();
-            switchToLobby();
+            lobbyController.host();
+            toLobby();
           } catch (ServerConnectionException e) {
             hostInputErrorLabel.setText(e.getMessage());
           }
         }
       };
 
-  private void switchToLobby() {
-    LobbyView lobbyView = new LobbyView(primaryStage, gameController);
+  private void toLobby() {
+    new LobbyView(primaryStage, lobbyController);
   }
 
   public void update() {}

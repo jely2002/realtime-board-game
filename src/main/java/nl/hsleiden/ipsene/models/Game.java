@@ -23,6 +23,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   private String token;
   private final Deck deck;
 
+  private Integer ownPlayer;
   private int doingTurn;
   private int round;
   private Timestamp turnStartTime;
@@ -87,13 +88,12 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serializedGame = new LinkedHashMap<>();
 
-    // LinkedHashMap<String, Object> serializedteams = new LinkedHashMap<>();
-    HashMap<String, Object> serializedteams = new HashMap<String, Object>();
+    LinkedHashMap<String, Object> serializedPlayers = new LinkedHashMap<>();
     for (Team team : teams) {
-      serializedteams.put(String.valueOf(team.teamIndex), team.serialize());
+      serializedPlayers.putAll(team.serialize());
     }
 
-    serializedGame.put(Firebase.TEAM_FIELD_NAME, serializedteams);
+    serializedGame.put(Firebase.PLAYER_FIELD_NAME, serializedPlayers);
     serializedGame.put(Firebase.CARD_FIELD_NAME, deck.serialize());
     serializedGame.put(Firebase.ROUND_FIELD_NAME, round);
     serializedGame.put(Firebase.TURN_START_TIME_FIELD_NAME, turnStartTime);
@@ -102,8 +102,30 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     return serializedGame;
   }
 
+  public Integer getOwnPlayer() {
+    return ownPlayer;
+  }
+
+  public void setOwnPlayer(Integer ownPlayer) {
+    this.ownPlayer = ownPlayer;
+  }
+
   public ArrayList<Team> getTeams() {
     return teams;
+  }
+
+  public Player getPlayer(int absolutePlayerId) {
+    int playerIndex = absolutePlayerId;
+    int teamIndex = 0;
+    if (absolutePlayerId >= 2) {
+      playerIndex =
+          (int)
+              (Math.round((double) absolutePlayerId / (double) AMOUNT_OF_TEAMS)
+                  - (AMOUNT_OF_TEAMS - 1));
+      teamIndex = absolutePlayerId - playerIndex - 1;
+    }
+    Team team = teams.get(teamIndex);
+    return team.getPlayer(playerIndex);
   }
 
   public String getToken() {

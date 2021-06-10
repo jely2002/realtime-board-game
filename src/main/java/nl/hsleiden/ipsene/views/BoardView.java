@@ -14,7 +14,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.application.Main;
 import nl.hsleiden.ipsene.controllers.BoardController;
+import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.interfaces.View;
+
 import nl.hsleiden.ipsene.models.Card;
 import nl.hsleiden.ipsene.models.CardType;
 import org.slf4j.Logger;
@@ -22,8 +24,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class BoardView implements View {
   private static final Logger logger = LoggerFactory.getLogger(Main.class.getName());
+
+  private static final Logger logger = LoggerFactory.getLogger(BoardView.class.getName());
 
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
@@ -39,15 +46,22 @@ public class BoardView implements View {
   private Thread timerThread;
 
   BoardController boardController;
+  private GameController gameController;
 
-  public BoardView(Stage s) {
+  public BoardView(Stage s, GameController gameController) {
     primaryStage = s;
     loadPrimaryStage(createInitialPane());
     this.boardController = new BoardController(4);
     boardController.registerObserver(this);
+    
+    //this.gameController = gameController;
+    //gameController.registerObserver(this);
+    //loadPrimaryStage((Pane) createInitialPane());
+
   }
 
   private void loadPrimaryStage(Pane pane) {
+    logger.info("BoardView started!");
     try {
       Scene scene = new Scene(pane, WIDTH, HEIGHT);
       primaryStage.setScene(scene);

@@ -6,12 +6,16 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Team implements FirebaseSerializable<Map<String, Object>> {
 
+  private static final Logger logger = LoggerFactory.getLogger(Team.class.getName());
+
   private final Game game;
 
-  private Player[] players;
+  private final Player[] players;
   public static final int PAWNS_PER_PLAYER = 2; // idk
   public static final int PLAYERS_PER_TEAM = 2;
   public final int teamIndex;
@@ -30,9 +34,11 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
         pawns.add(new Pawn(teamtype, pawnNumber, game));
         ++pawnNumber;
       }
-
-      int absolutePlayerId = (i + 1) * teamIndex + 1;
-      players[i] = new Player(this, i, absolutePlayerId, pawns, game);
+      int absolutePlayerId = i;
+      if (teamIndex > 0) {
+        absolutePlayerId = i + (teamIndex + 1);
+      }
+      players[i] = new Player(this, absolutePlayerId, i, pawns, game);
     }
   }
 
@@ -66,6 +72,11 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
    */
   public Pawn getPawn(int playerIndex, int pawnIndex) {
     if (playerIndex < PLAYERS_PER_TEAM) return players[playerIndex].getPawn(pawnIndex);
+    return null; // TODO Remove null return
+  }
+
+  public Player getPlayer(int playerIndex) {
+    if (playerIndex < PLAYERS_PER_TEAM) return players[playerIndex];
     return null;
   }
 
