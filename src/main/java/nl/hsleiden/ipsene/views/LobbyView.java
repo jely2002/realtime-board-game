@@ -122,6 +122,7 @@ public class LobbyView implements View {
     } catch (PlayerIndexNotFoundException e) {
       logger.error("player not found", e);
     }
+
     return pane;
   }
 
@@ -142,7 +143,7 @@ public class LobbyView implements View {
 
     lbl.setText("LobbyID: " + lobbyID);
     lbl.setStyle("-fx-font-size: 75; -fx-font-family: 'Comic Sans MS'");
-    MenuView.applyDropShadow(lbl);
+    ViewHelper.applyDropShadow(lbl);
 
     return lbl;
   }
@@ -152,7 +153,7 @@ public class LobbyView implements View {
 
     lbl.setText(txt);
     lbl.setStyle("-fx-font-size: 75; -fx-font-family: 'Comic Sans MS'");
-    MenuView.applyDropShadow(lbl);
+    ViewHelper.applyDropShadow(lbl);
 
     return lbl;
   }
@@ -212,7 +213,7 @@ public class LobbyView implements View {
     btn.setPrefHeight(125);
     btn.setText(buttonText);
     btn.setStyle("-fx-font-size: 20; -fx-background-color: " + bgColor);
-    MenuView.applyDropShadow(btn);
+    ViewHelper.applyDropShadow(btn);
 
     return btn;
   }
@@ -231,7 +232,7 @@ public class LobbyView implements View {
     btn.setPrefHeight(125);
     btn.setText(txt);
     btn.setStyle("-fx-font-size: 20; -fx-background-color: " + bgColor);
-    MenuView.applyDropShadow(btn);
+    ViewHelper.applyDropShadow(btn);
 
     return btn;
   }
