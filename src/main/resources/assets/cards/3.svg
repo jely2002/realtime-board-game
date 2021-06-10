@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="300"
+   height="450"
+   viewBox="0 0 79.375 119.0625"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c4e8f9ed74, 2021-05-24)"
+   sodipodi:docname="3.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="271.529"
+     inkscape:cy="244.48217"
+     inkscape:window-width="3840"
+     inkscape:window-height="2091"
+     inkscape:window-x="1080"
+     inkscape:window-y="28"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:snap-object-midpoints="true"
+     inkscape:object-paths="true"
+     inkscape:snap-intersection-paths="true"
+     inkscape:snap-smooth-nodes="true"
+     inkscape:snap-midpoints="true"
+     inkscape:snap-center="true"
+     inkscape:snap-text-baseline="true" />
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient1368"
+       inkscape:swatch="gradient">
+      <stop
+         style="stop-color:#b900eb;stop-opacity:0.5;"
+         offset="0"
+         id="stop1458" />
+      <stop
+         style="stop-color:#00ceff;stop-opacity:1"
+         offset="1"
+         id="stop1460" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient1368-6"
+       inkscape:swatch="gradient">
+      <stop
+         style="stop-color:#02eb00;stop-opacity:0.38702253;"
+         offset="0"
+         id="stop1364" />
+      <stop
+         style="stop-color:#0000ff;stop-opacity:0;"
+         offset="1"
+         id="stop1366" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1368"
+       id="linearGradient1653"
+       gradientUnits="userSpaceOnUse"
+       x1="0.26312149"
+       y1="0.26312149"
+       x2="79.111877"
+       y2="118.79937"
+       gradientTransform="matrix(1.0394555,0,0,1.0257228,-1.5658936,-1.5312925)" />
+  </defs>
+  <g
+     inkscape:label="bg"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:url(#linearGradient1653);fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:2.10628;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect31-3"
+       width="77.268715"
+       height="116.95622"
+       x="1.0531394"
+       y="1.0531411"
+       ry="6.151948" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="edge">
+    <rect
+       style="fill:none;fill-rule:evenodd;stroke:#2f2031;stroke-width:0.529167;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect31"
+       width="78.848755"
+       height="118.53625"
+       x="0.26312149"
+       y="0.26312149"
+       ry="6.2350564" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="text">
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1;font-family:'Comic Sans MS';-inkscape-font-specification:'Comic Sans MS';text-align:center;text-anchor:middle;stroke-width:0.264583"
+       x="39.75985"
+       y="83.894104"
+       id="text5550"><tspan
+         sodipodi:role="line"
+         id="tspan5548"
+         style="text-align:center;text-anchor:middle;stroke-width:0.264583"
+         x="39.75985"
+         y="83.894104">steps</tspan><tspan
+         sodipodi:role="line"
+         style="text-align:center;text-anchor:middle;stroke-width:0.264583"
+         x="39.75985"
+         y="94.477402"
+         id="tspan8360">forward</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:49.3889px;line-height:1.25;font-family:'Comic Sans MS';-inkscape-font-specification:'Comic Sans MS';stroke-width:0.264583"
+       x="39.494576"
+       y="67.43251"
+       id="text21425"><tspan
+         sodipodi:role="line"
+         id="tspan21423"
+         style="font-size:49.3889px;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         x="39.494576"
+         y="67.43251">3</tspan></text>
+  </g>
+</svg>
