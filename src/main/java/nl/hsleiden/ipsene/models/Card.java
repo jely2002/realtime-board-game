@@ -42,31 +42,35 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
   }
 
   private static void playSpawnCard(Player player, Pawn pawn, Card card) {
-
+    System.out.println("played spawn card");
     logger.debug("spawn card played");
   }
 
   private static void playSubCard(Player player, Pawn pawn, Card card) {
-
+    System.out.println("played sub card");
     logger.debug("sub card played");
   }
 
   private static void playSpawnStep1Card(Player player, Pawn pawn, Card card) {
+    System.out.println("played spawn step 1");
     pawn.addRelativeBoardPosition(1);
     logger.debug("step1 card played");
   }
 
   private static void playStep7Card(Player player, Pawn pawn, Card card) {
-    pawn.addRelativeBoardPosition(1);
+    System.out.println("played 7 card");
+    pawn.addRelativeBoardPosition(7);
     logger.debug("step7 card played");
   }
 
   private static void playStep4Card(Player player, Pawn pawn, Card card) {
+    System.out.println("played 4 card");
     pawn.addRelativeBoardPosition(4);
     logger.debug("step4 card played");
   }
 
   private static void playStepNCard(Player player, Pawn pawn, Card card) {
+    System.out.println("played n card value: " + card.steps);
     pawn.addRelativeBoardPosition(card.steps);
     logger.debug("n card played with value: {}", card.steps);
   }

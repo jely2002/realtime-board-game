@@ -5,10 +5,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
+import nl.hsleiden.ipsene.interfaces.Model;
+import nl.hsleiden.ipsene.interfaces.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Player implements FirebaseSerializable<Map<String, Object>> {
+public class Player implements FirebaseSerializable<Map<String, Object>>, Model {
 
   private static final Logger logger = LoggerFactory.getLogger(Player.class.getName());
 
@@ -74,9 +76,14 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
   }
 
   private void playCard(Pawn pawn) {
-    Card c = cards.get(selectedCardIndex);
-    c.play(this, pawn);
-    cards.remove(c);
+    if (selectedCardIndex != -1) {
+      Card c = cards.get(selectedCardIndex);
+      c.play(this, pawn);
+      cards.remove(selectedCardIndex);
+    }
+    selectedCardIndex = -1;
+    notifyObservers();
+
   }
   public ArrayList<Card> getCards() {
     return cards;
@@ -130,6 +137,23 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
       CardType cardType = CardType.valueOf((String) card.get("type"));
       int step = (int) (long) card.get("value");
       this.cards.add(new Card(cardType, step));
+    }
+  }
+  private final ArrayList<View> observers = new ArrayList<>();
+  @Override
+  public void registerObserver(View v) {
+    this.observers.add(v);
+  }
+
+  @Override
+  public void unregisterObserver(View v) {
+    this.observers.remove(v);
+  }
+
+  @Override
+  public void notifyObservers() {
+    for (View v : observers) {
+      v.update();
     }
   }
 }

@@ -57,11 +57,12 @@ public class BoardView implements View {
     this.boardController = new BoardController(4);
     boardController.registerObserver(this);
     gameController.registerObserver(this);
-    subscribeToPawns(gameController);
+    subscribeToPawnsAndPlayer(gameController);
     loadPrimaryStage(createInitialPane());
   }
-  private void subscribeToPawns(GameController controller) {
+  private void subscribeToPawnsAndPlayer(GameController controller) {
     // we are going in a loopedieloop...
+    controller.getGame().getPlayer(gameController.getGame().getOwnPlayer()).registerObserver(this);
     for (Team t : controller.getGame().getTeams()) {
       for (int i = 0; i < Team.PLAYERS_PER_TEAM; i++) {
         for (int j = 0; j < Team.PAWNS_PER_PLAYER; j++) {
@@ -83,7 +84,6 @@ public class BoardView implements View {
   }
   private Pane createInitialPane() {
     Pane pane = new Pane();
-
     // TODO: hoe veel tijd er nog voor de zet over is, aansturen a.d.h.v firebase(ik weet niet hoe dit moet!)
     int timer = 60;
 
@@ -166,8 +166,7 @@ public class BoardView implements View {
     // show all our players cards
     cardSelected = false;
     Game g = gameController.getGame();
-    // -1 for the player number to player index
-    int p = g.getOwnPlayer() - 1;
+    int p = g.getOwnPlayer();
     Player ourPlayer = g.getPlayer(p);
     ArrayList<ImageView> cards = new ArrayList<>();
     for (Card card : ourPlayer.getCards()) {
@@ -194,8 +193,13 @@ public class BoardView implements View {
       double mousex = mouseEvent.getSceneX();
       // get the index of the card we clicked on
       int clickedCardIndex = (int) ((mousex - CARD_START_X_POSITION) / CARD_SEPERATION_VALUE);
-      gameController.getGame().getPlayer(gameController.getGame().getOwnPlayer()).setSelectedCardIndex(clickedCardIndex);
-      cardSelected = true;
+      Player ourPlayer = gameController.getGame().getPlayer(gameController.getGame().getOwnPlayer());
+      System.out.println("amount of cards: " + ourPlayer.getCards().size());
+      if (clickedCardIndex < ourPlayer.getCards().size()) {
+        ourPlayer.setSelectedCardIndex(clickedCardIndex);
+        cardSelected = true;
+      }
+
     }
   };
   EventHandler<MouseEvent> pawnClickedEvent = new EventHandler<MouseEvent>() {
