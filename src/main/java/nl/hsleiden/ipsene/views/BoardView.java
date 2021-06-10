@@ -30,8 +30,6 @@ import org.slf4j.LoggerFactory;
 public class BoardView implements View {
   private static final Logger logger = LoggerFactory.getLogger(Main.class.getName());
 
-  private static final Logger logger = LoggerFactory.getLogger(BoardView.class.getName());
-
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
 

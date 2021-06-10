@@ -79,22 +79,22 @@ public class LobbyView implements View {
 
     this.player1Join = joinButtonBuilder(1, player1Available);
     player1Join.setId("1");
-    MenuView.setNodeCoordinates(player1Join, 220, 150);
+    ViewHelper.setNodeCoordinates(player1Join, 220, 150);
     player1Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
 
     this.player2Join = joinButtonBuilder(2, player2Available);
     player2Join.setId("2");
-    MenuView.setNodeCoordinates(player2Join, 220, 295);
+    ViewHelper.setNodeCoordinates(player2Join, 220, 295);
     player2Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
 
     this.player3Join = joinButtonBuilder(3, player3Available);
     player3Join.setId("3");
-    MenuView.setNodeCoordinates(player3Join, 220, 520);
+    ViewHelper.setNodeCoordinates(player3Join, 220, 520);
     player3Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
 
     this.player4Join = joinButtonBuilder(4, player4Available);
     player4Join.setId("4");
-    MenuView.setNodeCoordinates(player4Join, 220, 660);
+    ViewHelper.setNodeCoordinates(player4Join, 220, 660);
     player4Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
 
     this.waitingForPlayersLabel = WaitingForPlayersLabelBuilder("Waiting for players");
@@ -210,7 +210,7 @@ public class LobbyView implements View {
     btn.setPrefHeight(125);
     btn.setText(buttonText);
     btn.setStyle("-fx-font-size: 20; -fx-background-color: " + bgColor);
-    MenuView.applyDropShadow(btn);
+    ViewHelper.applyDropShadow(btn);
 
     return btn;
   }

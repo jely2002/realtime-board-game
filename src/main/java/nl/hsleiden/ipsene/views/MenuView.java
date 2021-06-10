@@ -185,7 +185,7 @@ public class MenuView implements View {
     lbl.setStyle("-fx-font-size: 15");
     
     lbl.setText("");
-    applyDropShadow(lbl);
+    ViewHelper.applyDropShadow(lbl);
 
 
     return lbl;
