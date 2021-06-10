@@ -336,4 +336,7 @@ public class ViewHelper {
     public static void setPawnPosition(Polygon pawn, int index){
         setNodeCoordinates(pawn, getCoordinateMapX(index), getCoordinateMapY(index));
     }
+    public static Vec2d getRealPositionFromBoard(int index) {
+        return coordinates.get(index);
+    }
 }

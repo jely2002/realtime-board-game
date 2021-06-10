@@ -1,5 +1,6 @@
 package nl.hsleiden.ipsene.views;
 
+import com.sun.javafx.geom.Vec2d;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -56,9 +57,19 @@ public class BoardView implements View {
     this.boardController = new BoardController(4);
     boardController.registerObserver(this);
     gameController.registerObserver(this);
+    subscribeToPawns(gameController);
     loadPrimaryStage(createInitialPane());
   }
-
+  private void subscribeToPawns(GameController controller) {
+    // we are going in a loopedieloop...
+    for (Team t : controller.getGame().getTeams()) {
+      for (int i = 0; i < Team.PLAYERS_PER_TEAM; i++) {
+        for (int j = 0; j < Team.PAWNS_PER_PLAYER; j++) {
+          t.getPawn(i, j).registerObserver(this);
+        }
+      }
+    }
+  }
   private void loadPrimaryStage(Pane pane) {
     logger.info("BoardView started!");
     try {
@@ -70,12 +81,8 @@ public class BoardView implements View {
       e.printStackTrace();
     }
   }
-
   private Pane createInitialPane() {
     Pane pane = new Pane();
-
-    // TODO: dit aansturen aan de hand van de model(ik weet niet hoe dit moet!)
-    ArrayList<Card> deck;
 
     // TODO: hoe veel tijd er nog voor de zet over is, aansturen a.d.h.v firebase(ik weet niet hoe dit moet!)
     int timer = 60;
@@ -136,7 +143,7 @@ public class BoardView implements View {
   }
   private ArrayList<Node> buildPawns() {
     Game g = gameController.getGame();
-    int ourPlayersIndex = g.getOwnPlayer() - 1;
+    int ourPlayersIndex = g.getOwnPlayer();
     // -1 for the player number to player index
     ArrayList<Node> allpawns = new ArrayList<>();
     for (Team t : gameController.getGame().getTeams()) {
@@ -145,8 +152,10 @@ public class BoardView implements View {
         for(final Pawn pawn : p.getPawns()) {
           Polygon poly = ViewHelper.createPawn(pawn.getTeamType().getCode());
           ViewHelper.setPawnPosition(poly, pawn.getBoardPosition());
-          System.out.println("color: " + pawn.getTeamType().getCode() + " pos: " + pawn.getBoardPosition() );
-
+          // only add event when this is one of our pawns
+          if (p.equels(g.getPlayer(ourPlayersIndex))) {
+            poly.addEventFilter(MouseEvent.MOUSE_CLICKED, pawnClickedEvent);
+          }
           allpawns.add(poly);
         }
       }
@@ -193,10 +202,24 @@ public class BoardView implements View {
     @Override
     public void handle(MouseEvent mouseEvent) {
       if (cardSelected) {
-        int i = 0;
+        Player ourPlayer = gameController.getGame().getPlayer(gameController.getGame().getOwnPlayer());
+        Pawn closestPawn = ourPlayer.getPawn(0);
+        // get the closest pawn to our click position
+        for (int i = 1; i < Team.PAWNS_PER_PLAYER; i++) {
+          Pawn p = ourPlayer.getPawn(i);
+          double closestPawnDistance = getPawnDistanceFromMouse(closestPawn, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+          double pawnDistance = getPawnDistanceFromMouse(p, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+          closestPawn = (closestPawnDistance < pawnDistance) ? closestPawn : p;
+        }
+        ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
+        ourPlayer.doTurn();
       }
     }
   };
+  private double getPawnDistanceFromMouse(Pawn p, double mousex, double mousey) {
+    Vec2d realPos = ViewHelper.getRealPositionFromBoard(p.getBoardPosition());
+    return Math.sqrt(Math.pow(realPos.x - mousex, 2) + Math.pow(realPos.y - mousey, 2));
+  }
   @Override
   public void update() {
     try {
@@ -204,6 +227,7 @@ public class BoardView implements View {
     } catch (Exception e) {
       logger.error(e.getMessage(), e);
     }
+    lastCardX = CARD_START_X_POSITION;
     loadPrimaryStage(createInitialPane());
   }
 
