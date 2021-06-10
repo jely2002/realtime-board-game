@@ -8,18 +8,28 @@ import nl.hsleiden.ipsene.models.Deck;
 
 public class BoardController implements Controller {
 
+  static BoardController boardController = null;
+  private Board board;
+
   private Deck cards;
   private TeamController teamController;
   private boolean gameHasEnded = false;
   private final int AMOUNT_OF_PLAYERS;
 
-  Board board;
-
-  public BoardController(int amountOfPlayers, int amountOfTeams) {
+  private BoardController(int amountOfPlayers, int amountOfTeams) {
+    board = new Board();
     AMOUNT_OF_PLAYERS = amountOfPlayers;
-
     // todo sent cards array to firebase
     teamController = new TeamController();
+  }
+
+  public BoardController(int amount_of_players) {
+    this.board = new Board();
+    AMOUNT_OF_PLAYERS = amount_of_players;
+  }
+
+  public static void getInstance() {
+
   }
 
   @Override
@@ -28,5 +38,26 @@ public class BoardController implements Controller {
   @Override
   public void registerObserver(View v) {
     board.registerObserver(v);
+  }
+
+  public static BoardController getInstance(int amount_of_players) {
+    if (boardController == null) {
+      boardController = new BoardController(amount_of_players);
+    }
+    return boardController;
+  }
+
+  /**
+   * Returns the remaining amount of seconds of a turn from the model
+   *
+   * @return remaining amount of seconds
+   */
+  public int getCurrentTurnTime() {
+    return board.getCurrentTurnTime();
+  }
+
+  /** Starts the turnTimer by calling the model */
+  public void startTurnTimer() {
+    board.startTurnTimer();
   }
 }

@@ -62,42 +62,43 @@ public class LobbyView implements View {
     String lobbyID = lobbyController.getToken();
 
     Label title = lobbyHeaderLabelBuilder(lobbyID);
-    MenuView.setNodeCoordinates(title, 10, 10);
+    ViewHelper.setNodeCoordinates(title, 10, 10);
 
     Label player1Display = playerDisplayLabel("Player 1", player1Available, RED);
-    MenuView.setNodeCoordinates(player1Display, 10, 150);
+    ViewHelper.setNodeCoordinates(player1Display, 10, 150);
 
     Label player2Display = playerDisplayLabel("Player 2", player2Available, BLUE);
-    MenuView.setNodeCoordinates(player2Display, 10, 295);
+    ViewHelper.setNodeCoordinates(player2Display, 10, 295);
 
     Label player3Display = playerDisplayLabel("Player 3", player3Available, GREEN);
-    MenuView.setNodeCoordinates(player3Display, 10, 520);
+    ViewHelper.setNodeCoordinates(player3Display, 10, 520);
 
     Label player4Display = playerDisplayLabel("Player 4", player4Available, YELLOW);
-    MenuView.setNodeCoordinates(player4Display, 10, 660);
+    ViewHelper.setNodeCoordinates(player4Display, 10, 660);
+
 
     this.player1Join = joinButtonBuilder(1, player1Available);
     player1Join.setId("1");
-    MenuView.setNodeCoordinates(player1Join, 220, 150);
+    ViewHelper.setNodeCoordinates(player1Join, 220, 150);
     player1Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
 
     this.player2Join = joinButtonBuilder(2, player2Available);
     player2Join.setId("2");
-    MenuView.setNodeCoordinates(player2Join, 220, 295);
+    ViewHelper.setNodeCoordinates(player2Join, 220, 295);
     player2Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
 
     this.player3Join = joinButtonBuilder(3, player3Available);
     player3Join.setId("3");
-    MenuView.setNodeCoordinates(player3Join, 220, 520);
+    ViewHelper.setNodeCoordinates(player3Join, 220, 520);
     player3Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
 
     this.player4Join = joinButtonBuilder(4, player4Available);
     player4Join.setId("4");
-    MenuView.setNodeCoordinates(player4Join, 220, 660);
+    ViewHelper.setNodeCoordinates(player4Join, 220, 660);
     player4Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
 
     this.waitingForPlayersLabel = WaitingForPlayersLabelBuilder("Waiting for players");
-    MenuView.setNodeCoordinates(waitingForPlayersLabel, 10, 790);
+    ViewHelper.setNodeCoordinates(waitingForPlayersLabel, 10, 790);
     WaitingForPlayersThread wfpt = new WaitingForPlayersThread(waitingForPlayersLabel);
     Thread wfptThread = new Thread(wfpt);
     wfptThread.setDaemon(true); // Zorgt ervoor dat deze thread samen afsluit met de View
@@ -105,15 +106,15 @@ public class LobbyView implements View {
 
     Image image = null;
     try {
-      image = new Image(new FileInputStream("keez.png"));
+      image = new Image(ViewHelper.loadResource("/assets/branding/keez.png"));
     } catch (FileNotFoundException e) {
       logger.error(e.getMessage(), e);
     }
     ImageView imageView = new ImageView(image);
     imageView.setPreserveRatio(true);
     imageView.setFitHeight(400);
-    MenuView.applyDropShadow(imageView);
-    MenuView.setNodeCoordinates(imageView, 600, 200);
+    ViewHelper.applyDropShadow(imageView);
+    ViewHelper.setNodeCoordinates(imageView, 600, 200);
 
     pane.getChildren()
         .addAll(title, player1Display, player2Display, player3Display, player4Display);
@@ -139,7 +140,7 @@ public class LobbyView implements View {
 
     lbl.setText("LobbyID: " + lobbyID);
     lbl.setStyle("-fx-font-size: 75; -fx-font-family: 'Comic Sans MS'");
-    MenuView.applyDropShadow(lbl);
+    ViewHelper.applyDropShadow(lbl);
 
     return lbl;
   }
@@ -149,7 +150,7 @@ public class LobbyView implements View {
 
     lbl.setText(txt);
     lbl.setStyle("-fx-font-size: 75; -fx-font-family: 'Comic Sans MS'");
-    MenuView.applyDropShadow(lbl);
+    ViewHelper.applyDropShadow(lbl);
 
     return lbl;
   }
@@ -209,7 +210,7 @@ public class LobbyView implements View {
     btn.setPrefHeight(125);
     btn.setText(buttonText);
     btn.setStyle("-fx-font-size: 20; -fx-background-color: " + bgColor);
-    MenuView.applyDropShadow(btn);
+    ViewHelper.applyDropShadow(btn);
 
     return btn;
   }
@@ -228,7 +229,7 @@ public class LobbyView implements View {
     btn.setPrefHeight(125);
     btn.setText(txt);
     btn.setStyle("-fx-font-size: 20; -fx-background-color: " + bgColor);
-    MenuView.applyDropShadow(btn);
+    ViewHelper.applyDropShadow(btn);
 
     return btn;
   }
