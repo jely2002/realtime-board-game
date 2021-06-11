@@ -43,13 +43,6 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
     }
   }
 
-  /** calls doTurn() on all players */
-  public void doTurn() {
-    for (int i = 0; i < players.length; i++) {
-      players[i].doTurn();
-    }
-  }
-
   /**
    * draws a number of cards per player
    *
@@ -85,6 +78,7 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serialized = new LinkedHashMap<>();
     for (Player player : players) {
+
       serialized.put(String.valueOf(player.getId()), player.serialize());
     }
     return serialized;

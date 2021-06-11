@@ -64,7 +64,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
   @Override
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serializedPawn = new LinkedHashMap<>();
-    serializedPawn.put("location", boardPosition);
+    serializedPawn.put("location", getRelativeRealBoardPosition());
     serializedPawn.put("owner", player.getId());
     return serializedPawn;
   }

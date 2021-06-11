@@ -26,7 +26,7 @@ public class GameController implements Controller {
   }
   public Game getGame() { return game; }
   public Player getOwnPlayer() {
-    return game.getPlayer(game.getOwnPlayer());
+    return game.getPlayer(game.getOwnPlayer() - 1);
   }
   public ArrayList<Team> getTeams() {
     return game.getTeams();

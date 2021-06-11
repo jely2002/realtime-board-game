@@ -227,7 +227,6 @@ public class BoardView implements View {
     lastCardX = CARD_START_X_POSITION;
     System.out.println("updated");
     Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
-    //loadPrimaryStage(createInitialPane());
   }
 
 }
