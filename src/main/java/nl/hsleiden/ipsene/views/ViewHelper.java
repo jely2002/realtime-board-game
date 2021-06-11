@@ -21,7 +21,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import nl.hsleiden.ipsene.application.Main;
+import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.models.CardType;
+import nl.hsleiden.ipsene.models.Pawn;
+import nl.hsleiden.ipsene.models.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -318,7 +321,15 @@ public class ViewHelper {
    * @param color Infill color of the pawn
    * @return returns polygon with specified infill color in the shape of a pawn
    */
-  public static Polygon createPawn(String color) {
+  public static Polygon createPawn(Pawn pawn) {
+    String colour =
+        //    if (pawn.isHover()) {
+        //      // black
+        //      colour = "#ffffff";
+        //    }
+        //    else
+        colour = pawn.getPlayerColour().getCode();
+
     Polygon poly = new Polygon();
 
     poly.getPoints()
@@ -336,7 +347,7 @@ public class ViewHelper {
             5.0, 7.5,
             2.4, 2.5,
             2.4, 5.0);
-    poly.setStyle("-fx-fill: " + color + "; -fx-stroke: black; -fx-stroke-width: 1;");
+    poly.setStyle("-fx-fill: " + colour + "; -fx-stroke: black; -fx-stroke-width: 1;");
     poly.setStrokeType(StrokeType.INSIDE);
 
     return poly;
@@ -353,6 +364,29 @@ public class ViewHelper {
     }
   }
 
+  public static Pawn getPawnClosestToPoint(GameController gameController, double x, double y) {
+    Pawn closestPawn = gameController.getOwnPlayerPawn(0);
+    // get the closest pawn to our click position
+    for (int i = 1; i < Team.PAWNS_PER_PLAYER; i++) {
+      Pawn p = gameController.getOwnPlayerPawn(i);
+      double closestPawnDistance = getPawnDistanceFromMouse(closestPawn, x, y);
+      double pawnDistance = getPawnDistanceFromMouse(p, x, y);
+      closestPawn = (closestPawnDistance < pawnDistance) ? closestPawn : p;
+    }
+    return closestPawn;
+  }
+  /**
+   * gets the distance between a pawn and a position on screen
+   *
+   * @param p the pawn to check for
+   * @param mousex the mouse x position
+   * @param mousey the mouse y position
+   * @return the distance between the pawn and the mouse
+   */
+  private static double getPawnDistanceFromMouse(Pawn p, double mousex, double mousey) {
+    Vec2d realPos = ViewHelper.getRealPositionFromBoard(p.getBoardPosition());
+    return Math.sqrt(Math.pow(realPos.x - mousex, 2) + Math.pow(realPos.y - mousey, 2));
+  }
   /**
    * Returns the X coordinate of the specified index in the coordinates ArrayList
    *
