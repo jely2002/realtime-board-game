@@ -112,8 +112,8 @@ public class BoardView implements View {
     Label playersTurnDisplay = ViewHelper.playersTurnDisplay(turnPlayerNumber);
     ViewHelper.setNodeCoordinates(playersTurnDisplay, 1350, 200);
 
-//    Label roundNumberHeader = ViewHelper.headerLabelBuilder("Round number:");
-//    ViewHelper.setNodeCoordinates(roundNumberHeader, 1375, 280);
+    //    Label roundNumberHeader = ViewHelper.headerLabelBuilder("Round number:");
+    //    ViewHelper.setNodeCoordinates(roundNumberHeader, 1375, 280);
 
     VBox roundNumberDisplay = ViewHelper.roundNumberDisplayBuilder(roundNumber, 1);
     ViewHelper.setNodeCoordinates(roundNumberDisplay, 1375, 280);

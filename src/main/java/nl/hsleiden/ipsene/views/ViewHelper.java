@@ -20,7 +20,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import nl.hsleiden.ipsene.application.Main;
-import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.CardType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -203,7 +202,6 @@ public class ViewHelper {
     VBox vbx = new VBox();
     Label roundNumberHeader = ViewHelper.headerLabelBuilder("Round Number:");
 
-
     Label roundNumberLabel = new Label();
     roundNumberLabel.setStyle(css);
     roundNumberLabel.setText(String.valueOf(((roundNumber / 3) + 1)));
@@ -216,7 +214,8 @@ public class ViewHelper {
     subroundNumberLabel.setText(String.valueOf(roundNumber % 3));
     subroundNumberLabel.setTranslateX(55);
 
-    vbx.getChildren().addAll(roundNumberHeader, roundNumberLabel, subroundNumberHeader, subroundNumberLabel);
+    vbx.getChildren()
+        .addAll(roundNumberHeader, roundNumberLabel, subroundNumberHeader, subroundNumberLabel);
 
     return vbx;
   }
