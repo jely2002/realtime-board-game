@@ -1,6 +1,7 @@
 package nl.hsleiden.ipsene.controllers;
 
 import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.cloud.firestore.ListenerRegistration;
 import java.util.concurrent.ExecutionException;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -21,6 +22,7 @@ public class LobbyController implements Controller {
 
   private final Game game;
   private final FirebaseService firebaseService;
+  private ListenerRegistration registration;
 
   public LobbyController(FirebaseService firebaseService, Stage stage) {
     this.firebaseService = firebaseService;
@@ -107,7 +109,7 @@ public class LobbyController implements Controller {
         throw new GameNotFoundException("No game with token " + token + " was found");
       } else {
         game.update(document);
-        firebaseService.listen(game.getToken(), this);
+        if (registration == null) registration = firebaseService.listen(game.getToken(), this);
       }
     } catch (ExecutionException | InterruptedException e) {
       logger.error(e.getMessage(), e);
@@ -124,7 +126,7 @@ public class LobbyController implements Controller {
   public void host() throws ServerConnectionException {
     try {
       firebaseService.set(game.getToken(), game.serialize());
-      firebaseService.listen(game.getToken(), this);
+      if (registration == null) registration = firebaseService.listen(game.getToken(), this);
     } catch (ExecutionException | InterruptedException e) {
       logger.error(e.getMessage(), e);
       throw new ServerConnectionException();
@@ -133,6 +135,8 @@ public class LobbyController implements Controller {
 
   public GameController startGame(View view) {
     game.unregisterObserver(view);
+    firebaseService.removeListener(registration);
+    registration = null;
     return new GameController(firebaseService, game);
   }
 
@@ -140,7 +144,7 @@ public class LobbyController implements Controller {
   private void push() {
     try {
       firebaseService.set(game.getToken(), game.serialize());
-      firebaseService.listen(game.getToken(), this);
+      if (registration == null) firebaseService.listen(game.getToken(), this);
     } catch (ExecutionException | InterruptedException e) {
       logger.error(e.getMessage(), e);
     }

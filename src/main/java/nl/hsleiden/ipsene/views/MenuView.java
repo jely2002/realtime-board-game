@@ -55,6 +55,15 @@ public class MenuView implements View {
       logger.error(e.getMessage(), e);
     }
     lobbyController.registerObserver(this);
+
+    // todo remove this when done debugging
+    try {
+      // lobbyController.join("76430");
+      lobbyController.host();
+      toLobby();
+    } catch (ServerConnectionException e) {
+      e.printStackTrace();
+    }
   }
 
   private void loadPrimaryStage(Pane pane) {
@@ -119,7 +128,6 @@ public class MenuView implements View {
     return pane;
   }
 
-
   private Rectangle rectangleBuilder() {
     Rectangle rect = new Rectangle();
 
@@ -183,10 +191,9 @@ public class MenuView implements View {
 
     lbl.setTextFill(Color.RED);
     lbl.setStyle("-fx-font-size: 15");
-    
+
     lbl.setText("");
     ViewHelper.applyDropShadow(lbl);
-
 
     return lbl;
   }

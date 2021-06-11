@@ -1,6 +1,5 @@
 package nl.hsleiden.ipsene.views;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -36,13 +35,14 @@ public class LobbyView implements View {
   private Button player2Join;
   private Button player3Join;
   private Button player4Join;
+  private Button startButton;
 
   private Label waitingForPlayersLabel;
 
-  public LobbyView(Stage primaryStage, LobbyController gameController) {
-    this.lobbyController = gameController;
+  public LobbyView(Stage primaryStage, LobbyController lobbyController) {
+    this.lobbyController = lobbyController;
     this.primaryStage = primaryStage;
-    gameController.registerObserver(this);
+    lobbyController.registerObserver(this);
     loadPrimaryStage(createPane());
   }
 
@@ -76,7 +76,6 @@ public class LobbyView implements View {
     Label player4Display = playerDisplayLabel("Player 4", player4Available, YELLOW);
     ViewHelper.setNodeCoordinates(player4Display, 10, 660);
 
-
     this.player1Join = joinButtonBuilder(1, player1Available);
     player1Join.setId("1");
     ViewHelper.setNodeCoordinates(player1Join, 220, 150);
@@ -96,6 +95,10 @@ public class LobbyView implements View {
     player4Join.setId("4");
     ViewHelper.setNodeCoordinates(player4Join, 220, 660);
     player4Join.addEventFilter(MouseEvent.MOUSE_CLICKED, playerButtonClicked);
+
+    this.startButton = startButtonBuilder();
+    ViewHelper.setNodeCoordinates(startButton, 1400, 700);
+    startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, playButtonClicked);
 
     this.waitingForPlayersLabel = WaitingForPlayersLabelBuilder("Waiting for players");
     ViewHelper.setNodeCoordinates(waitingForPlayersLabel, 10, 790);
@@ -118,7 +121,7 @@ public class LobbyView implements View {
 
     pane.getChildren()
         .addAll(title, player1Display, player2Display, player3Display, player4Display);
-    pane.getChildren().addAll(player1Join, player2Join, player3Join, player4Join);
+    pane.getChildren().addAll(player1Join, player2Join, player3Join, player4Join, startButton);
     pane.getChildren().addAll(waitingForPlayersLabel, imageView);
     return pane;
   }
@@ -199,10 +202,10 @@ public class LobbyView implements View {
       bgColor = "#00FFFF";
       buttonText = "Joined";
     } else if (!isAvailable) {
-      bgColor = "#FF0000";
+      bgColor = RED;
       buttonText = "Taken";
     } else {
-      bgColor = "#00FF00";
+      bgColor = GREEN;
       buttonText = "Join";
     }
 
@@ -213,6 +216,16 @@ public class LobbyView implements View {
     ViewHelper.applyDropShadow(btn);
 
     return btn;
+  }
+
+  private Button startButtonBuilder() {
+    Button button = new Button();
+    button.setText("start game");
+    button.setPrefWidth(125);
+    button.setPrefHeight(125);
+    button.setStyle("-fx-font-size: 20; -fx-background-color: " + RED);
+    ViewHelper.applyDropShadow(button);
+    return button;
   }
 
   private Button buttonBuilder(String txt, boolean isAvailable) {
@@ -258,6 +271,14 @@ public class LobbyView implements View {
               lobbyController.setPlayerAvailable(playerId, false);
             }
           }
+        }
+      };
+
+  EventHandler<MouseEvent> playButtonClicked =
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+          startGame();
         }
       };
 

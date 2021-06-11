@@ -1,10 +1,14 @@
 package nl.hsleiden.ipsene.controllers;
 
 import com.google.cloud.firestore.DocumentSnapshot;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.Game;
+import nl.hsleiden.ipsene.models.Player;
+import nl.hsleiden.ipsene.models.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +22,26 @@ public class GameController implements Controller {
   public GameController(FirebaseService firebaseService, Game game) {
     this.game = game;
     this.firebaseService = firebaseService;
+  }
+
+  public Game getGame() {
+    return game;
+  }
+
+  public Player getOwnPlayer() {
+    return game.getPlayer(game.getOwnPlayer() - 1);
+  }
+
+  public ArrayList<Team> getTeams() {
+    return game.getTeams();
+  }
+
+  public void serialize() {
+    try {
+      firebaseService.set(game.getToken(), game.serialize());
+    } catch (ExecutionException | InterruptedException e) {
+      logger.error("execution/interrupt exception", e);
+    }
   }
 
   @Override

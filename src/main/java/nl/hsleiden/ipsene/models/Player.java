@@ -5,10 +5,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
+import nl.hsleiden.ipsene.interfaces.Model;
+import nl.hsleiden.ipsene.interfaces.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Player implements FirebaseSerializable<Map<String, Object>> {
+public class Player implements FirebaseSerializable<Map<String, Object>>, Model {
 
   private static final Logger logger = LoggerFactory.getLogger(Player.class.getName());
 
@@ -26,6 +28,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
 
   private int id;
   private boolean available;
+  private PlayerColour colour;
 
   /**
    * should not be called manually, call through Team#createPlayers
@@ -33,7 +36,9 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
    * @param team the players team
    * @param index the players index within its team
    */
-  public Player(Team team, int id, int index, ArrayList<Pawn> pawns, Game game) {
+  public Player(
+      Team team, PlayerColour colour, int id, int index, ArrayList<Pawn> pawns, Game game) {
+    this.colour = colour;
     cards = new ArrayList<Card>();
     this.game = game;
     this.id = id;
@@ -46,8 +51,24 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
     }
   }
 
+  public boolean equals(Player other) {
+    return (team.teamIndex == other.team.teamIndex && id == other.id);
+  }
+
+  public void setSelectedPawnIndex(int i) {
+    selectedPawnIndex = i;
+  }
+
+  public void setSelectedCardIndex(int i) {
+    selectedCardIndex = i;
+  }
+
   public Pawn getPawn(int pawnIndex) {
     return pawns.get(pawnIndex);
+  }
+
+  public final ArrayList<Pawn> getPawns() {
+    return pawns;
   }
 
   public void doTurn() {
@@ -55,8 +76,9 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
     // something
     // todo set selected card and pawn before calling before getting the pawn and playing the card
     Pawn selectedPawn = team.getPawn(playerIndex, selectedPawnIndex);
-    if (selectedPawn != null) playCard(selectedPawn);
-    else {
+    if (selectedPawn != null) {
+      playCard(selectedPawn);
+    } else {
       logger.warn("Player#doTurn failed. No pawn selected.");
     }
   }
@@ -67,9 +89,17 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
   }
 
   private void playCard(Pawn pawn) {
-    Card c = cards.get(selectedCardIndex);
-    c.play(this, pawn);
-    cards.remove(c);
+    if (selectedCardIndex != -1) {
+      Card c = cards.get(selectedCardIndex);
+      c.play(this, pawn);
+      cards.remove(selectedCardIndex);
+    }
+    selectedCardIndex = -1;
+    notifyObservers();
+  }
+
+  public ArrayList<Card> getCards() {
+    return cards;
   }
 
   public boolean isAvailable() {
@@ -121,6 +151,25 @@ public class Player implements FirebaseSerializable<Map<String, Object>> {
       CardType cardType = CardType.valueOf((String) card.get("type"));
       int step = (int) (long) card.get("value");
       this.cards.add(new Card(cardType, step));
+    }
+  }
+
+  private final ArrayList<View> observers = new ArrayList<>();
+
+  @Override
+  public void registerObserver(View v) {
+    this.observers.add(v);
+  }
+
+  @Override
+  public void unregisterObserver(View v) {
+    this.observers.remove(v);
+  }
+
+  @Override
+  public void notifyObservers() {
+    for (View v : observers) {
+      v.update();
     }
   }
 }

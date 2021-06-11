@@ -35,12 +35,14 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     this.teams = generateTeams();
     this.deck = new Deck(4, this);
     setCardsToBeDrawnNextTurn(5);
-    distributeCards(deck);
+    distributeCards();
   }
 
   private ArrayList<Team> generateTeams() {
     ArrayList<Team> teams = new ArrayList<>();
-    TeamType[] types = {TeamType.RED, TeamType.GREEN, TeamType.BLUE, TeamType.YELLOW};
+    PlayerColour[][] types = {
+      {PlayerColour.RED, PlayerColour.GREEN}, {PlayerColour.BLUE, PlayerColour.YELLOW}
+    };
     for (int i = 0; i < AMOUNT_OF_TEAMS; i++) {
       teams.add(new Team(types[i], i, this));
     }
@@ -54,13 +56,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     return sb.toString();
   }
 
-  public void doTurns() {
-    for (Team team : this.teams) {
-      team.doTurn();
-    }
-  }
-
-  public void distributeCards(Deck deck) {
+  public void distributeCards() {
     for (Team team : this.teams) {
       team.distributeCards(cardsPerPlayerNextRound, deck);
     }
@@ -134,10 +130,6 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
   public int getDoingTurn() {
     return doingTurn;
-  }
-
-  public void setDoingTurn(int doingTurn) {
-    this.doingTurn = doingTurn;
   }
 
   public int getRound() {

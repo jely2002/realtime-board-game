@@ -16,36 +16,30 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
   private final Game game;
 
   private final Player[] players;
-  public static final int PAWNS_PER_PLAYER = 2; // idk
+  public static final int PAWNS_PER_PLAYER = 4;
   public static final int PLAYERS_PER_TEAM = 2;
   public final int teamIndex;
 
-  /** @param teamtype the type of the team, given to the pawns created in the constructor */
-  public Team(TeamType teamtype, int teamIndex, Game game) {
+  /** @param playerColours the type of the team, given to the pawns created in the constructor */
+  public Team(PlayerColour[] playerColours, int teamIndex, Game game) {
     this.game = game;
     this.teamIndex = teamIndex;
-    int pawnNumber = 0;
-    players = new Player[PLAYERS_PER_TEAM];
 
+    players = new Player[PLAYERS_PER_TEAM];
+    int position = 0;
     for (int i = 0; i < PLAYERS_PER_TEAM; i++) {
       ArrayList<Pawn> pawns = new ArrayList<>(PAWNS_PER_PLAYER);
+      int pawnNumber = 0;
 
       for (int j = 0; j < PAWNS_PER_PLAYER; j++) {
-        pawns.add(new Pawn(teamtype, pawnNumber, game));
+        pawns.add(new Pawn(playerColours[i], pawnNumber, game));
         ++pawnNumber;
       }
       int absolutePlayerId = i;
       if (teamIndex > 0) {
         absolutePlayerId = i + (teamIndex + 1);
       }
-      players[i] = new Player(this, absolutePlayerId, i, pawns, game);
-    }
-  }
-
-  /** calls doTurn() on all players */
-  public void doTurn() {
-    for (int i = 0; i < players.length; i++) {
-      players[i].doTurn();
+      players[i] = new Player(this, playerColours[i], absolutePlayerId, i, pawns, game);
     }
   }
 
@@ -84,6 +78,7 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serialized = new LinkedHashMap<>();
     for (Player player : players) {
+
       serialized.put(String.valueOf(player.getId()), player.serialize());
     }
     return serialized;

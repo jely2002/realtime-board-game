@@ -5,8 +5,10 @@ import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import nl.hsleiden.ipsene.views.ViewHelper;
 
 public class Firebase {
   public static final String CARD_FIELD_NAME = "cards";
@@ -17,7 +19,9 @@ public class Firebase {
   private final Firestore store;
 
   protected Firebase(String privateKeyPath) throws IOException {
-    FileInputStream serviceAccount = new FileInputStream(privateKeyPath);
+    InputStream serviceAccount = ViewHelper.class.getResourceAsStream(privateKeyPath);
+    if (serviceAccount == null)
+      throw new FileNotFoundException("Private key file could not be found.");
     GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
     FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).build();
     FirebaseApp.initializeApp(options);
