@@ -3,7 +3,6 @@ package nl.hsleiden.ipsene.models;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
-
 import nl.hsleiden.ipsene.controllers.LobbyController;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;

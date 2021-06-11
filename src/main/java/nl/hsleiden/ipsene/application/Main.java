@@ -19,7 +19,8 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) {
     try {
-      FirebaseService firebaseService = new FirebaseService("/firestoretest-5c4e4-52601abc4d0c.json", "games");
+      FirebaseService firebaseService =
+          new FirebaseService("/firestoretest-5c4e4-52601abc4d0c.json", "games");
       LobbyController lobbyController = new LobbyController(firebaseService, primaryStage);
       // todo gamecontroller would normally go through LobbyController#startGame
       // GameController gameController = new GameController(firebaseService, game);

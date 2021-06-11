@@ -71,7 +71,8 @@ public class BoardView implements View {
 
   private Pane createInitialPane() {
     Pane pane = new Pane();
-    // TODO: hoe veel tijd er nog voor de zet over is, aansturen a.d.h.v firebase(ik weet niet hoe dit moet!)
+    // TODO: hoe veel tijd er nog voor de zet over is, aansturen a.d.h.v firebase(ik weet niet hoe
+    // dit moet!)
     int timer = MAXTURNTIME;
 
     // TODO: Welke ronde we nu in zitten in een coole integer!

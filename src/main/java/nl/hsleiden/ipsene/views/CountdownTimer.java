@@ -19,17 +19,15 @@ public class CountdownTimer implements Runnable {
 
   private final int YOFFSET = 30;
   private final int XOFFSET = 40;
-  /**
-   * SLEEPTIME is in mili sec
-   */
+  /** SLEEPTIME is in mili sec */
   private final int SLEEPTIME = 1000;
-  /**
-   * MAXTURNTIME and MINTURNTIME in sec
-   */
+  /** MAXTURNTIME and MINTURNTIME in sec */
   private final int SMALLESTTWODIGIT = 10;
+
   private final int ENDTIME = 0;
 
-  public CountdownTimer(GameController gameController, Label label, int turnTime, int labelX, int labelY) {
+  public CountdownTimer(
+      GameController gameController, Label label, int turnTime, int labelX, int labelY) {
     this.label = label;
     this.turnTime = turnTime;
     this.labelX = labelX;
@@ -43,13 +41,12 @@ public class CountdownTimer implements Runnable {
     ViewHelper.setNodeCoordinates(label, labelX, labelY);
     label.setStyle("-fx-font-family: 'Comic Sans MS'; -fx-font-size: 120; -fx-text-fill: #000000");
     int countDownTime = turnTime;
-    //System.out.println("Thread is running");
+    // System.out.println("Thread is running");
     while (!Thread.interrupted()) {
       System.out.println("Thread is running");
       if (countDownTime >= SMALLESTTWODIGIT) {
         numberAsString = Integer.toString(countDownTime);
-      }
-      else if (countDownTime < SMALLESTTWODIGIT && countDownTime > ENDTIME) {
+      } else if (countDownTime < SMALLESTTWODIGIT && countDownTime > ENDTIME) {
         numberAsString = "0" + Integer.toString(countDownTime);
       } else {
         break;
@@ -64,22 +61,24 @@ public class CountdownTimer implements Runnable {
         break;
       }
     }
-    if (countDownTime==0) {
+    if (countDownTime == 0) {
       Platform.runLater(
-        () -> {
-          label.setStyle("-fx-font-family: 'Comic Sans MS'; -fx-font-size: 40; -fx-text-fill: #000000");
-          ViewHelper.setNodeCoordinates(label, labelX - XOFFSET, labelY + YOFFSET);
-          label.setText("Time's up!");
-        });
+          () -> {
+            label.setStyle(
+                "-fx-font-family: 'Comic Sans MS'; -fx-font-size: 40; -fx-text-fill: #000000");
+            ViewHelper.setNodeCoordinates(label, labelX - XOFFSET, labelY + YOFFSET);
+            label.setText("Time's up!");
+          });
       try {
         Thread.sleep(3000);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      Platform.runLater(() -> {
-        System.out.println("Thread is stopped");
-        gameController.backToMainMenu();
-      });
+      Platform.runLater(
+          () -> {
+            System.out.println("Thread is stopped");
+            gameController.backToMainMenu();
+          });
     }
   }
 }

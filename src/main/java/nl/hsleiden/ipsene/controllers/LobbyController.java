@@ -29,7 +29,7 @@ public class LobbyController implements Controller {
   public LobbyController(FirebaseService firebaseService, Stage stage) {
     this.firebaseService = firebaseService;
     this.game = new Game(this);
-    this.menuView =  new MenuView(stage, this);
+    this.menuView = new MenuView(stage, this);
     this.stage = stage;
   }
 
@@ -158,6 +158,6 @@ public class LobbyController implements Controller {
   }
 
   public void backToMainMenu() {
-    this.menuView =  new MenuView(stage, this);
+    this.menuView = new MenuView(stage, this);
   }
 }
