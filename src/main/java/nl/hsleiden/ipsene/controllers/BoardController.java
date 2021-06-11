@@ -21,9 +21,7 @@ public class BoardController implements Controller {
     AMOUNT_OF_PLAYERS = amount_of_players;
   }
 
-  public static void getInstance() {
-
-  }
+  public static void getInstance() {}
 
   @Override
   public void update(DocumentSnapshot ds) {}

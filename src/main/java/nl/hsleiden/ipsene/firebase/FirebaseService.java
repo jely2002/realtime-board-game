@@ -33,22 +33,23 @@ public class FirebaseService {
     DocumentReference docRef = this.colRef.document(documentId);
 
     return docRef.addSnapshotListener(
-            (snapshot, e) -> {
-              if (e != null) {
-                logger.error("listen failed", e);
-                return;
-              }
+        (snapshot, e) -> {
+          if (e != null) {
+            logger.error("listen failed", e);
+            return;
+          }
 
-              if (snapshot != null && snapshot.exists()) {
+          if (snapshot != null && snapshot.exists()) {
 
-                controller.update(snapshot);
+            controller.update(snapshot);
 
-                logger.debug("listener received data: {}", snapshot.getData());
-              } else {
-                logger.warn("listener received null data");
-              }
-            });
+            logger.debug("listener received data: {}", snapshot.getData());
+          } else {
+            logger.warn("listener received null data");
+          }
+        });
   }
+
   public void removeListener(ListenerRegistration registration) {
     registration.remove();
   }
@@ -61,7 +62,7 @@ public class FirebaseService {
    * @param documentId
    */
   public void set(String documentId, Map<String, Object> docData)
-          throws ExecutionException, InterruptedException {
+      throws ExecutionException, InterruptedException {
     ApiFuture<WriteResult> future = this.colRef.document(documentId).set(docData);
     logger.debug("time to update: {}", future.get().getUpdateTime());
   }

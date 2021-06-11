@@ -15,13 +15,14 @@ public enum PlayerColour {
   public String getCode() {
     return colour;
   }
+
   private PlayerColour(String code) {
     this.colour = code;
   }
 
   private static final Map<String, PlayerColour> lookup = new HashMap<String, PlayerColour>();
+
   static {
     for (PlayerColour s : EnumSet.allOf(PlayerColour.class)) lookup.put(s.getCode(), s);
   }
-
 }

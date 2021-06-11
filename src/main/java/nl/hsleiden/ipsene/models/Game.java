@@ -40,7 +40,9 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
   private ArrayList<Team> generateTeams() {
     ArrayList<Team> teams = new ArrayList<>();
-    PlayerColour[][] types = {{PlayerColour.RED, PlayerColour.GREEN}, {PlayerColour.BLUE, PlayerColour.YELLOW}};
+    PlayerColour[][] types = {
+      {PlayerColour.RED, PlayerColour.GREEN}, {PlayerColour.BLUE, PlayerColour.YELLOW}
+    };
     for (int i = 0; i < AMOUNT_OF_TEAMS; i++) {
       teams.add(new Team(types[i], i, this));
     }

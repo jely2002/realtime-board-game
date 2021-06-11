@@ -52,40 +52,40 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
   }
 
   private static void playSpawnStep1Card(Player player, Pawn pawn, Card card) {
-    //System.out.println("played spawn step 1");
+    // System.out.println("played spawn step 1");
     int p = pawn.getBoardPosition();
 
     pawn.addRelativeBoardPosition(1);
-    //System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
+    // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
 
     logger.debug("step1 card played");
   }
 
   private static void playStep7Card(Player player, Pawn pawn, Card card) {
-    //System.out.println("played 7 card");
+    // System.out.println("played 7 card");
     int p = pawn.getBoardPosition();
 
     pawn.addRelativeBoardPosition(7);
-    //System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
+    // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
 
     logger.debug("step7 card played");
   }
 
   private static void playStep4Card(Player player, Pawn pawn, Card card) {
-    //System.out.println("played 4 card");
+    // System.out.println("played 4 card");
     int p = pawn.getBoardPosition();
 
     pawn.addRelativeBoardPosition(4);
-    //System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
+    // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
 
     logger.debug("step4 card played");
   }
 
   private static void playStepNCard(Player player, Pawn pawn, Card card) {
-    //System.out.println("played n card value: " + card.steps);
+    // System.out.println("played n card value: " + card.steps);
     int p = pawn.getBoardPosition();
     pawn.addRelativeBoardPosition(card.steps);
-    //System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
+    // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
     logger.debug("n card played with value: {}", card.steps);
   }
 
@@ -101,7 +101,11 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
     onPlayActions.put(CardType.STEP_4, Card::playStep4Card);
     onPlayActions.put(CardType.STEP_N, Card::playStepNCard);
   }
-  public CardType getType() { return type; }
+
+  public CardType getType() {
+    return type;
+  }
+
   @Override
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serializedCard = new LinkedHashMap<>();

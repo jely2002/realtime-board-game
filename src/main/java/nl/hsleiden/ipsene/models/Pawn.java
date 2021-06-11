@@ -25,7 +25,10 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
     boardPosition = pawnNum;
     pawnNumber = pawnNum;
   }
-  public PlayerColour getTeamType() { return colour; }
+
+  public PlayerColour getTeamType() {
+    return colour;
+  }
 
   public void setOwningPlayer(Player player) {
     this.player = player;
@@ -80,6 +83,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
   }
 
   private final ArrayList<View> observers = new ArrayList<>();
+
   @Override
   public void registerObserver(View v) {
     this.observers.add(v);

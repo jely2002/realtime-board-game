@@ -36,7 +36,8 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
    * @param team the players team
    * @param index the players index within its team
    */
-  public Player(Team team, PlayerColour colour, int id, int index, ArrayList<Pawn> pawns, Game game) {
+  public Player(
+      Team team, PlayerColour colour, int id, int index, ArrayList<Pawn> pawns, Game game) {
     this.colour = colour;
     cards = new ArrayList<Card>();
     this.game = game;
@@ -49,13 +50,26 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
       p.setOwningPlayer(this);
     }
   }
-  public boolean equels(Player other) { return (team.teamIndex == other.team.teamIndex && id == other.id); }
-  public void setSelectedPawnIndex(int i) { selectedPawnIndex = i; }
-  public void setSelectedCardIndex(int i) { selectedCardIndex = i; }
+
+  public boolean equels(Player other) {
+    return (team.teamIndex == other.team.teamIndex && id == other.id);
+  }
+
+  public void setSelectedPawnIndex(int i) {
+    selectedPawnIndex = i;
+  }
+
+  public void setSelectedCardIndex(int i) {
+    selectedCardIndex = i;
+  }
+
   public Pawn getPawn(int pawnIndex) {
     return pawns.get(pawnIndex);
   }
-  public final ArrayList<Pawn> getPawns() { return pawns; }
+
+  public final ArrayList<Pawn> getPawns() {
+    return pawns;
+  }
 
   public void doTurn() {
     // just zero for now, should use a callback from the view to get the clicked pawns index or
@@ -64,8 +78,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
     Pawn selectedPawn = team.getPawn(playerIndex, selectedPawnIndex);
     if (selectedPawn != null) {
       playCard(selectedPawn);
-    }
-    else {
+    } else {
       logger.warn("Player#doTurn failed. No pawn selected.");
     }
   }
@@ -83,11 +96,12 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
     }
     selectedCardIndex = -1;
     notifyObservers();
-
   }
+
   public ArrayList<Card> getCards() {
     return cards;
   }
+
   public boolean isAvailable() {
     return available;
   }
@@ -139,7 +153,9 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
       this.cards.add(new Card(cardType, step));
     }
   }
+
   private final ArrayList<View> observers = new ArrayList<>();
+
   @Override
   public void registerObserver(View v) {
     this.observers.add(v);
