@@ -1,11 +1,11 @@
 package nl.hsleiden.ipsene.views;
 
-import com.sun.javafx.geom.Vec2d;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -58,7 +58,7 @@ public class BoardView implements View {
   }
 
   private void loadPrimaryStage(Pane pane) {
-    logger.info("BoardView started!");
+    // logger.info("BoardView started!");
     try {
       Scene scene = new Scene(pane, WIDTH, HEIGHT);
       primaryStage.setScene(scene);
@@ -70,16 +70,18 @@ public class BoardView implements View {
   }
 
   private Pane createInitialPane() {
+    lastCardX = CARD_START_X_POSITION;
+
     Pane pane = new Pane();
     // TODO: hoe veel tijd er nog voor de zet over is, aansturen a.d.h.v firebase(ik weet niet hoe
     // dit moet!)
     int timer = MAXTURNTIME;
 
-    // TODO: Welke ronde we nu in zitten in een coole integer!
-    int roundNumber = 3;
+    // Welke ronde we nu in zitten in een coole integer!
+    int roundNumber = gameController.getRound();
 
     // TODO: de huidige speler die aan de beurt is hier doorgeven
-    int turnPlayerNumber = 3;
+    int turnPlayerNumber = gameController.getIdCurrentPlayer();
 
     Rectangle statRect = ViewHelper.createUIDividers(250, 700);
     ViewHelper.setNodeCoordinates(statRect, 1350, 0);
@@ -123,6 +125,10 @@ public class BoardView implements View {
     VBox cardsText = ViewHelper.verticalTextDisplayBuilder("CARDS");
     ViewHelper.setNodeCoordinates(cardsText, 10, 700);
 
+    // skip turn button
+    Button skipTurnButton = buildSkipTurnButton();
+    skipTurnButton.addEventFilter(MouseEvent.MOUSE_CLICKED, skipTurnEvent);
+
     pane.getChildren()
         .addAll(
             gameBoard,
@@ -131,7 +137,8 @@ public class BoardView implements View {
             keezBoardLogo,
             timerLabel,
             timerHeader,
-            playersTurnDisplay);
+            playersTurnDisplay,
+            skipTurnButton);
     pane.getChildren().addAll(cardsText, roundNumberDisplay);
     pane.getChildren().addAll(pawns);
     pane.getChildren().addAll(cards);
@@ -139,6 +146,27 @@ public class BoardView implements View {
     return pane;
   }
 
+  private Button buildSkipTurnButton() {
+    Button button = new Button();
+    button.setText("skip turn");
+    button.setPrefWidth(125);
+    button.setPrefHeight(125);
+    ViewHelper.setNodeCoordinates(button, 1220, 710);
+    button.setStyle("-fx-font-size: 20; -fx-background-color: " + RED);
+    ViewHelper.applyDropShadow(button);
+    return button;
+  }
+
+  EventHandler<MouseEvent> skipTurnEvent =
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+          System.out.println("pressed");
+          gameController.increasePlayerCounter();
+          gameController.serialize();
+          loadPrimaryStage(createInitialPane());
+        }
+      };
   /**
    * gets all pawns in the game and builds polygons for them
    *
@@ -152,12 +180,16 @@ public class BoardView implements View {
       for (int i = 0; i < Team.PLAYERS_PER_TEAM; i++) {
         Player p = t.getPlayer(i);
         for (final Pawn pawn : p.getPawns()) {
-          Polygon poly = ViewHelper.createPawn(pawn.getTeamType().getCode());
+          Polygon poly = ViewHelper.createPawn(pawn);
           ViewHelper.setPawnPosition(poly, pawn.getBoardPosition());
-          // only add event when this is one of our pawns
-          if (p.equals(ourPlayer)) {
+          // only add event when this is one of our pawns and it is our turn
+          if (p.equals(ourPlayer)
+              && gameController.getIdCurrentPlayer() == gameController.getOwnPlayer().getId()) {
             poly.addEventFilter(MouseEvent.MOUSE_CLICKED, pawnClickedEvent);
           }
+          // for hover functionality
+          //          poly.addEventFilter(MouseEvent.MOUSE_ENTERED, pawnHoverEvent);
+          //          poly.addEventFilter(MouseEvent.MOUSE_EXITED, pawnHoverEvent);
           allpawns.add(poly);
         }
       }
@@ -178,7 +210,8 @@ public class BoardView implements View {
     for (Card card : ourPlayer.getCards()) {
       ImageView cardview = ViewHelper.showCard(card.getType(), card.steps);
       cardview.addEventFilter(MouseEvent.MOUSE_CLICKED, cardClicked);
-      ViewHelper.setNodeCoordinates(cardview, lastCardX, 705);
+      int ycoordinate = (card.isSelected()) ? 740 : 705;
+      ViewHelper.setNodeCoordinates(cardview, lastCardX, ycoordinate);
       cards.add(cardview);
       lastCardX += CARD_SEPERATION_VALUE;
     }
@@ -207,9 +240,11 @@ public class BoardView implements View {
           if (clickedCardIndex < ourPlayer.getCards().size()) {
             ourPlayer.setSelectedCardIndex(clickedCardIndex);
             cardSelected = true;
+            loadPrimaryStage(createInitialPane());
           }
         }
       };
+
   /**
    * called when a pawn is clicked, checks if a card is selected, if it is calculates the pawn
    * closest to the clicked position. then sets that pawn as the selected pawn for the player and
@@ -242,23 +277,9 @@ public class BoardView implements View {
         }
       };
 
-  /**
-   * gets the distance between a pawn and a position on screen
-   *
-   * @param p the pawn to check for
-   * @param mousex the mouse x position
-   * @param mousey the mouse y position
-   * @return the distance between the pawn and the mouse
-   */
-  private double getPawnDistanceFromMouse(Pawn p, double mousex, double mousey) {
-    Vec2d realPos = ViewHelper.getRealPositionFromBoard(p.getBoardPosition());
-    return Math.sqrt(Math.pow(realPos.x - mousex, 2) + Math.pow(realPos.y - mousey, 2));
-  }
-
   @Override
   public void update() {
     // reset the x position of the cards to draw them anew
-    lastCardX = CARD_START_X_POSITION;
     Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
   }
 }

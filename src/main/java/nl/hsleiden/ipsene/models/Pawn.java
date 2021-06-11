@@ -13,6 +13,15 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
   private Player player;
   private int pawnNumber;
   private boolean isInsidePool = true;
+  private boolean isHover = false;
+
+  public boolean isHover() {
+    return isHover;
+  }
+
+  public void setHover(boolean hover) {
+    isHover = hover;
+  }
   /**
    * @param colour - the 'type' of the team, from enum TeamType used to get team info and calculate
    *     position
@@ -26,7 +35,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
     pawnNumber = pawnNum;
   }
 
-  public PlayerColour getTeamType() {
+  public PlayerColour getPlayerColour() {
     return colour;
   }
 
@@ -50,8 +59,19 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
   }
 
   private void setRelativeBoardposition(int pos) {
-    boardPosition = pos;
-    notifyObservers();
+    if (!isInsidePool) {
+      boardPosition = pos;
+      notifyObservers();
+    }
+  }
+
+  public void takeOutOfPool() {
+    isInsidePool = true;
+    setRelativeBoardposition(Board.getFirstBoardPosition(getPlayerColour()));
+  }
+
+  public boolean isOutOfPool() {
+    return !isInsidePool;
   }
 
   /** @param amount the amount of 'tiles' to add to the pawns position */

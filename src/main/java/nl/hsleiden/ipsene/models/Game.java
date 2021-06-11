@@ -15,7 +15,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
   private static final Logger logger = LoggerFactory.getLogger(Game.class.getName());
 
-  private static final int AMOUNT_OF_TEAMS = 2;
+  public static final int AMOUNT_OF_TEAMS = 2;
   private static final int TOKEN_LENGTH = 5;
 
   private final ArrayList<View> observers = new ArrayList<>();
@@ -28,7 +28,8 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   private int doingTurn;
   private int round;
   private Timestamp turnStartTime;
-  private int cardsPerPlayerNextRound = 0;
+  private int cardsPerPlayerNextRound = 5;
+  private int cardsThisTurnValue = 2;
 
   private LobbyController lobbyController;
 
@@ -39,7 +40,29 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     this.deck = new Deck(4, this);
     this.lobbyController = lobbyController;
     setCardsToBeDrawnNextTurn(5);
+    this.doingTurn = 0;
     distributeCards();
+  }
+
+  public int getRound() {
+    return round;
+  }
+
+  /** */
+  public void advanceRound() {
+    round += 1;
+    cardsPerPlayerNextRound = (cardsThisTurnValue == 1) ? 5 : 4;
+
+    for (Team team : teams) {
+      team.emptyCards();
+    }
+    distributeCards();
+    if (cardsThisTurnValue < 3) {
+      cardsThisTurnValue = cardsThisTurnValue + 1;
+    } else {
+      cardsThisTurnValue = 1;
+      deck.regenerate();
+    }
   }
 
   private ArrayList<Team> generateTeams() {
@@ -60,22 +83,19 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     return sb.toString();
   }
 
-  public void distributeCards() {
+  /** distributes cards to all teams */
+  private void distributeCards() {
     for (Team team : this.teams) {
       team.distributeCards(cardsPerPlayerNextRound, deck);
     }
   }
 
-  public void setCardsToBeDrawnNextTurn(int amount) {
-    cardsPerPlayerNextRound = amount;
-  }
-
   @Override
   public void update(DocumentSnapshot document) {
 
-    doingTurn = Math.toIntExact(document.getLong("doingTurn"));
-    round = Math.toIntExact(document.getLong("round"));
-    turnStartTime = document.getTimestamp("turnStartTime");
+    doingTurn = Math.toIntExact(document.getLong(Firebase.DOING_TURN_FIELD_NAME));
+    round = Math.toIntExact(document.getLong(Firebase.ROUND_FIELD_NAME));
+    turnStartTime = document.getTimestamp(Firebase.TURN_START_TIME_FIELD_NAME);
     token = document.getId();
 
     teams.forEach(team -> team.update(document));
@@ -114,6 +134,10 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     return teams;
   }
 
+  /**
+   * @param absolutePlayerId the players id
+   * @return player with a given id
+   */
   public Player getPlayer(int absolutePlayerId) {
     int playerIndex = absolutePlayerId;
     int teamIndex = 0;
@@ -136,8 +160,8 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     return doingTurn;
   }
 
-  public int getRound() {
-    return round;
+  public void setDoingTurnPlayer(int doingTurn) {
+    this.doingTurn = doingTurn;
   }
 
   public void setRound(int round) {
