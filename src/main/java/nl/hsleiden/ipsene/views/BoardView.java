@@ -1,6 +1,7 @@
 package nl.hsleiden.ipsene.views;
 
 import com.sun.javafx.geom.Vec2d;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -62,14 +63,8 @@ public class BoardView implements View {
   }
   private void subscribeToPawnsAndPlayer(GameController controller) {
     // we are going in a loopedieloop...
-    controller.getGame().getPlayer(gameController.getGame().getOwnPlayer()).registerObserver(this);
-    for (Team t : controller.getGame().getTeams()) {
-      for (int i = 0; i < Team.PLAYERS_PER_TEAM; i++) {
-        for (int j = 0; j < Team.PAWNS_PER_PLAYER; j++) {
-          t.getPawn(i, j).registerObserver(this);
-        }
-      }
-    }
+    controller.getOwnPlayer().registerObserver(this);
+
   }
   private void loadPrimaryStage(Pane pane) {
     logger.info("BoardView started!");
@@ -142,18 +137,17 @@ public class BoardView implements View {
     return pane;
   }
   private ArrayList<Node> buildPawns() {
-    Game g = gameController.getGame();
-    int ourPlayersIndex = g.getOwnPlayer();
+    Player ourPlayer = gameController.getOwnPlayer();
     // -1 for the player number to player index
     ArrayList<Node> allpawns = new ArrayList<>();
-    for (Team t : gameController.getGame().getTeams()) {
+    for (Team t : gameController.getTeams()) {
       for (int i = 0; i < Team.PLAYERS_PER_TEAM; i++) {
         Player p = t.getPlayer(i);
         for(final Pawn pawn : p.getPawns()) {
           Polygon poly = ViewHelper.createPawn(pawn.getTeamType().getCode());
           ViewHelper.setPawnPosition(poly, pawn.getBoardPosition());
           // only add event when this is one of our pawns
-          if (p.equels(g.getPlayer(ourPlayersIndex))) {
+          if (p.equels(ourPlayer)) {
             poly.addEventFilter(MouseEvent.MOUSE_CLICKED, pawnClickedEvent);
           }
           allpawns.add(poly);
@@ -165,9 +159,7 @@ public class BoardView implements View {
   private ArrayList<ImageView> buildCards() {
     // show all our players cards
     cardSelected = false;
-    Game g = gameController.getGame();
-    int p = g.getOwnPlayer();
-    Player ourPlayer = g.getPlayer(p);
+    Player ourPlayer = gameController.getOwnPlayer();
     ArrayList<ImageView> cards = new ArrayList<>();
     for (Card card : ourPlayer.getCards()) {
       ImageView cardview = ViewHelper.showCard(card.getType(), card.steps);
@@ -193,8 +185,7 @@ public class BoardView implements View {
       double mousex = mouseEvent.getSceneX();
       // get the index of the card we clicked on
       int clickedCardIndex = (int) ((mousex - CARD_START_X_POSITION) / CARD_SEPERATION_VALUE);
-      Player ourPlayer = gameController.getGame().getPlayer(gameController.getGame().getOwnPlayer());
-      System.out.println("amount of cards: " + ourPlayer.getCards().size());
+      Player ourPlayer = gameController.getOwnPlayer();
       if (clickedCardIndex < ourPlayer.getCards().size()) {
         ourPlayer.setSelectedCardIndex(clickedCardIndex);
         cardSelected = true;
@@ -206,7 +197,7 @@ public class BoardView implements View {
     @Override
     public void handle(MouseEvent mouseEvent) {
       if (cardSelected) {
-        Player ourPlayer = gameController.getGame().getPlayer(gameController.getGame().getOwnPlayer());
+        Player ourPlayer = gameController.getOwnPlayer();
         Pawn closestPawn = ourPlayer.getPawn(0);
         // get the closest pawn to our click position
         for (int i = 1; i < Team.PAWNS_PER_PLAYER; i++) {
@@ -215,8 +206,10 @@ public class BoardView implements View {
           double pawnDistance = getPawnDistanceFromMouse(p, mouseEvent.getSceneX(), mouseEvent.getSceneY());
           closestPawn = (closestPawnDistance < pawnDistance) ? closestPawn : p;
         }
+        // do turn and sent to firebase
         ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
         ourPlayer.doTurn();
+        gameController.serializeGame();
       }
     }
   };
@@ -232,7 +225,9 @@ public class BoardView implements View {
       logger.error(e.getMessage(), e);
     }
     lastCardX = CARD_START_X_POSITION;
-    loadPrimaryStage(createInitialPane());
+    System.out.println("updated");
+    Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
+    //loadPrimaryStage(createInitialPane());
   }
 
 }

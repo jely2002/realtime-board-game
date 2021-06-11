@@ -52,7 +52,7 @@ public enum CardType {
         break;
       }
       case STEP_N: {
-        path += String.valueOf(code) + ".png";
+        path += String.valueOf(steps) + ".png";
         break;
       }
       default: {

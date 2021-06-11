@@ -28,11 +28,11 @@ public class FirebaseService {
    *
    * @param documentId
    */
-  public void listen(String documentId, final Controller controller) {
+  public ListenerRegistration listen(String documentId, final Controller controller) {
 
     DocumentReference docRef = this.colRef.document(documentId);
 
-    docRef.addSnapshotListener(
+    return docRef.addSnapshotListener(
             (snapshot, e) -> {
               if (e != null) {
                 logger.error("listen failed", e);
@@ -48,6 +48,9 @@ public class FirebaseService {
                 logger.warn("listener received null data");
               }
             });
+  }
+  public void removeListener(ListenerRegistration registration) {
+    registration.remove();
   }
 
   /**

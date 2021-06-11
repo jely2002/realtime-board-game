@@ -45,7 +45,6 @@ public class LobbyView implements View {
     this.primaryStage = primaryStage;
     lobbyController.registerObserver(this);
     loadPrimaryStage(createPane());
-    //startGame();
   }
 
   private Pane createPane() {

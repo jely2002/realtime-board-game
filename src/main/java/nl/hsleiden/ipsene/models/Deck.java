@@ -18,18 +18,16 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
   public Deck(int amountOfPlayers, Game game) {
     this.game = game;
     nCardDeck = generateNCardDeck(amountOfPlayers);
+    System.out.println("generated deck: ");
     cards = new ArrayList<>(Arrays.asList(generateDeck(amountOfPlayers, nCardDeck)));
-  }
-
-  public Deck(ArrayList<Card> cards, Game game) {
-    this.game = game;
-    this.cards = cards;
+    for (Card c : cards) {
+    }
   }
 
   private Card[] generateDeck(int amountOfPlayers, ArrayList<Integer> nCardDeck) {
 
     // each different card appears once for every player, nCards are added separately
-    final int AMOUNT_NORMAL_CARDS = CardType.values().length;
+    final int AMOUNT_NORMAL_CARDS = CardType.values().length - 1;
     final int TOTAL_AMOUNT_OF_CARDS =
         (AMOUNT_NORMAL_CARDS * amountOfPlayers) + (POSSIBLE_N_CARDS.length * amountOfPlayers);
     Card[] cards = new Card[TOTAL_AMOUNT_OF_CARDS];
@@ -62,7 +60,7 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
         nDeck.add(POSSIBLE_N_CARDS[j]);
       }
     }
-    Collections.shuffle(nCardDeck);
+    Collections.shuffle(nDeck);
     return nDeck;
   }
 
