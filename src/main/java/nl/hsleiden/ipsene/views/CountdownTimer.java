@@ -22,7 +22,7 @@ public class CountdownTimer implements Runnable {
   /** SLEEPTIME is in mili sec */
   private final int SLEEPTIME = 1000;
   /** MAXTURNTIME and MINTURNTIME in sec */
-  private final int SMALLESTTWODIGIT = 10;
+  private final int SMALLEST_TWO_DIGIT = 10;
 
   private final int ENDTIME = 0;
 
@@ -37,6 +37,7 @@ public class CountdownTimer implements Runnable {
 
   @Override
   public void run() {
+    /** numberAsString help variable for converting integer to string */
     String numberAsString;
     ViewHelper.setNodeCoordinates(label, labelX, labelY);
     label.setStyle("-fx-font-family: 'Comic Sans MS'; -fx-font-size: 120; -fx-text-fill: #000000");
@@ -44,9 +45,9 @@ public class CountdownTimer implements Runnable {
     // System.out.println("Thread is running");
     while (!Thread.interrupted()) {
       System.out.println("Thread is running");
-      if (countDownTime >= SMALLESTTWODIGIT) {
+      if (countDownTime >= SMALLEST_TWO_DIGIT) {
         numberAsString = Integer.toString(countDownTime);
-      } else if (countDownTime < SMALLESTTWODIGIT && countDownTime > ENDTIME) {
+      } else if (countDownTime < SMALLEST_TWO_DIGIT && countDownTime > ENDTIME) {
         numberAsString = "0" + Integer.toString(countDownTime);
       } else {
         break;
@@ -72,7 +73,7 @@ public class CountdownTimer implements Runnable {
       try {
         Thread.sleep(3000);
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        logger.error(e.getMessage(), e);
       }
       Platform.runLater(
           () -> {
