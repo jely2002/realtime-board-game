@@ -5,5 +5,5 @@ import nl.hsleiden.ipsene.models.Pawn;
 import nl.hsleiden.ipsene.models.Player;
 
 public interface Playable {
-  void play(Player player, Pawn pawn, Card card);
+  void play(Player player, Card card);
 }

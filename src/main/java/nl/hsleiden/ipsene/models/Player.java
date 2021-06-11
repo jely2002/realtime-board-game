@@ -24,6 +24,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
   private ArrayList<Pawn> pawns;
 
   private int selectedPawnIndex = 0;
+  private int selectedPawnIndex2 = -1;
   private int selectedCardIndex = 0;
 
   private int id;
@@ -55,11 +56,25 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
     return (team.teamIndex == other.team.teamIndex && id == other.id);
   }
 
+  /** sets the pawn to be moved by the card
+   * @param i the index of the pawn
+   */
   public void setSelectedPawnIndex(int i) {
+    System.out.println("first pawn selected");
     selectedPawnIndex = i;
+  }
+  public void setSecondSelectedPawnIndex(int i) {
+    System.out.println("second pawn selected");
+
+    if (cards.get(selectedCardIndex).getType().isTwoPawnCard())
+      selectedPawnIndex2 = i;
   }
 
   public void setSelectedCardIndex(int i) {
+    for (Card c : cards) {
+      c.setIsSelected(false);
+    }
+    cards.get(i).setIsSelected(true);
     selectedCardIndex = i;
   }
 
@@ -71,16 +86,29 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
     return pawns;
   }
 
-  public void doTurn() {
-    // just zero for now, should use a callback from the view to get the clicked pawns index or
-    // something
-    // todo set selected card and pawn before calling before getting the pawn and playing the card
-    Pawn selectedPawn = team.getPawn(playerIndex, selectedPawnIndex);
-    if (selectedPawn != null) {
-      playCard(selectedPawn);
-    } else {
-      logger.warn("Player#doTurn failed. No pawn selected.");
+  public void emptyCards() {
+    cards.clear();
+  }
+
+  public boolean doTurn() {
+    // if we need to select two pawns return false if the second pawn was not selected
+    if (cards.get(selectedCardIndex).getType().isTwoPawnCard()) {
+      if (selectedPawnIndex2 == -1)
+        return false;
     }
+    System.out.println("do turn");
+    // if the pawn we play this on is not out of its pool yet
+    if (cards.get(selectedCardIndex).getType() != CardType.SPAWN) {
+      if (!getSelectedPawn(true).isOutOfPool())
+        return false;
+    }
+    playCard();
+    return true;
+  }
+  public boolean isFirstPawnSelected() { return selectedPawnIndex != -1;}
+  public Pawn getSelectedPawn(boolean firstPawn) {
+    int index = (firstPawn) ? selectedPawnIndex : selectedPawnIndex2;
+    return team.getPawn(playerIndex, index);
   }
 
   public void addCard(Card card) {
@@ -88,10 +116,10 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
     cards.add(card);
   }
 
-  private void playCard(Pawn pawn) {
+  private void playCard() {
     if (selectedCardIndex != -1) {
       Card c = cards.get(selectedCardIndex);
-      c.play(this, pawn);
+      c.play(this);
       cards.remove(selectedCardIndex);
     }
     selectedCardIndex = -1;
@@ -152,6 +180,9 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
       int step = (int) (long) card.get("value");
       this.cards.add(new Card(cardType, step));
     }
+    // unselect pawns
+    selectedPawnIndex = -1;
+    selectedPawnIndex2 = -1;
   }
 
   private final ArrayList<View> observers = new ArrayList<>();

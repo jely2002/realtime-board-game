@@ -14,7 +14,7 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
   private static final Logger logger = LoggerFactory.getLogger(Card.class.getName());
 
   public final int steps;
-
+  private boolean isSelected = false;
   private Playable onPlay;
   private CardType type;
 
@@ -30,59 +30,66 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
     this.steps = steps;
     onPlay = onPlayActions.get(type);
   }
-
+  public boolean isSelected() { return isSelected; }
+  public void setIsSelected(boolean selected) { isSelected = selected; }
   /**
    * calls the appropriate method for this card to be played
    *
    * @param player the player playing this card
-   * @param pawn the pawn the card was used on
    */
-  public void play(Player player, Pawn pawn) {
-    onPlay.play(player, pawn, this);
+  public void play(Player player) {
+    onPlay.play(player,this);
   }
 
-  private static void playSpawnCard(Player player, Pawn pawn, Card card) {
+  private static void playSpawnCard(Player player, Card card) {
     System.out.println("played spawn card");
+    Pawn pawn = player.getSelectedPawn(true);
+    pawn.takeOutOfPool();
     logger.debug("spawn card played");
   }
 
-  private static void playSubCard(Player player, Pawn pawn, Card card) {
+  private static void playSubCard(Player player, Card card) {
     System.out.println("played sub card");
     logger.debug("sub card played");
   }
 
-  private static void playSpawnStep1Card(Player player, Pawn pawn, Card card) {
+  private static void playSpawnStep1Card(Player player, Card card) {
     // System.out.println("played spawn step 1");
-    int p = pawn.getBoardPosition();
-
+    Pawn pawn = player.getSelectedPawn(true);
     pawn.addRelativeBoardPosition(1);
     // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
 
     logger.debug("step1 card played");
   }
 
-  private static void playStep7Card(Player player, Pawn pawn, Card card) {
+  private static void playStep7Card(Player player, Card card) {
     // System.out.println("played 7 card");
-    int p = pawn.getBoardPosition();
-
-    pawn.addRelativeBoardPosition(7);
+    Pawn pawn = player.getSelectedPawn(true);
+    Pawn pawn2 = player.getSelectedPawn(false);
+    if (pawn2 != null) {
+      pawn.addRelativeBoardPosition(3);
+      pawn2.addRelativeBoardPosition(3);
+    }
+    else {
+      pawn.addRelativeBoardPosition(7);
+    }
     // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
-
     logger.debug("step7 card played");
   }
 
-  private static void playStep4Card(Player player, Pawn pawn, Card card) {
+  private static void playStep4Card(Player player, Card card) {
     // System.out.println("played 4 card");
+    Pawn pawn = player.getSelectedPawn(true);
     int p = pawn.getBoardPosition();
-
     pawn.addRelativeBoardPosition(4);
     // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
 
     logger.debug("step4 card played");
   }
 
-  private static void playStepNCard(Player player, Pawn pawn, Card card) {
+  private static void playStepNCard(Player player, Card card) {
     // System.out.println("played n card value: " + card.steps);
+    Pawn pawn = player.getSelectedPawn(true);
     int p = pawn.getBoardPosition();
     pawn.addRelativeBoardPosition(card.steps);
     // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());

@@ -56,6 +56,11 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
       }
     }
   }
+  public void emptyCards() {
+    for (int i = 0; i < players.length; i++) {
+      players[i].emptyCards();
+    }
+  }
 
   /**
    * gets a pawn with a given index from a given player
@@ -66,7 +71,7 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
    */
   public Pawn getPawn(int playerIndex, int pawnIndex) {
     if (playerIndex < PLAYERS_PER_TEAM) return players[playerIndex].getPawn(pawnIndex);
-    return null; // TODO Remove null return
+    return null; // do NOT remove NULL is used by Player
   }
 
   public Player getPlayer(int playerIndex) {
