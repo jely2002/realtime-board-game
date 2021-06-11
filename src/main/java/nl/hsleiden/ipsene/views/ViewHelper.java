@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -244,6 +245,33 @@ public class ViewHelper {
     }
 
     return vbx;
+  }
+
+  public static Label winnerLabelBuilder(boolean hasWon, int winningTeam) {
+    Label lbl = new Label();
+    String text = "";
+
+    if (hasWon) {
+      text += "You win! ";
+    } else {
+      text += "You lost! Team " + winningTeam + " wins!";
+    }
+    lbl.setText(text);
+    lbl.setStyle("-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-text-fill: #000000");
+
+    return lbl;
+  }
+
+  public static Button buttonBuilder(String txt) {
+    Button btn = new Button();
+
+    btn.setPrefWidth(200);
+    btn.setPrefHeight(125);
+    btn.setText(txt);
+    btn.setStyle("-fx-font-size: 20;");
+    ViewHelper.applyDropShadow(btn);
+
+    return btn;
   }
 
   /**
