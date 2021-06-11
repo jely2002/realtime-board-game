@@ -1,6 +1,5 @@
 package nl.hsleiden.ipsene.views;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -76,7 +75,6 @@ public class LobbyView implements View {
 
     Label player4Display = playerDisplayLabel("Player 4", player4Available, YELLOW);
     ViewHelper.setNodeCoordinates(player4Display, 10, 660);
-
 
     this.player1Join = joinButtonBuilder(1, player1Available);
     player1Join.setId("1");
@@ -276,12 +274,13 @@ public class LobbyView implements View {
         }
       };
 
-  EventHandler<MouseEvent> playButtonClicked = new EventHandler<MouseEvent>() {
-    @Override
-    public void handle(MouseEvent mouseEvent) {
-      startGame();
-    }
-  };
+  EventHandler<MouseEvent> playButtonClicked =
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+          startGame();
+        }
+      };
 
   // TODO finetune and check if boardstage really comes after lobbyView
   private void startGame() {
