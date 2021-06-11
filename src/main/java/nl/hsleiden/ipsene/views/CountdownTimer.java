@@ -42,9 +42,7 @@ public class CountdownTimer implements Runnable {
     ViewHelper.setNodeCoordinates(label, labelX, labelY);
     label.setStyle("-fx-font-family: 'Comic Sans MS'; -fx-font-size: 120; -fx-text-fill: #000000");
     int countDownTime = turnTime;
-    // System.out.println("Thread is running");
     while (!Thread.interrupted()) {
-      System.out.println("Thread is running");
       if (countDownTime >= SMALLEST_TWO_DIGIT) {
         numberAsString = Integer.toString(countDownTime);
       } else if (countDownTime < SMALLEST_TWO_DIGIT && countDownTime > ENDTIME) {
@@ -77,7 +75,6 @@ public class CountdownTimer implements Runnable {
       }
       Platform.runLater(
           () -> {
-            System.out.println("Thread is stopped");
             gameController.backToMainMenu();
           });
     }
