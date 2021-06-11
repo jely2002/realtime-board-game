@@ -112,11 +112,11 @@ public class BoardView implements View {
     Label playersTurnDisplay = ViewHelper.playersTurnDisplay(turnPlayerNumber);
     ViewHelper.setNodeCoordinates(playersTurnDisplay, 1350, 200);
 
-    Label roundNumberHeader = ViewHelper.headerLabelBuilder("Round number:");
-    ViewHelper.setNodeCoordinates(roundNumberHeader, 1375, 280);
+//    Label roundNumberHeader = ViewHelper.headerLabelBuilder("Round number:");
+//    ViewHelper.setNodeCoordinates(roundNumberHeader, 1375, 280);
 
-    Label roundNumberDisplay = ViewHelper.roundNumberDisplayBuilder(roundNumber, 1);
-    ViewHelper.setNodeCoordinates(roundNumberDisplay, 1400, 300);
+    VBox roundNumberDisplay = ViewHelper.roundNumberDisplayBuilder(roundNumber, 1);
+    ViewHelper.setNodeCoordinates(roundNumberDisplay, 1375, 280);
 
     // BOTTOM CARD BAR
     VBox cardsText = ViewHelper.verticalTextDisplayBuilder("CARDS");
@@ -131,7 +131,7 @@ public class BoardView implements View {
             timerLabel,
             timerHeader,
             playersTurnDisplay);
-    pane.getChildren().addAll(cardsText, roundNumberDisplay, roundNumberHeader);
+    pane.getChildren().addAll(cardsText, roundNumberDisplay);
     pane.getChildren().addAll(pawns);
     pane.getChildren().addAll(cards);
 

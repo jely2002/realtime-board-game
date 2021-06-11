@@ -20,6 +20,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import nl.hsleiden.ipsene.application.Main;
+import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.CardType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -195,16 +196,29 @@ public class ViewHelper {
    * @param startOffset set to 0 if round counting starts at 1, set to 0 if counting starts at 1
    * @return returns label with formatted round number
    */
-  public static Label roundNumberDisplayBuilder(int roundNumber, int startOffset) {
-    String display;
+  public static VBox roundNumberDisplayBuilder(int roundNumber, int startOffset) {
+    String css = "-fx-font-family: 'Comic Sans MS'; -fx-font-size: 120; -fx-text-fill: #000000";
     roundNumber = roundNumber + startOffset;
 
-    Label lbl = new Label();
-    display = ((roundNumber / 3) + 1) + "." + roundNumber % 3;
-    lbl.setStyle("-fx-font-family: 'Comic Sans MS'; -fx-font-size: 120; -fx-text-fill: #000000");
-    lbl.setText(display);
+    VBox vbx = new VBox();
+    Label roundNumberHeader = ViewHelper.headerLabelBuilder("Round Number:");
 
-    return lbl;
+
+    Label roundNumberLabel = new Label();
+    roundNumberLabel.setStyle(css);
+    roundNumberLabel.setText(String.valueOf(((roundNumber / 3) + 1)));
+    roundNumberLabel.setTranslateX(55);
+
+    Label subroundNumberHeader = ViewHelper.headerLabelBuilder("Sub Round:");
+
+    Label subroundNumberLabel = new Label();
+    subroundNumberLabel.setStyle(css);
+    subroundNumberLabel.setText(String.valueOf(roundNumber % 3));
+    subroundNumberLabel.setTranslateX(55);
+
+    vbx.getChildren().addAll(roundNumberHeader, roundNumberLabel, subroundNumberHeader, subroundNumberLabel);
+
+    return vbx;
   }
 
   /**
