@@ -57,13 +57,13 @@ public class MenuView implements View {
     lobbyController.registerObserver(this);
 
     // todo remove this when done debugging
-    try {
-      // lobbyController.join("76430");
-      lobbyController.host();
-      toLobby();
-    } catch (ServerConnectionException e) {
-      e.printStackTrace();
-    }
+    //    try {
+    //      // lobbyController.join("76430");
+    //      lobbyController.host();
+    //      toLobby();
+    //    } catch (ServerConnectionException e) {
+    //      e.printStackTrace();
+    //    }
   }
 
   private void loadPrimaryStage(Pane pane) {
