@@ -51,7 +51,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
     }
   }
 
-  public boolean equels(Player other) {
+  public boolean equals(Player other) {
     return (team.teamIndex == other.team.teamIndex && id == other.id);
   }
 
