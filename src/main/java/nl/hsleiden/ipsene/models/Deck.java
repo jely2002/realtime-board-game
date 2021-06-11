@@ -18,10 +18,7 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
   public Deck(int amountOfPlayers, Game game) {
     this.game = game;
     nCardDeck = generateNCardDeck(amountOfPlayers);
-    System.out.println("generated deck: ");
     cards = new ArrayList<>(Arrays.asList(generateDeck(amountOfPlayers, nCardDeck)));
-    for (Card c : cards) {
-    }
   }
 
   private Card[] generateDeck(int amountOfPlayers, ArrayList<Integer> nCardDeck) {

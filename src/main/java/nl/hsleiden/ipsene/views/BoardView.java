@@ -6,7 +6,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -24,9 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BoardView implements View {
   private static final Logger logger = LoggerFactory.getLogger(Main.class.getName());
@@ -58,14 +54,10 @@ public class BoardView implements View {
     this.boardController = new BoardController(4);
     boardController.registerObserver(this);
     gameController.registerObserver(this);
-    subscribeToPawnsAndPlayer(gameController);
+    gameController.getOwnPlayer().registerObserver(this);
     loadPrimaryStage(createInitialPane());
   }
-  private void subscribeToPawnsAndPlayer(GameController controller) {
-    // we are going in a loopedieloop...
-    controller.getOwnPlayer().registerObserver(this);
 
-  }
   private void loadPrimaryStage(Pane pane) {
     logger.info("BoardView started!");
     try {
@@ -98,14 +90,16 @@ public class BoardView implements View {
     ViewHelper.setNodeCoordinates(keezBoardLogo,1350,725);
 
     ImageView gameBoard = ViewHelper.drawGameBoard();
-    // No coordinates need to be set, as its always at 0,0
 
+    // pawns and cards
     ArrayList<Node> pawns = buildPawns();
+    ArrayList<ImageView> cards = buildCards();
 
     //RIGHT SIDEBAR
     Label timerHeader = ViewHelper.headerLabelBuilder("Time left:");
     ViewHelper.setNodeCoordinates(timerHeader, 1400, 10);
 
+    // the timer
     Label timerLabel = new Label();
     timerLabel.setStyle("-fx-font-family: 'Comic Sans MS'; -fx-font-size: 120; -fx-text-fill: #000000");
     timerLabel.setText(String.valueOf(timer));
@@ -123,8 +117,6 @@ public class BoardView implements View {
     Label roundNumberDisplay = ViewHelper.roundNumberDisplayBuilder(roundNumber, 1);
     ViewHelper.setNodeCoordinates(roundNumberDisplay, 1400,300);
 
-    ArrayList<ImageView> cards = buildCards();
-
     //BOTTOM CARD BAR
     VBox cardsText = ViewHelper.verticalTextDisplayBuilder("CARDS");
     ViewHelper.setNodeCoordinates(cardsText, 10, 700);
@@ -136,6 +128,10 @@ public class BoardView implements View {
 
     return pane;
   }
+
+  /** gets all pawns in the game and builds polygons for them
+   * @return a list of all the pawnlygons
+   */
   private ArrayList<Node> buildPawns() {
     Player ourPlayer = gameController.getOwnPlayer();
     // -1 for the player number to player index
@@ -156,6 +152,10 @@ public class BoardView implements View {
     }
     return allpawns;
   }
+
+  /** gets the owning player and builds image views from its cards
+   * @return a list of ImageViews representing cards
+   */
   private ArrayList<ImageView> buildCards() {
     // show all our players cards
     cardSelected = false;
@@ -178,6 +178,9 @@ public class BoardView implements View {
           boardController.startTurnTimer();
         }
       };
+  /**
+   * called when one of our cards is clicked, calculates what card was clicked through its position
+   */
   EventHandler<MouseEvent> cardClicked = new EventHandler<MouseEvent>() {
     @Override
     public void handle(MouseEvent mouseEvent) {
@@ -193,6 +196,10 @@ public class BoardView implements View {
 
     }
   };
+  /**
+   * called when a pawn is clicked, checks if a card is selected, if it is calculates the pawn closest to the clicked position.
+   * then sets that pawn as the selected pawn for the player and calls doTurn and serializes the game again
+   */
   EventHandler<MouseEvent> pawnClickedEvent = new EventHandler<MouseEvent>() {
     @Override
     public void handle(MouseEvent mouseEvent) {
@@ -213,6 +220,13 @@ public class BoardView implements View {
       }
     }
   };
+
+  /** gets the distance between a pawn and a position on screen
+   * @param p the pawn to check for
+   * @param mousex the mouse x position
+   * @param mousey the mouse y position
+   * @return the distance between the pawn and the mouse
+   */
   private double getPawnDistanceFromMouse(Pawn p, double mousex, double mousey) {
     Vec2d realPos = ViewHelper.getRealPositionFromBoard(p.getBoardPosition());
     return Math.sqrt(Math.pow(realPos.x - mousex, 2) + Math.pow(realPos.y - mousey, 2));
@@ -224,8 +238,8 @@ public class BoardView implements View {
     } catch (Exception e) {
       logger.error(e.getMessage(), e);
     }
+    // reset the x position of the cards to draw them anew
     lastCardX = CARD_START_X_POSITION;
-    System.out.println("updated");
     Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
   }
 

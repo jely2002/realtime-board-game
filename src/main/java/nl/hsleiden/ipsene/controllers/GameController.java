@@ -31,6 +31,7 @@ public class GameController implements Controller {
   public ArrayList<Team> getTeams() {
     return game.getTeams();
   }
+
   public void serializeGame() {
     try {
       firebaseService.set(game.getToken(), game.serialize());
