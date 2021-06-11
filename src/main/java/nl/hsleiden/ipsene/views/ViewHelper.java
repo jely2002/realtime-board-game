@@ -8,9 +8,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import com.sun.javafx.tk.FontLoader;
-import com.sun.javafx.tk.Toolkit;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -250,14 +247,13 @@ public class ViewHelper {
     return vbx;
   }
 
-  public static Label winnerLabelBuilder(boolean hasWon, int winningTeam){
+  public static Label winnerLabelBuilder(boolean hasWon, int winningTeam) {
     Label lbl = new Label();
     String text = "";
 
-    if (hasWon){
+    if (hasWon) {
       text += "You win! ";
-    }
-    else {
+    } else {
       text += "You lost! Team " + winningTeam + " wins!";
     }
     lbl.setText(text);
