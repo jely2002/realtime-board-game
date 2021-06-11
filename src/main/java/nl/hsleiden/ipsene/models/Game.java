@@ -3,6 +3,8 @@ package nl.hsleiden.ipsene.models;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
+
+import nl.hsleiden.ipsene.controllers.LobbyController;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import nl.hsleiden.ipsene.interfaces.Model;
@@ -29,11 +31,14 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   private Timestamp turnStartTime;
   private int cardsPerPlayerNextRound = 0;
 
-  public Game() {
+  private LobbyController lobbyController;
+
+  public Game(LobbyController lobbyController) {
     this.token = generateToken(TOKEN_LENGTH);
     this.round = 0;
     this.teams = generateTeams();
     this.deck = new Deck(4, this);
+    this.lobbyController = lobbyController;
     setCardsToBeDrawnNextTurn(5);
     distributeCards();
   }
@@ -146,6 +151,10 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
   public void setTurnStartTime(Timestamp turnStartTime) {
     this.turnStartTime = turnStartTime;
+  }
+
+  public void backToMainMenu() {
+    this.lobbyController.backToMainMenu();
   }
 
   @Override

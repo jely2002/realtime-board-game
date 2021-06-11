@@ -32,6 +32,7 @@ public class BoardView implements View {
 
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
+  private final int MAXTURNTIME = 60;
 
   private final String RED = "#FF0000";
   private final String BLUE = "#0000FF";
@@ -70,9 +71,8 @@ public class BoardView implements View {
 
   private Pane createInitialPane() {
     Pane pane = new Pane();
-    // TODO: hoe veel tijd er nog voor de zet over is, aansturen a.d.h.v firebase(ik weet niet hoe
-    // dit moet!)
-    int timer = 60;
+    // TODO: hoe veel tijd er nog voor de zet over is, aansturen a.d.h.v firebase(ik weet niet hoe dit moet!)
+    int timer = MAXTURNTIME;
 
     // TODO: Welke ronde we nu in zitten in een coole integer!
     int roundNumber = 3;
@@ -104,7 +104,7 @@ public class BoardView implements View {
     timerLabel.setStyle(
         "-fx-font-family: 'Comic Sans MS'; -fx-font-size: 120; -fx-text-fill: #000000");
     timerLabel.setText(String.valueOf(timer));
-    CountdownTimer countdownTimer = new CountdownTimer(timerLabel, timer, 1400, 20);
+    CountdownTimer countdownTimer = new CountdownTimer(gameController, timerLabel, timer, 1400, 20);
     this.timerThread = new Thread(countdownTimer);
     timerThread.setDaemon(true);
     timerThread.start();
@@ -219,6 +219,7 @@ public class BoardView implements View {
         @Override
         public void handle(MouseEvent mouseEvent) {
           if (cardSelected) {
+            timerThread.interrupt();
             Player ourPlayer = gameController.getOwnPlayer();
             Pawn closestPawn = ourPlayer.getPawn(0);
             // get the closest pawn to our click position
@@ -235,6 +236,7 @@ public class BoardView implements View {
             ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
             ourPlayer.doTurn();
             gameController.serialize();
+            timerThread.start();
           }
         }
       };

@@ -44,6 +44,10 @@ public class GameController implements Controller {
     }
   }
 
+  public void backToMainMenu() {
+    this.game.backToMainMenu();
+  }
+
   @Override
   public void update(DocumentSnapshot document) {
     logger.info("Received update from firebase"); // TODO Remove in production

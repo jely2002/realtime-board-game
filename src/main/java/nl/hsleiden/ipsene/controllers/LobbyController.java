@@ -23,11 +23,14 @@ public class LobbyController implements Controller {
   private final Game game;
   private final FirebaseService firebaseService;
   private ListenerRegistration registration;
+  private MenuView menuView;
+  private Stage stage;
 
   public LobbyController(FirebaseService firebaseService, Stage stage) {
     this.firebaseService = firebaseService;
-    this.game = new Game();
-    new MenuView(stage, this);
+    this.game = new Game(this);
+    this.menuView =  new MenuView(stage, this);
+    this.stage = stage;
   }
 
   @Override
@@ -152,5 +155,9 @@ public class LobbyController implements Controller {
 
   public void quit() {
     Platform.exit();
+  }
+
+  public void backToMainMenu() {
+    this.menuView =  new MenuView(stage, this);
   }
 }
