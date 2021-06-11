@@ -1,6 +1,7 @@
 package nl.hsleiden.ipsene.views;
 
 import com.sun.javafx.geom.Vec2d;
+import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -17,12 +18,9 @@ import nl.hsleiden.ipsene.application.Main;
 import nl.hsleiden.ipsene.controllers.BoardController;
 import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.interfaces.View;
-
 import nl.hsleiden.ipsene.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
 
 public class BoardView implements View {
   private static final Logger logger = LoggerFactory.getLogger(Main.class.getName());
@@ -69,9 +67,11 @@ public class BoardView implements View {
       e.printStackTrace();
     }
   }
+
   private Pane createInitialPane() {
     Pane pane = new Pane();
-    // TODO: hoe veel tijd er nog voor de zet over is, aansturen a.d.h.v firebase(ik weet niet hoe dit moet!)
+    // TODO: hoe veel tijd er nog voor de zet over is, aansturen a.d.h.v firebase(ik weet niet hoe
+    // dit moet!)
     int timer = 60;
 
     // TODO: Welke ronde we nu in zitten in een coole integer!
@@ -87,7 +87,7 @@ public class BoardView implements View {
     ViewHelper.setNodeCoordinates(cardRect, 0, 700);
 
     ImageView keezBoardLogo = ViewHelper.createLogo(null, 150);
-    ViewHelper.setNodeCoordinates(keezBoardLogo,1350,725);
+    ViewHelper.setNodeCoordinates(keezBoardLogo, 1350, 725);
 
     ImageView gameBoard = ViewHelper.drawGameBoard();
 
@@ -95,13 +95,14 @@ public class BoardView implements View {
     ArrayList<Node> pawns = buildPawns();
     ArrayList<ImageView> cards = buildCards();
 
-    //RIGHT SIDEBAR
+    // RIGHT SIDEBAR
     Label timerHeader = ViewHelper.headerLabelBuilder("Time left:");
     ViewHelper.setNodeCoordinates(timerHeader, 1400, 10);
 
     // the timer
     Label timerLabel = new Label();
-    timerLabel.setStyle("-fx-font-family: 'Comic Sans MS'; -fx-font-size: 120; -fx-text-fill: #000000");
+    timerLabel.setStyle(
+        "-fx-font-family: 'Comic Sans MS'; -fx-font-size: 120; -fx-text-fill: #000000");
     timerLabel.setText(String.valueOf(timer));
     CountdownTimer countdownTimer = new CountdownTimer(timerLabel, timer, 1400, 20);
     this.timerThread = new Thread(countdownTimer);
@@ -115,13 +116,21 @@ public class BoardView implements View {
     ViewHelper.setNodeCoordinates(roundNumberHeader, 1375, 280);
 
     Label roundNumberDisplay = ViewHelper.roundNumberDisplayBuilder(roundNumber, 1);
-    ViewHelper.setNodeCoordinates(roundNumberDisplay, 1400,300);
+    ViewHelper.setNodeCoordinates(roundNumberDisplay, 1400, 300);
 
-    //BOTTOM CARD BAR
+    // BOTTOM CARD BAR
     VBox cardsText = ViewHelper.verticalTextDisplayBuilder("CARDS");
     ViewHelper.setNodeCoordinates(cardsText, 10, 700);
 
-    pane.getChildren().addAll(gameBoard ,statRect, cardRect, keezBoardLogo, timerLabel, timerHeader, playersTurnDisplay);
+    pane.getChildren()
+        .addAll(
+            gameBoard,
+            statRect,
+            cardRect,
+            keezBoardLogo,
+            timerLabel,
+            timerHeader,
+            playersTurnDisplay);
     pane.getChildren().addAll(cardsText, roundNumberDisplay, roundNumberHeader);
     pane.getChildren().addAll(pawns);
     pane.getChildren().addAll(cards);
@@ -129,7 +138,9 @@ public class BoardView implements View {
     return pane;
   }
 
-  /** gets all pawns in the game and builds polygons for them
+  /**
+   * gets all pawns in the game and builds polygons for them
+   *
    * @return a list of all the pawnlygons
    */
   private ArrayList<Node> buildPawns() {
@@ -139,7 +150,7 @@ public class BoardView implements View {
     for (Team t : gameController.getTeams()) {
       for (int i = 0; i < Team.PLAYERS_PER_TEAM; i++) {
         Player p = t.getPlayer(i);
-        for(final Pawn pawn : p.getPawns()) {
+        for (final Pawn pawn : p.getPawns()) {
           Polygon poly = ViewHelper.createPawn(pawn.getTeamType().getCode());
           ViewHelper.setPawnPosition(poly, pawn.getBoardPosition());
           // only add event when this is one of our pawns
@@ -153,7 +164,9 @@ public class BoardView implements View {
     return allpawns;
   }
 
-  /** gets the owning player and builds image views from its cards
+  /**
+   * gets the owning player and builds image views from its cards
+   *
    * @return a list of ImageViews representing cards
    */
   private ArrayList<ImageView> buildCards() {
@@ -181,47 +194,54 @@ public class BoardView implements View {
   /**
    * called when one of our cards is clicked, calculates what card was clicked through its position
    */
-  EventHandler<MouseEvent> cardClicked = new EventHandler<MouseEvent>() {
-    @Override
-    public void handle(MouseEvent mouseEvent) {
-      // todo check if this is our turn
-      double mousex = mouseEvent.getSceneX();
-      // get the index of the card we clicked on
-      int clickedCardIndex = (int) ((mousex - CARD_START_X_POSITION) / CARD_SEPERATION_VALUE);
-      Player ourPlayer = gameController.getOwnPlayer();
-      if (clickedCardIndex < ourPlayer.getCards().size()) {
-        ourPlayer.setSelectedCardIndex(clickedCardIndex);
-        cardSelected = true;
-      }
-
-    }
-  };
-  /**
-   * called when a pawn is clicked, checks if a card is selected, if it is calculates the pawn closest to the clicked position.
-   * then sets that pawn as the selected pawn for the player and calls doTurn and serializes the game again
-   */
-  EventHandler<MouseEvent> pawnClickedEvent = new EventHandler<MouseEvent>() {
-    @Override
-    public void handle(MouseEvent mouseEvent) {
-      if (cardSelected) {
-        Player ourPlayer = gameController.getOwnPlayer();
-        Pawn closestPawn = ourPlayer.getPawn(0);
-        // get the closest pawn to our click position
-        for (int i = 1; i < Team.PAWNS_PER_PLAYER; i++) {
-          Pawn p = ourPlayer.getPawn(i);
-          double closestPawnDistance = getPawnDistanceFromMouse(closestPawn, mouseEvent.getSceneX(), mouseEvent.getSceneY());
-          double pawnDistance = getPawnDistanceFromMouse(p, mouseEvent.getSceneX(), mouseEvent.getSceneY());
-          closestPawn = (closestPawnDistance < pawnDistance) ? closestPawn : p;
+  EventHandler<MouseEvent> cardClicked =
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+          // todo check if this is our turn
+          double mousex = mouseEvent.getSceneX();
+          // get the index of the card we clicked on
+          int clickedCardIndex = (int) ((mousex - CARD_START_X_POSITION) / CARD_SEPERATION_VALUE);
+          Player ourPlayer = gameController.getOwnPlayer();
+          if (clickedCardIndex < ourPlayer.getCards().size()) {
+            ourPlayer.setSelectedCardIndex(clickedCardIndex);
+            cardSelected = true;
+          }
         }
-        // do turn and sent to firebase
-        ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
-        ourPlayer.doTurn();
-        gameController.serialize();
-      }
-    }
-  };
+      };
+  /**
+   * called when a pawn is clicked, checks if a card is selected, if it is calculates the pawn
+   * closest to the clicked position. then sets that pawn as the selected pawn for the player and
+   * calls doTurn and serializes the game again
+   */
+  EventHandler<MouseEvent> pawnClickedEvent =
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+          if (cardSelected) {
+            Player ourPlayer = gameController.getOwnPlayer();
+            Pawn closestPawn = ourPlayer.getPawn(0);
+            // get the closest pawn to our click position
+            for (int i = 1; i < Team.PAWNS_PER_PLAYER; i++) {
+              Pawn p = ourPlayer.getPawn(i);
+              double closestPawnDistance =
+                  getPawnDistanceFromMouse(
+                      closestPawn, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+              double pawnDistance =
+                  getPawnDistanceFromMouse(p, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+              closestPawn = (closestPawnDistance < pawnDistance) ? closestPawn : p;
+            }
+            // do turn and sent to firebase
+            ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
+            ourPlayer.doTurn();
+            gameController.serialize();
+          }
+        }
+      };
 
-  /** gets the distance between a pawn and a position on screen
+  /**
+   * gets the distance between a pawn and a position on screen
+   *
    * @param p the pawn to check for
    * @param mousex the mouse x position
    * @param mousey the mouse y position
@@ -231,11 +251,11 @@ public class BoardView implements View {
     Vec2d realPos = ViewHelper.getRealPositionFromBoard(p.getBoardPosition());
     return Math.sqrt(Math.pow(realPos.x - mousex, 2) + Math.pow(realPos.y - mousey, 2));
   }
+
   @Override
   public void update() {
     // reset the x position of the cards to draw them anew
     lastCardX = CARD_START_X_POSITION;
     Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
   }
-
 }
