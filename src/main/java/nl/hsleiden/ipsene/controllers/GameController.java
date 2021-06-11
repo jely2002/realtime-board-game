@@ -36,7 +36,7 @@ public class GameController implements Controller {
     return game.getTeams();
   }
 
-  public void serializeGame() {
+  public void serialize() {
     try {
       firebaseService.set(game.getToken(), game.serialize());
     } catch (ExecutionException | InterruptedException e) {

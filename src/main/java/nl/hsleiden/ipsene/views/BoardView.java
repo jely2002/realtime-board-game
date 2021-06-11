@@ -154,7 +154,7 @@ public class BoardView implements View {
           Polygon poly = ViewHelper.createPawn(pawn.getTeamType().getCode());
           ViewHelper.setPawnPosition(poly, pawn.getBoardPosition());
           // only add event when this is one of our pawns
-          if (p.equels(ourPlayer)) {
+          if (p.equals(ourPlayer)) {
             poly.addEventFilter(MouseEvent.MOUSE_CLICKED, pawnClickedEvent);
           }
           allpawns.add(poly);
@@ -234,7 +234,7 @@ public class BoardView implements View {
             // do turn and sent to firebase
             ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
             ourPlayer.doTurn();
-            gameController.serializeGame();
+            gameController.serialize();
           }
         }
       };
@@ -254,11 +254,6 @@ public class BoardView implements View {
 
   @Override
   public void update() {
-    try {
-      // timerThread.interrupt();
-    } catch (Exception e) {
-      logger.error(e.getMessage(), e);
-    }
     // reset the x position of the cards to draw them anew
     lastCardX = CARD_START_X_POSITION;
     Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
