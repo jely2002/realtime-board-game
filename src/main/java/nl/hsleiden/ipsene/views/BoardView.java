@@ -255,20 +255,10 @@ public class BoardView implements View {
         @Override
         public void handle(MouseEvent mouseEvent) {
           if (cardSelected) {
+            // TODO This may be broken (11/06/2021)
             timerThread.interrupt();
             Player ourPlayer = gameController.getOwnPlayer();
             Pawn closestPawn = ourPlayer.getPawn(0);
-            // get the closest pawn to our click position
-            for (int i = 1; i < Team.PAWNS_PER_PLAYER; i++) {
-              Pawn p = ourPlayer.getPawn(i);
-              double closestPawnDistance =
-                  getPawnDistanceFromMouse(
-                      closestPawn, mouseEvent.getSceneX(), mouseEvent.getSceneY());
-              double pawnDistance =
-                  getPawnDistanceFromMouse(p, mouseEvent.getSceneX(), mouseEvent.getSceneY());
-              closestPawn = (closestPawnDistance < pawnDistance) ? closestPawn : p;
-            }
-            // do turn and sent to firebase
             ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
             ourPlayer.doTurn();
             gameController.serialize();
