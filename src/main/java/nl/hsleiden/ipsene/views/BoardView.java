@@ -1,6 +1,5 @@
 package nl.hsleiden.ipsene.views;
 
-import com.sun.javafx.geom.Vec2d;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -58,7 +57,7 @@ public class BoardView implements View {
   }
 
   private void loadPrimaryStage(Pane pane) {
-    //logger.info("BoardView started!");
+    // logger.info("BoardView started!");
     try {
       Scene scene = new Scene(pane, WIDTH, HEIGHT);
       primaryStage.setScene(scene);
@@ -145,6 +144,7 @@ public class BoardView implements View {
 
     return pane;
   }
+
   private Button buildSkipTurnButton() {
     Button button = new Button();
     button.setText("skip turn");
@@ -155,15 +155,17 @@ public class BoardView implements View {
     ViewHelper.applyDropShadow(button);
     return button;
   }
-  EventHandler<MouseEvent> skipTurnEvent = new EventHandler<MouseEvent>() {
-    @Override
-    public void handle(MouseEvent mouseEvent) {
-      System.out.println("pressed");
-      gameController.increasePlayerCounter();
-      gameController.serialize();
-      loadPrimaryStage(createInitialPane());
-    }
-  };
+
+  EventHandler<MouseEvent> skipTurnEvent =
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+          System.out.println("pressed");
+          gameController.increasePlayerCounter();
+          gameController.serialize();
+          loadPrimaryStage(createInitialPane());
+        }
+      };
   /**
    * gets all pawns in the game and builds polygons for them
    *
@@ -180,12 +182,13 @@ public class BoardView implements View {
           Polygon poly = ViewHelper.createPawn(pawn);
           ViewHelper.setPawnPosition(poly, pawn.getBoardPosition());
           // only add event when this is one of our pawns and it is our turn
-          if (p.equals(ourPlayer) && gameController.getIdCurrentPlayer() == gameController.getOwnPlayer().getId()) {
+          if (p.equals(ourPlayer)
+              && gameController.getIdCurrentPlayer() == gameController.getOwnPlayer().getId()) {
             poly.addEventFilter(MouseEvent.MOUSE_CLICKED, pawnClickedEvent);
           }
           // for hover functionality
-//          poly.addEventFilter(MouseEvent.MOUSE_ENTERED, pawnHoverEvent);
-//          poly.addEventFilter(MouseEvent.MOUSE_EXITED, pawnHoverEvent);
+          //          poly.addEventFilter(MouseEvent.MOUSE_ENTERED, pawnHoverEvent);
+          //          poly.addEventFilter(MouseEvent.MOUSE_EXITED, pawnHoverEvent);
           allpawns.add(poly);
         }
       }
@@ -251,7 +254,9 @@ public class BoardView implements View {
         @Override
         public void handle(MouseEvent mouseEvent) {
           if (cardSelected) {
-            Pawn closestPawn = ViewHelper.getPawnClosestToPoint(gameController, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+            Pawn closestPawn =
+                ViewHelper.getPawnClosestToPoint(
+                    gameController, mouseEvent.getSceneX(), mouseEvent.getSceneY());
             // do turn
             boolean success = gameController.doTurn(closestPawn.getPawnNumber());
             if (success) {

@@ -56,6 +56,7 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
       }
     }
   }
+
   public void emptyCards() {
     for (int i = 0; i < players.length; i++) {
       players[i].emptyCards();

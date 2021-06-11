@@ -33,30 +33,34 @@ public class GameController implements Controller {
     return game.getPlayer(game.getOwnPlayer() - 1);
   }
 
-  public Integer getIdCurrentPlayer() { return game.getDoingTurn(); }
+  public Integer getIdCurrentPlayer() {
+    return game.getDoingTurn();
+  }
 
   public ArrayList<Team> getTeams() {
     return game.getTeams();
   }
 
-  public int getRound() { return game.getRound(); }
+  public int getRound() {
+    return game.getRound();
+  }
 
   /**
-   * @param pawnNumber sets the selected pawn in our own player, the calls Player#doTurn, increases the player counter and sents to firebase
+   * @param pawnNumber sets the selected pawn in our own player, the calls Player#doTurn, increases
+   *     the player counter and sents to firebase
    */
   public boolean doTurn(int pawnNumber) {
     if (getOwnPlayer().isFirstPawnSelected()) {
       getOwnPlayer().setSecondSelectedPawnIndex(pawnNumber);
-    }
-    else {
+    } else {
       getOwnPlayer().setSelectedPawnIndex(pawnNumber);
     }
     return getOwnPlayer().doTurn();
   }
 
   /**
-   * adds 1 to the id of the current player or wraps around when the highst value is reached
-   * if the highst value is reached redistributes cards and advance round
+   * adds 1 to the id of the current player or wraps around when the highst value is reached if the
+   * highst value is reached redistributes cards and advance round
    */
   public void increasePlayerCounter() {
     int nextPlayer = game.getDoingTurn() + 1;
@@ -66,9 +70,11 @@ public class GameController implements Controller {
       game.advanceRound();
     }
   }
+
   public Pawn getOwnPlayerPawn(int pawn) {
     return getOwnPlayer().getPawn(pawn);
   }
+
   public void serialize() {
     try {
       firebaseService.set(game.getToken(), game.serialize());

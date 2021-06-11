@@ -11,7 +11,6 @@ import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -296,12 +295,12 @@ public class ViewHelper {
    */
   public static Polygon createPawn(Pawn pawn) {
     String colour =
-//    if (pawn.isHover()) {
-//      // black
-//      colour = "#ffffff";
-//    }
-//    else
-    colour = pawn.getPlayerColour().getCode();
+        //    if (pawn.isHover()) {
+        //      // black
+        //      colour = "#ffffff";
+        //    }
+        //    else
+        colour = pawn.getPlayerColour().getCode();
 
     Polygon poly = new Polygon();
 
@@ -336,16 +335,14 @@ public class ViewHelper {
       coordinates.add(i, point);
     }
   }
+
   public static Pawn getPawnClosestToPoint(GameController gameController, double x, double y) {
     Pawn closestPawn = gameController.getOwnPlayerPawn(0);
     // get the closest pawn to our click position
     for (int i = 1; i < Team.PAWNS_PER_PLAYER; i++) {
       Pawn p = gameController.getOwnPlayerPawn(i);
-      double closestPawnDistance =
-              getPawnDistanceFromMouse(
-                      closestPawn, x, y);
-      double pawnDistance =
-              getPawnDistanceFromMouse(p, x, y);
+      double closestPawnDistance = getPawnDistanceFromMouse(closestPawn, x, y);
+      double pawnDistance = getPawnDistanceFromMouse(p, x, y);
       closestPawn = (closestPawnDistance < pawnDistance) ? closestPawn : p;
     }
     return closestPawn;

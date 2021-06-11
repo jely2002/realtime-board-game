@@ -30,15 +30,21 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
     this.steps = steps;
     onPlay = onPlayActions.get(type);
   }
-  public boolean isSelected() { return isSelected; }
-  public void setIsSelected(boolean selected) { isSelected = selected; }
+
+  public boolean isSelected() {
+    return isSelected;
+  }
+
+  public void setIsSelected(boolean selected) {
+    isSelected = selected;
+  }
   /**
    * calls the appropriate method for this card to be played
    *
    * @param player the player playing this card
    */
   public void play(Player player) {
-    onPlay.play(player,this);
+    onPlay.play(player, this);
   }
 
   private static void playSpawnCard(Player player, Card card) {
@@ -69,8 +75,7 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
     if (pawn2 != null) {
       pawn.addRelativeBoardPosition(3);
       pawn2.addRelativeBoardPosition(3);
-    }
-    else {
+    } else {
       pawn.addRelativeBoardPosition(7);
     }
     // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());

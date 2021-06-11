@@ -30,12 +30,14 @@ public enum CardType {
     return 0;
   }
 
-  /**
-   * @return if this cardtype allows taking steps
-   */
+  /** @return if this cardtype allows taking steps */
   public boolean isStepCard() {
-    return (code == CardType.SPAWN_STEP_1.code || code == CardType.STEP_7.code || code == CardType.STEP_4.code || code == CardType.STEP_N.code);
+    return (code == CardType.SPAWN_STEP_1.code
+        || code == CardType.STEP_7.code
+        || code == CardType.STEP_4.code
+        || code == CardType.STEP_N.code);
   }
+
   public boolean isTwoPawnCard() {
     return (code == CardType.SUB.code || code == CardType.STEP_7.code);
   }

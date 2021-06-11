@@ -38,11 +38,12 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     this.doingTurn = 0;
     distributeCards();
   }
-  public int getRound() { return round; }
 
-  /**
-   *
-   */
+  public int getRound() {
+    return round;
+  }
+
+  /** */
   public void advanceRound() {
     round += 1;
     cardsPerPlayerNextRound = (cardsThisTurnValue == 1) ? 5 : 4;
@@ -58,6 +59,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
       deck.regenerate();
     }
   }
+
   private ArrayList<Team> generateTeams() {
     ArrayList<Team> teams = new ArrayList<>();
     PlayerColour[][] types = {
@@ -76,9 +78,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     return sb.toString();
   }
 
-  /**
-   * distributes cards to all teams
-   */
+  /** distributes cards to all teams */
   private void distributeCards() {
     for (Team team : this.teams) {
       team.distributeCards(cardsPerPlayerNextRound, deck);
@@ -120,6 +120,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   public Integer getOwnPlayer() {
     return ownPlayer;
   }
+
   public void setOwnPlayer(Integer ownPlayer) {
     this.ownPlayer = ownPlayer;
   }
@@ -153,7 +154,10 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   public int getDoingTurn() {
     return doingTurn;
   }
-  public void setDoingTurnPlayer(int doingTurn) { this.doingTurn = doingTurn; }
+
+  public void setDoingTurnPlayer(int doingTurn) {
+    this.doingTurn = doingTurn;
+  }
 
   public void setRound(int round) {
     this.round = round;

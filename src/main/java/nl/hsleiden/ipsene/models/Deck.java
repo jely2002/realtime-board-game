@@ -17,14 +17,17 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
   private static final int[] POSSIBLE_N_CARDS = {2, 3, 5, 6, 8, 9, 10, 12};
 
   public Deck(int amountOfPlayers, Game game) {
-    this.game = game; this.amountOfPlayers = amountOfPlayers;
+    this.game = game;
+    this.amountOfPlayers = amountOfPlayers;
     nCardDeck = generateNCardDeck(amountOfPlayers);
     cards = new ArrayList<>(Arrays.asList(generateDeck(amountOfPlayers, nCardDeck)));
   }
+
   public void regenerate() {
     nCardDeck = generateNCardDeck(amountOfPlayers);
     cards = new ArrayList<>(Arrays.asList(generateDeck(amountOfPlayers, nCardDeck)));
   }
+
   private Card[] generateDeck(int amountOfPlayers, ArrayList<Integer> nCardDeck) {
 
     // each different card appears once for every player, nCards are added separately
