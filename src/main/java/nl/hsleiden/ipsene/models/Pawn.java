@@ -54,9 +54,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
     notifyObservers();
   }
 
-  /**
-   * @param amount the amount of 'tiles' to add to the pawns position
-   */
+  /** @param amount the amount of 'tiles' to add to the pawns position */
   public void addRelativeBoardPosition(int amount) {
     // if pos has changed then pawn is now outside pool
     if (isInsidePool && amount != 0) {
