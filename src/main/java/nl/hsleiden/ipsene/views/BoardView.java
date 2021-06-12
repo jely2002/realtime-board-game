@@ -32,7 +32,6 @@ public class BoardView implements View {
 
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
-  private final int MAXTURNTIME = 60;
 
   private final String RED = "#FF0000";
   private final String BLUE = "#0000FF";
@@ -75,9 +74,8 @@ public class BoardView implements View {
     Pane pane = new Pane();
     // TODO: hoe veel tijd er nog voor de zet over is, aansturen a.d.h.v firebase(ik weet niet hoe
     // dit moet!)
-    int timer = MAXTURNTIME;
+    int timer = gameController.getTimeLeft();
 
-    // Welke ronde we nu in zitten in een coole integer!
     int roundNumber = gameController.getRound();
 
     // TODO: de huidige speler die aan de beurt is hier doorgeven

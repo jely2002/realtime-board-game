@@ -1,5 +1,6 @@
 package nl.hsleiden.ipsene.models;
 
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
 import java.util.stream.Collectors;
