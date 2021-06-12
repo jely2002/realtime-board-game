@@ -72,13 +72,8 @@ public class BoardView implements View {
     lastCardX = CARD_START_X_POSITION;
 
     Pane pane = new Pane();
-    // TODO: hoe veel tijd er nog voor de zet over is, aansturen a.d.h.v firebase(ik weet niet hoe
-    // dit moet!)
     int timer = gameController.getTimeLeft();
-
     int roundNumber = gameController.getRound();
-
-    // TODO: de huidige speler die aan de beurt is hier doorgeven
     int turnPlayerNumber = gameController.getIdCurrentPlayer();
 
     Rectangle statRect = ViewHelper.createUIDividers(250, 700);
@@ -127,6 +122,15 @@ public class BoardView implements View {
     Button skipTurnButton = buildSkipTurnButton();
     skipTurnButton.addEventFilter(MouseEvent.MOUSE_CLICKED, skipTurnEvent);
 
+    // menu buttons
+    Button gameRulesButton = buildMenuButton("RULES");
+    ViewHelper.setNodeCoordinates(gameRulesButton, 5, 5);
+    gameRulesButton.addEventFilter(MouseEvent.MOUSE_CLICKED, openGameRulesButtonClicked);
+
+    Button returnToMainMenuButton = buildMenuButton("EXIT");
+    ViewHelper.setNodeCoordinates(returnToMainMenuButton, 85, 5);
+    returnToMainMenuButton.addEventFilter(MouseEvent.MOUSE_CLICKED, returnToMainMenuButtonClicked);
+
     // surrender button
     Button surrenderButton = buildSurrenderButton();
     surrenderButton.addEventFilter(MouseEvent.MOUSE_CLICKED, surrenderEvent);
@@ -143,6 +147,7 @@ public class BoardView implements View {
             skipTurnButton,
             surrenderButton);
     pane.getChildren().addAll(cardsText, roundNumberDisplay);
+    pane.getChildren().addAll(gameRulesButton, returnToMainMenuButton);
     pane.getChildren().addAll(pawns);
     pane.getChildren().addAll(cards);
 
@@ -168,6 +173,17 @@ public class BoardView implements View {
     ViewHelper.setNodeCoordinates(button, 1165, 715);
     button.setStyle("-fx-font-size: 20; -fx-background-color: " + RED);
     ViewHelper.applyDropShadow(button);
+    return button;
+  }
+
+  private Button buildMenuButton(String text) {
+    Button button = new Button();
+
+    button.setText(text);
+    button.setPrefWidth(75);
+    button.setPrefHeight(75);
+    button.setStyle("-fx-font-size: 10;");
+
     return button;
   }
 
@@ -284,6 +300,23 @@ public class BoardView implements View {
             ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
             if (ourPlayer.doTurn()) gameController.serialize();
           }
+        }
+      };
+
+  EventHandler<MouseEvent> returnToMainMenuButtonClicked =
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+          logger.debug("Back to menu button clicked");
+          gameController.backToMainMenu();
+        }
+      };
+  EventHandler<MouseEvent> openGameRulesButtonClicked =
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+          logger.debug("gameRules webpage opened");
+          BoardController.openWebpage("https://github.com/jely2002/IIPSENE/wiki/Rules");
         }
       };
 
