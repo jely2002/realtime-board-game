@@ -4,8 +4,6 @@ import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-
-import javafx.application.Platform;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.interfaces.View;
@@ -61,7 +59,10 @@ public class GameController implements Controller {
   public boolean isOwnPlayerCurrentPlayer() {
     return getIdCurrentPlayer() == getOwnPlayer().getId();
   }
-  public int getOwnPlayerId() { return getOwnPlayer().getId(); }
+
+  public int getOwnPlayerId() {
+    return getOwnPlayer().getId();
+  }
 
   public void setOwnPlayerSelectedPawnIndex(int index) {
     getOwnPlayer().setSelectedPawnIndex(index);
@@ -86,6 +87,7 @@ public class GameController implements Controller {
   public int getRound() {
     return game.getRound();
   }
+
   public boolean doesOwnPlayerHaveCards() {
     return getOwnPlayer().getCards().size() != 0;
   }
@@ -116,10 +118,12 @@ public class GameController implements Controller {
     getOwnPlayer().passTurn();
     advanceTurn();
   }
+
   public void advanceTurn() {
     increasePlayerCounter();
     serialize();
   }
+
   public final Pawn getOwnPlayerPawn(int pawn) {
     return getOwnPlayer().getPawn(pawn);
   }
@@ -131,8 +135,6 @@ public class GameController implements Controller {
       logger.error(e.getMessage(), e);
     }
   }
-
-
 
   public void clickPawn(boolean cardSelected, double x, double y) {
     if (cardSelected) {
@@ -162,7 +164,9 @@ public class GameController implements Controller {
   public final ArrayList<Player> getAllPlayers() {
     return game.getAllPlayers();
   }
+
   int i = 0;
+
   @Override
   public void update(DocumentSnapshot document) {
     logger.info("Received update from firebase"); // TODO Remove in production

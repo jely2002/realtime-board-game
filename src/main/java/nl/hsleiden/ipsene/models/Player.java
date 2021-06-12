@@ -57,7 +57,6 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
 
   public void setHasPassed(boolean p) {
     hasPassedTheTurn = p;
-
   }
 
   public boolean equals(Player other) {
