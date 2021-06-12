@@ -42,7 +42,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
 
   public int getBoardPosition() {
     if (isInsidePool) {
-      return pawnNumber + 1;
+      return Board.getFirstPoolPosition(colour) + pawnNumber + 1;
     }
     return Board.getFirstBoardPosition(colour) + boardPosition + 1;
   }
