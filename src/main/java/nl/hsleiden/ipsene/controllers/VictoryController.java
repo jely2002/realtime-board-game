@@ -13,9 +13,7 @@ public class VictoryController implements Controller {
   public void update(DocumentSnapshot ds) {}
 
   @Override
-  public void registerObserver(View v) {
-
-  }
+  public void registerObserver(View v) {}
 
   public void backToMainMenu(Stage primaryStage, FirebaseService firebaseService)
       throws IOException {

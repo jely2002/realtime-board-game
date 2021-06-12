@@ -2,9 +2,7 @@ package nl.hsleiden.ipsene.models;
 
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
-
 import java.util.*;
-
 import nl.hsleiden.ipsene.controllers.LobbyController;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
@@ -46,8 +44,13 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     distributeCards();
   }
 
-  public boolean hasGameStarted() { return gameHasStarted; }
-  public void setGameHasStarted(boolean started) { gameHasStarted = started; }
+  public boolean hasGameStarted() {
+    return gameHasStarted;
+  }
+
+  public void setGameHasStarted(boolean started) {
+    gameHasStarted = started;
+  }
 
   public int getRound() {
     return round;
