@@ -20,7 +20,7 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
 
   /** types: "spawn": 0 "sub": 1 "spawn_step_1": 2 "step_7": 3 "step_4": 4 "step_n": 5 */
   private static final HashMap<CardType, Playable> onPlayActions =
-          new HashMap<CardType, Playable>();
+      new HashMap<CardType, Playable>();
 
   static {
     onPlayActions.put(CardType.SPAWN, Card::playSpawnCard);
@@ -34,6 +34,7 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
    * binds the appropriate method to be called when Card.play is called and determines the correct
    * steps to use * types: * "spawn": 0 * "sub": 1 * "spawn_step_1": 2 * "step_7": 3 * "step_4": 4 *
    * "step_n": 5
+   *
    * @param type the type of card as an integer
    */
   public Card(CardType type, int steps) {
@@ -52,6 +53,7 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
 
   /**
    * calls the appropriate method for this card to be played
+   *
    * @param player the player playing this card
    */
   public void play(Player player) {

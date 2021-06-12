@@ -34,8 +34,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
    * @param team the players team
    * @param index the players index within its team
    */
-  public Player(
-      Team team, int id, int index, ArrayList<Pawn> pawns) {
+  public Player(Team team, int id, int index, ArrayList<Pawn> pawns) {
     cards = new ArrayList<>();
     this.id = id;
     this.team = team;

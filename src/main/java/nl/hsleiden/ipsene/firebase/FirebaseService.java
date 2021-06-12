@@ -5,7 +5,6 @@ import com.google.cloud.firestore.*;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
 import nl.hsleiden.ipsene.exceptions.GameNotFoundException;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import org.slf4j.Logger;
@@ -25,6 +24,7 @@ public class FirebaseService {
 
   /**
    * Attaches a snapshot listener to a controller instance
+   *
    * @param documentId the document that the listener attaches to
    * @param controller the controller that listens to events
    */
@@ -56,6 +56,7 @@ public class FirebaseService {
 
   /**
    * Overwrites the specified document with the new data
+   *
    * @param docData the data that must be written to firebase
    * @param documentId the target document id
    */
@@ -67,10 +68,12 @@ public class FirebaseService {
 
   /**
    * Gets a document snap shot from the specified documentId
+   *
    * @param documentId the document to get the data from
    * @return document snapshot containing the data
    */
-  public DocumentSnapshot get(String documentId) throws ExecutionException, InterruptedException, GameNotFoundException {
+  public DocumentSnapshot get(String documentId)
+      throws ExecutionException, InterruptedException, GameNotFoundException {
 
     DocumentReference docRef = this.colRef.document(documentId);
     ApiFuture<DocumentSnapshot> future = docRef.get();
@@ -87,6 +90,7 @@ public class FirebaseService {
 
   /**
    * Deletes a document
+   *
    * @param documentId the id of the document to delete
    */
   public void delete(String documentId) {

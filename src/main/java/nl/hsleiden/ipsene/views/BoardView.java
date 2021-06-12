@@ -271,26 +271,26 @@ public class BoardView implements View {
    * calls doTurn and serializes the game again
    */
   EventHandler<MouseEvent> pawnClickedEvent =
-          new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-              gameController.clickPawn(cardSelected, mouseEvent.getSceneX(), mouseEvent.getSceneY());
-            }
-          };
+      new EventHandler<>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+          gameController.clickPawn(cardSelected, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+        }
+      };
 
   EventHandler<MouseEvent> returnToMainMenuButtonClicked =
-          new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent e) {
-              logger.debug("Back to menu button clicked");
-              gameController.backToMainMenu();
-            }
-          };
+      new EventHandler<>() {
+        @Override
+        public void handle(MouseEvent e) {
+          logger.debug("Back to menu button clicked");
+          gameController.backToMainMenu();
+        }
+      };
   EventHandler<MouseEvent> openGameRulesButtonClicked =
-          e -> {
-            logger.debug("gameRules webpage opened");
-            BoardController.openWebpage("https://github.com/jely2002/IIPSENE/wiki/Rules");
-          };
+      e -> {
+        logger.debug("gameRules webpage opened");
+        BoardController.openWebpage("https://github.com/jely2002/IIPSENE/wiki/Rules");
+      };
 
   @Override
   public void update() {

@@ -95,6 +95,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
 
   /**
    * No longer does anything as there is a better alternative.
+   *
    * @param document the document received from firebase
    * @deprecated Don't use this, use update in the player. Pawn is already updated in player.
    */
@@ -104,6 +105,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
 
   /**
    * sets the pawns position, should be used to update from firebase in the player
+   *
    * @param position the new position
    */
   public void update(int position) {

@@ -3,7 +3,6 @@ package nl.hsleiden.ipsene.models;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import nl.hsleiden.ipsene.exceptions.OverdrawException;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
@@ -22,10 +21,7 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
     cards = new ArrayList<>(Arrays.asList(generateDeck(amountOfPlayers, nCardDeck)));
   }
 
-
-  /**
-   * Shuffle cards, only happens when a new deck is created currently.
-   */
+  /** Shuffle cards, only happens when a new deck is created currently. */
   public void regenerate() {
     nCardDeck = generateNCardDeck(amountOfPlayers);
     cards = new ArrayList<>(Arrays.asList(generateDeck(amountOfPlayers, nCardDeck)));
@@ -33,6 +29,7 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
 
   /**
    * Generates a deck, with 4 cars for every player for every card type.
+   *
    * @param amountOfPlayers The amount of players to give cards
    * @param nCardDeck n-cards to be given to players
    * @return The generated deck as array of cards
@@ -75,9 +72,9 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
     return cards;
   }
 
-
   /**
    * Generate a deck with only n-cards to be used later by generateDeck
+   *
    * @param amountOfPlayers The amount of players to give n-cards to
    * @return The deck of only n-cards
    */
@@ -104,6 +101,7 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
 
   /**
    * internally called by Card to determine the value of the 'step' variable
+   *
    * @return a value to be used by an nCard for its step amount, 0 if all values have been taken
    */
   private int getNCardStepValue() {

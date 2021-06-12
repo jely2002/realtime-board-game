@@ -7,7 +7,8 @@ import org.slf4j.LoggerFactory;
 
 public class WaitingForPlayersThread implements Runnable {
 
-  private static final Logger logger = LoggerFactory.getLogger(WaitingForPlayersThread.class.getName());
+  private static final Logger logger =
+      LoggerFactory.getLogger(WaitingForPlayersThread.class.getName());
 
   private final Label label;
   private final int DELAY = 750;

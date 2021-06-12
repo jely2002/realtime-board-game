@@ -4,13 +4,10 @@ import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-
-import javafx.event.Event;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.*;
-import nl.hsleiden.ipsene.views.ViewHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -138,9 +135,7 @@ public class GameController implements Controller {
 
   public void clickPawn(boolean cardSelected, double x, double y) {
     if (cardSelected) {
-      Pawn closestPawn =
-              getPawnClosestToPoint(
-                      x, y);
+      Pawn closestPawn = getPawnClosestToPoint(x, y);
       setOwnPlayerSelectedPawnIndex(closestPawn.getPawnNumber());
       // if turn was successful
       if (doOwnPlayerTurn()) {

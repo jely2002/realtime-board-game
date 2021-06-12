@@ -24,10 +24,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import nl.hsleiden.ipsene.application.Main;
-import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.models.CardType;
 import nl.hsleiden.ipsene.models.Pawn;
-import nl.hsleiden.ipsene.models.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

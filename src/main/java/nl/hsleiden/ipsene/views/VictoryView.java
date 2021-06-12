@@ -91,17 +91,17 @@ public class VictoryView implements View {
   }
 
   EventHandler<MouseEvent> quitButtonClicked =
-          new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent event) {
-              logger.debug("Back to menu button clicked");
-              try {
-                victoryController.backToMainMenu(primaryStage, firebaseService);
-              } catch (IOException e) {
-                logger.error(e.getMessage(), e);
-              }
-            }
-          };
+      new EventHandler<>() {
+        @Override
+        public void handle(MouseEvent event) {
+          logger.debug("Back to menu button clicked");
+          try {
+            victoryController.backToMainMenu(primaryStage, firebaseService);
+          } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+          }
+        }
+      };
 
   @Override
   public void update() {}

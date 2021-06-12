@@ -8,8 +8,6 @@ import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
@@ -54,10 +52,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     return round;
   }
 
-
-  /**
-   * Empties all decks and regenerates cards for them
-   */
+  /** Empties all decks and regenerates cards for them */
   public void advanceRound() {
     round += 1;
     cardsPerPlayerNextRound = (cardsThisTurnValue == 1) ? 5 : 4;
@@ -96,9 +91,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     return sb.toString();
   }
 
-  /**
-   * Distribute cards to all teams
-   */
+  /** Distribute cards to all teams */
   private void distributeCards() {
     for (Team team : this.teams) {
       team.distributeCards(cardsPerPlayerNextRound, deck);
@@ -157,6 +150,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
   /**
    * Get all the Players objects in the game. We currently have 4 of them.
+   *
    * @return ArrayList with Player objects.
    */
   public ArrayList<Player> getAllPlayers() {
@@ -170,6 +164,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
   /**
    * Loops through all the players and counts how many of them have cards.
+   *
    * @return the amount of players that have one or more cards.
    */
   public int amountOfPlayersWithCards() {
