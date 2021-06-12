@@ -4,6 +4,8 @@ import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+
+import javafx.application.Platform;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.interfaces.View;
@@ -43,7 +45,7 @@ public class GameController implements Controller {
     return false;
   }
 
-  public boolean hasOwnPlayedPassed() {
+  public boolean hasOwnPlayerPassed() {
     return getOwnPlayer().hasPassed();
   }
 
@@ -59,6 +61,7 @@ public class GameController implements Controller {
   public boolean isOwnPlayerCurrentPlayer() {
     return getIdCurrentPlayer() == getOwnPlayer().getId();
   }
+  public int getOwnPlayerId() { return getOwnPlayer().getId(); }
 
   public void setOwnPlayerSelectedPawnIndex(int index) {
     getOwnPlayer().setSelectedPawnIndex(index);
@@ -83,11 +86,9 @@ public class GameController implements Controller {
   public int getRound() {
     return game.getRound();
   }
-
-  public boolean hasGameStarted() {
-    return game.hasGameStarted();
+  public boolean doesOwnPlayerHaveCards() {
+    return getOwnPlayer().getCards().size() != 0;
   }
-
   /**
    * Adds 1 to the id of the current player or wraps around when the highest value is reached. If
    * there are no players left who have cards, we go to the next round.
@@ -113,9 +114,12 @@ public class GameController implements Controller {
   /** Remove all cards from the player and end turn. */
   public void passTurn() {
     getOwnPlayer().passTurn();
-    increasePlayerCounter();
+    advanceTurn();
   }
-
+  public void advanceTurn() {
+    increasePlayerCounter();
+    serialize();
+  }
   public final Pawn getOwnPlayerPawn(int pawn) {
     return getOwnPlayer().getPawn(pawn);
   }
@@ -128,10 +132,7 @@ public class GameController implements Controller {
     }
   }
 
-  public void advanceTurn() {
-    increasePlayerCounter();
-    serialize();
-  }
+
 
   public void clickPawn(boolean cardSelected, double x, double y) {
     if (cardSelected) {
@@ -161,11 +162,12 @@ public class GameController implements Controller {
   public final ArrayList<Player> getAllPlayers() {
     return game.getAllPlayers();
   }
-
+  int i = 0;
   @Override
   public void update(DocumentSnapshot document) {
     logger.info("Received update from firebase"); // TODO Remove in production
     game.update(document);
+    // if our player has passed his turn skip the turn
   }
 
   @Override
