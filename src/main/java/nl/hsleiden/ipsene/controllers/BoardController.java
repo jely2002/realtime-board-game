@@ -10,20 +10,16 @@ import java.io.IOException;
 
 public class BoardController implements Controller {
 
-  static BoardController boardController = null;
+  static BoardController boardController;
   private Board board;
 
   private Deck cards;
   private TeamController teamController;
   private boolean gameHasEnded = false;
-  private final int AMOUNT_OF_PLAYERS;
 
-  public BoardController(int amount_of_players) {
+  public BoardController() {
     this.board = new Board();
-    AMOUNT_OF_PLAYERS = amount_of_players;
   }
-
-  public static void getInstance() {}
 
   @Override
   public void update(DocumentSnapshot ds) {}
@@ -33,9 +29,9 @@ public class BoardController implements Controller {
     board.registerObserver(v);
   }
 
-  public static BoardController getInstance(int amount_of_players) {
+  public static BoardController getInstance() {
     if (boardController == null) {
-      boardController = new BoardController(amount_of_players);
+      boardController = new BoardController();
     }
     return boardController;
   }
