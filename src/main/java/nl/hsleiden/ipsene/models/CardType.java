@@ -8,11 +8,11 @@ import java.util.Map;
 /* source: https://stackoverflow.com/questions/5021246/conveniently-map-between-enum-and-int-string */
 public enum CardType {
   SPAWN(0),
-  SUB(1),
-  SPAWN_STEP_1(2),
-  STEP_7(3),
-  STEP_4(4),
-  STEP_N(5);
+  // SUB(1),
+  SPAWN_STEP_1(1),
+  STEP_7(2),
+  STEP_4(3),
+  STEP_N(4);
   private int code;
 
   public int getCode() {
@@ -43,7 +43,7 @@ public enum CardType {
   }
 
   public boolean isTwoPawnCard() {
-    return (code == CardType.SUB.code || code == CardType.STEP_7.code);
+    return (code == CardType.STEP_7.code);
   }
 
   public String getCardBackground(int steps) {
@@ -57,11 +57,6 @@ public enum CardType {
       case SPAWN:
         {
           path += "spawn.png";
-          break;
-        }
-      case SUB:
-        {
-          path += "trade.png";
           break;
         }
       case STEP_4:

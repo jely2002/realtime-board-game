@@ -20,8 +20,7 @@ public class GameController implements Controller {
 
   private final Game game;
   private final FirebaseService firebaseService;
-
-  private final int MAX_TURN_TIME = 60;
+  private final int MAX_TURN_TIME = 6000;
 
   public GameController(FirebaseService firebaseService, Game game) {
     this.game = game;
@@ -48,15 +47,6 @@ public class GameController implements Controller {
     return game.getRound();
   }
 
-  public int getTimeLeft() {
-    Timestamp startTime = game.getTurnStartTime();
-    if (startTime == null) {
-      startTime = Timestamp.now();
-    }
-    int secondsPast = startTime.compareTo(Timestamp.now());
-    return MAX_TURN_TIME - secondsPast;
-  }
-
   /**
    * Adds 1 to the id of the current player or wraps around when the highest value is reached. If
    * there are no players left who have cards, we go to the next round.
@@ -68,6 +58,15 @@ public class GameController implements Controller {
     if (game.amountOfPlayersWithCards() == 0) {
       game.advanceRound();
     }
+  }
+
+  public int getTimeLeft() {
+    Timestamp startTime = game.getTurnStartTime();
+    if (startTime == null) {
+      startTime = Timestamp.now();
+    }
+    int secondsPast = startTime.compareTo(Timestamp.now());
+    return MAX_TURN_TIME - secondsPast;
   }
 
   /** Remove all cards from the player and end turn. */
@@ -84,7 +83,6 @@ public class GameController implements Controller {
 
   public void serialize() {
     try {
-      game.setTurnStartTime(Timestamp.now());
       firebaseService.set(game.getToken(), game.serialize());
     } catch (ExecutionException | InterruptedException e) {
       logger.error(e.getMessage(), e);
