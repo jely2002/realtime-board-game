@@ -50,7 +50,7 @@ public class GameController implements Controller {
 
   public int getTimeLeft() {
     Timestamp startTime = game.getTurnStartTime();
-    if(startTime == null) {
+    if (startTime == null) {
       startTime = Timestamp.now();
     }
     int secondsPast = startTime.compareTo(Timestamp.now());
