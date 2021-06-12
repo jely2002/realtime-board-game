@@ -328,8 +328,8 @@ public class BoardView implements View {
     PlayerColour potentialWinner = boardController.hasGameBeenWon();
     System.out.println("winner: " + potentialWinner);
     if (potentialWinner != null) {
-      boardController.unRegisterObserver(this);
-      gameController.unregisterobserver(this);
+      boardController.unregisterObserver(this);
+      gameController.unregisterObserver(this);
       // someone has won the game
       victoryView.show(potentialWinner);
     } else {
