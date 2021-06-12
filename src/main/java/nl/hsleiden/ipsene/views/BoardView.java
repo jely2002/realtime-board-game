@@ -161,7 +161,6 @@ public class BoardView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          System.out.println("pressed");
           gameController.increasePlayerCounter();
           gameController.serialize();
           loadPrimaryStage(createInitialPane());
@@ -187,9 +186,6 @@ public class BoardView implements View {
               && gameController.getIdCurrentPlayer() == gameController.getOwnPlayer().getId()) {
             poly.addEventFilter(MouseEvent.MOUSE_CLICKED, pawnClickedEvent);
           }
-          // for hover functionality
-          //          poly.addEventFilter(MouseEvent.MOUSE_ENTERED, pawnHoverEvent);
-          //          poly.addEventFilter(MouseEvent.MOUSE_EXITED, pawnHoverEvent);
           allpawns.add(poly);
         }
       }
@@ -204,7 +200,6 @@ public class BoardView implements View {
    */
   private ArrayList<ImageView> buildCards() {
     // show all our players cards
-    cardSelected = false;
     Player ourPlayer = gameController.getOwnPlayer();
     ArrayList<ImageView> cards = new ArrayList<>();
     for (Card card : ourPlayer.getCards()) {
@@ -240,6 +235,7 @@ public class BoardView implements View {
           if (clickedCardIndex < ourPlayer.getCards().size()) {
             ourPlayer.setSelectedCardIndex(clickedCardIndex);
             cardSelected = true;
+
             loadPrimaryStage(createInitialPane());
           }
         }
@@ -255,14 +251,14 @@ public class BoardView implements View {
         @Override
         public void handle(MouseEvent mouseEvent) {
           if (cardSelected) {
-            // TODO This may be broken (11/06/2021)
-            timerThread.interrupt();
+            // timerThread.interrupt();
             Player ourPlayer = gameController.getOwnPlayer();
-            Pawn closestPawn = ourPlayer.getPawn(0);
+            Pawn closestPawn =
+                ViewHelper.getPawnClosestToPoint(
+                    gameController, mouseEvent.getSceneX(), mouseEvent.getSceneY());
             ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
-            ourPlayer.doTurn();
-            gameController.serialize();
-            timerThread.start();
+            if (ourPlayer.doTurn()) gameController.serialize();
+            // timerThread.start();
           }
         }
       };

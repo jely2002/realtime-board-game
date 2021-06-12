@@ -62,12 +62,10 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
    * @param i the index of the pawn
    */
   public void setSelectedPawnIndex(int i) {
-    System.out.println("first pawn selected");
     selectedPawnIndex = i;
   }
 
   public void setSecondSelectedPawnIndex(int i) {
-    System.out.println("second pawn selected");
 
     if (cards.get(selectedCardIndex).getType().isTwoPawnCard()) selectedPawnIndex2 = i;
   }
@@ -97,9 +95,8 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
     if (cards.get(selectedCardIndex).getType().isTwoPawnCard()) {
       if (selectedPawnIndex2 == -1) return false;
     }
-    System.out.println("do turn");
-    // if the pawn we play this on is not out of its pool yet
-    if (cards.get(selectedCardIndex).getType() != CardType.SPAWN) {
+    // if the card is not a spawn card and the selected pawn is not out of the pool yet return false
+    if (!cards.get(selectedCardIndex).getType().isSpawnCard()) {
       if (!getSelectedPawn(true).isOutOfPool()) return false;
     }
     playCard();
@@ -121,13 +118,14 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
   }
 
   private void playCard() {
+
     if (selectedCardIndex != -1) {
       Card c = cards.get(selectedCardIndex);
       c.play(this);
       cards.remove(selectedCardIndex);
+      notifyObservers();
     }
     selectedCardIndex = -1;
-    notifyObservers();
   }
 
   public ArrayList<Card> getCards() {
