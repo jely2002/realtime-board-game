@@ -1,6 +1,5 @@
 package nl.hsleiden.ipsene.views;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -308,21 +307,21 @@ public class BoardView implements View {
       };
 
   EventHandler<MouseEvent> returnToMainMenuButtonClicked =
-          new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-              logger.debug("Back to menu button clicked");
-              gameController.backToMainMenu();
-            }
-          };
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+          logger.debug("Back to menu button clicked");
+          gameController.backToMainMenu();
+        }
+      };
   EventHandler<MouseEvent> openGameRulesButtonClicked =
-          new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-              logger.debug("gameRules webpage opened");
-              BoardController.openWebpage("https://github.com/jely2002/IIPSENE/wiki/Rules");
-            }
-          };
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+          logger.debug("gameRules webpage opened");
+          BoardController.openWebpage("https://github.com/jely2002/IIPSENE/wiki/Rules");
+        }
+      };
 
   @Override
   public void update() {

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 public class BoardController implements Controller {
 
   private static final Logger logger = LoggerFactory.getLogger(BoardController.class.getName());
-  
+
   static BoardController boardController;
   private final Board board;
 
@@ -65,7 +65,6 @@ public class BoardController implements Controller {
       }
     } catch (Exception e) {
       logger.warn(e.getMessage(), e);
-
     }
   }
 }
