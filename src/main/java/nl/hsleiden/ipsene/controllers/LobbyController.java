@@ -24,7 +24,7 @@ public class LobbyController implements Controller {
   private final FirebaseService firebaseService;
   private ListenerRegistration registration;
   private MenuView menuView;
-  private Stage stage;
+  private final Stage stage;
 
   public LobbyController(FirebaseService firebaseService, Stage stage) {
     this.firebaseService = firebaseService;

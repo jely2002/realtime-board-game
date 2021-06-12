@@ -16,20 +16,20 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
 
   private final Game game;
 
-  private ArrayList<Card> cards;
+  private final ArrayList<Card> cards;
   /** index of the player in its team */
-  private int playerIndex;
+  private final int playerIndex;
 
-  private Team team;
-  private ArrayList<Pawn> pawns;
+  private final Team team;
+  private final ArrayList<Pawn> pawns;
 
   private int selectedPawnIndex = -1;
   private int selectedPawnIndex2 = -1;
   private int selectedCardIndex = 0;
 
-  private int id;
+  private final int id;
   private boolean available;
-  private PlayerColour colour;
+  private final PlayerColour colour;
 
   /**
    * should not be called manually, call through Team#createPlayers

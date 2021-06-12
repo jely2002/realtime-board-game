@@ -1,7 +1,9 @@
 package nl.hsleiden.ipsene.models;
 
 import com.google.cloud.firestore.DocumentSnapshot;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
@@ -11,7 +13,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
   private int boardPosition;
   private final PlayerColour colour;
   private Player player;
-  private int pawnNumber;
+  private final int pawnNumber;
   private boolean isInsidePool = true;
   private boolean isInsideVictoryPool = false;
 

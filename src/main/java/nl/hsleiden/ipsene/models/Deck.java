@@ -9,7 +9,7 @@ import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
   private ArrayList<Card> cards = new ArrayList<Card>();
   private final Game game;
-  private int amountOfPlayers;
+  private final int amountOfPlayers;
   // all possible values for nCards filled by generateDeck, slowly emptied over the course of the
   // game
   private ArrayList<Integer> nCardDeck = new ArrayList<Integer>();

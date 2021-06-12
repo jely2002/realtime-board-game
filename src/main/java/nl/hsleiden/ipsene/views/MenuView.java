@@ -26,10 +26,10 @@ public class MenuView implements View {
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
 
-  private String labelCSS =
+  private final String labelCSS =
       "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
-  private String textFieldCSS = "-fx-font-size: 20";
-  private String quitButtonCSS =
+  private final String textFieldCSS = "-fx-font-size: 20";
+  private final String quitButtonCSS =
       "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #808080;"
           + " -fx-padding: 10 255";
 
@@ -39,7 +39,7 @@ public class MenuView implements View {
 
   private TextField joinLobbyIDInput;
   private Label hostLobbyIDDisplay;
-  private Stage primaryStage;
+  private final Stage primaryStage;
 
   private Label joinInputErrorLabel;
   private Label hostInputErrorLabel;

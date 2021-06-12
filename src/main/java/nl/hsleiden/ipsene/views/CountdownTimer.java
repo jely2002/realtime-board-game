@@ -10,12 +10,12 @@ import org.slf4j.LoggerFactory;
 public class CountdownTimer implements Runnable {
   private static final Logger logger = LoggerFactory.getLogger(Main.class.getName());
 
-  private GameController gameController;
+  private final GameController gameController;
 
-  private int turnTime;
+  private final int turnTime;
   private final Label label;
-  private int labelX;
-  private int labelY;
+  private final int labelX;
+  private final int labelY;
 
   private final int YOFFSET = 30;
   private final int XOFFSET = 40;
@@ -46,12 +46,12 @@ public class CountdownTimer implements Runnable {
       if (countDownTime >= SMALLEST_TWO_DIGIT) {
         numberAsString = Integer.toString(countDownTime);
       } else if (countDownTime < SMALLEST_TWO_DIGIT && countDownTime > ENDTIME) {
-        numberAsString = "0" + Integer.toString(countDownTime);
+        numberAsString = "0" + countDownTime;
       } else {
         break;
       }
       String finalNumberAsString = numberAsString;
-      Platform.runLater(() -> label.setText(String.valueOf(finalNumberAsString)));
+      Platform.runLater(() -> label.setText(finalNumberAsString));
       countDownTime--;
       try {
         Thread.sleep(SLEEPTIME);
@@ -75,7 +75,9 @@ public class CountdownTimer implements Runnable {
       }
       Platform.runLater(
           () -> {
-            gameController.backToMainMenu();
+            if (gameController.getIdCurrentPlayer() == gameController.getOwnPlayer().getId()) {
+              gameController.surrender();
+            }
           });
     }
   }

@@ -15,8 +15,8 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
 
   public final int steps;
   private boolean isSelected = false;
-  private Playable onPlay;
-  private CardType type;
+  private final Playable onPlay;
+  private final CardType type;
 
   /**
    * binds the appropriate method to be called when Card.play is called and determines the correct

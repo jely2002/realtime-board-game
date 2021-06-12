@@ -18,7 +18,10 @@ import nl.hsleiden.ipsene.application.Main;
 import nl.hsleiden.ipsene.controllers.BoardController;
 import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.interfaces.View;
-import nl.hsleiden.ipsene.models.*;
+import nl.hsleiden.ipsene.models.Card;
+import nl.hsleiden.ipsene.models.Pawn;
+import nl.hsleiden.ipsene.models.Player;
+import nl.hsleiden.ipsene.models.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,13 +41,13 @@ public class BoardView implements View {
   private final String GREEN = "#00FF00";
   private final String YELLOW = "#FFFF00";
 
-  private Stage primaryStage;
+  private final Stage primaryStage;
 
   private static BoardView boardView;
   private Thread timerThread;
 
   BoardController boardController;
-  private GameController gameController;
+  private final GameController gameController;
 
   public BoardView(Stage s, GameController gameController) {
     primaryStage = s;
