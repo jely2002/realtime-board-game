@@ -55,15 +55,6 @@ public class MenuView implements View {
       logger.error(e.getMessage(), e);
     }
     lobbyController.registerObserver(this);
-
-    // todo remove this when done debugging
-    //    try {
-    //      // lobbyController.join("76430");
-    //      lobbyController.host();
-    //      toLobby();
-    //    } catch (ServerConnectionException e) {
-    //      e.printStackTrace();
-    //    }
   }
 
   private void loadPrimaryStage(Pane pane) {
@@ -74,7 +65,7 @@ public class MenuView implements View {
       primaryStage.setTitle("Keezbord");
       primaryStage.show();
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error(e.getMessage(), e);
     }
   }
 

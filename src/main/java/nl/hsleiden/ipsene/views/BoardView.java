@@ -37,9 +37,6 @@ public class BoardView implements View {
   private final int HEIGHT = 900;
 
   private final String RED = "#FF0000";
-  private final String BLUE = "#0000FF";
-  private final String GREEN = "#00FF00";
-  private final String YELLOW = "#FFFF00";
 
   private final Stage primaryStage;
 
@@ -61,14 +58,13 @@ public class BoardView implements View {
   }
 
   private void loadPrimaryStage(Pane pane) {
-    // logger.info("BoardView started!");
     try {
       Scene scene = new Scene(pane, WIDTH, HEIGHT);
       primaryStage.setScene(scene);
       primaryStage.setTitle("Keezboard");
       primaryStage.show();
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error(e.getMessage(), e);
     }
   }
 
@@ -111,9 +107,6 @@ public class BoardView implements View {
 
     Label playersTurnDisplay = ViewHelper.playersTurnDisplay(turnPlayerNumber);
     ViewHelper.setNodeCoordinates(playersTurnDisplay, 1350, 200);
-
-    //    Label roundNumberHeader = ViewHelper.headerLabelBuilder("Round number:");
-    //    ViewHelper.setNodeCoordinates(roundNumberHeader, 1375, 280);
 
     VBox roundNumberDisplay = ViewHelper.roundNumberDisplayBuilder(roundNumber, 1);
     ViewHelper.setNodeCoordinates(roundNumberDisplay, 1375, 280);
@@ -195,7 +188,7 @@ public class BoardView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          advanceTurn();
+          gameController.advanceTurn();
           gameController.serialize();
         }
       };
@@ -254,13 +247,6 @@ public class BoardView implements View {
     return cards;
   }
 
-  EventHandler<MouseEvent> timerStartButtonClicked =
-      new EventHandler<>() {
-        @Override
-        public void handle(MouseEvent e) {
-          boardController.startTurnTimer();
-        }
-      };
   /**
    * called when one of our cards is clicked, calculates what card was clicked through its position
    */
@@ -285,48 +271,30 @@ public class BoardView implements View {
    * calls doTurn and serializes the game again
    */
   EventHandler<MouseEvent> pawnClickedEvent =
-      new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-          if (cardSelected) {
-            Pawn closestPawn =
-                ViewHelper.getPawnClosestToPoint(
-                    gameController, mouseEvent.getSceneX(), mouseEvent.getSceneY());
-            gameController.setOwnPlayerSelectedPawnIndex(closestPawn.getPawnNumber());
-            // if turn was successful
-            if (gameController.doOwnPlayerTurn()) {
-              advanceTurn();
+          new EventHandler<>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+              gameController.clickPawn(cardSelected, mouseEvent.getSceneX(), mouseEvent.getSceneY());
             }
-          }
-        }
-      };
-
-  private void advanceTurn() {
-    gameController.increasePlayerCounter();
-    gameController.serialize();
-  }
+          };
 
   EventHandler<MouseEvent> returnToMainMenuButtonClicked =
-      new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent e) {
-          logger.debug("Back to menu button clicked");
-          gameController.backToMainMenu();
-        }
-      };
+          new EventHandler<>() {
+            @Override
+            public void handle(MouseEvent e) {
+              logger.debug("Back to menu button clicked");
+              gameController.backToMainMenu();
+            }
+          };
   EventHandler<MouseEvent> openGameRulesButtonClicked =
-      new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent e) {
-          logger.debug("gameRules webpage opened");
-          BoardController.openWebpage("https://github.com/jely2002/IIPSENE/wiki/Rules");
-        }
-      };
+          e -> {
+            logger.debug("gameRules webpage opened");
+            BoardController.openWebpage("https://github.com/jely2002/IIPSENE/wiki/Rules");
+          };
 
   @Override
   public void update() {
     PlayerColour potentialWinner = boardController.hasGameBeenWon();
-    System.out.println("winner: " + potentialWinner);
     if (potentialWinner != null) {
       boardController.unregisterObserver(this);
       gameController.unregisterObserver(this);

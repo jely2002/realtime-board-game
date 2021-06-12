@@ -8,9 +8,7 @@ import nl.hsleiden.ipsene.interfaces.View;
 
 public class Board implements Model {
 
-  public static final int STEPS_BETWEEN_TEAMS = 15;
   public static final int START_POSITION_INDEX = 37;
-  public static final int POOL_PLUS_END_SIZE = 9;
   public static final int HIGHEST_BOARD_POSITION = 101;
   public static final int END_POOL_SIZE = 4;
 
@@ -20,9 +18,8 @@ public class Board implements Model {
       new HashMap<PlayerColour, Integer>();
   private static final HashMap<PlayerColour, Integer> endPositions =
       new HashMap<PlayerColour, Integer>();
-  private static HashMap<PlayerColour, ArrayList<Pawn>> endPools = new HashMap<>();
+  private static final HashMap<PlayerColour, ArrayList<Pawn>> endPools = new HashMap<>();
   private static final HashMap<PlayerColour, Integer> endPoolStartPosition = new HashMap<>();
-  private static long turnStartTime;
   private final ArrayList<View> observers = new ArrayList<>();
 
   static {
@@ -72,8 +69,7 @@ public class Board implements Model {
     notifyObservers();
   }
 
-  public void emptyEndPools() {
-    System.out.println("created new pools");
+  public static void emptyEndPools() {
     for (PlayerColour colour : endPools.keySet()) {
       endPools.get(colour).clear();
     }
@@ -83,7 +79,6 @@ public class Board implements Model {
   public PlayerColour hasTheGameBeenWon() {
     for (PlayerColour colour : endPools.keySet()) {
       ArrayList<Pawn> pool = endPools.get(colour);
-      System.out.println("colour: " + colour.toString() + " size: " + pool.size());
       if (pool.size() >= END_POOL_SIZE) {
         return colour;
       }
@@ -104,40 +99,13 @@ public class Board implements Model {
   }
 
   /**
-   * @param colour the colour
-   * @param position the position
-   * @return wheter the position is inside the starting pool of the given colour
-   */
-  public static boolean isInsidePool(PlayerColour colour, int position) {
-    return (position < getFirstBoardPosition(colour));
-  }
-
-  /**
    * @param team the pawns team
    * @param position the pawns position
    * @return wheter this position is inside the teams end pool
    */
-  public boolean isInsideEndPool(PlayerColour team, int position) {
+  public static boolean isInsideEndPool(PlayerColour team, int position) {
     int startpos = endPoolStartPosition.get(team);
     return (position > startpos && position <= END_POOL_SIZE + startpos);
-  }
-
-  /**
-   * Returns the remaining amount of seconds of a turn
-   *
-   * @return remaining amount of seconds
-   */
-  public int getCurrentTurnTime() {
-    double nanoFactor = Math.pow(10, 9);
-    long remainingNano = (long) (60 * nanoFactor - (System.nanoTime() - turnStartTime));
-    return (int) (remainingNano / nanoFactor);
-  }
-
-  /** Starts the turnTimer */
-  public void startTurnTimer() {
-    turnStartTime = System.nanoTime();
-    CountDownTimer countDownTimer = new CountDownTimer(turnStartTime, this);
-    countDownTimer.start();
   }
 
   @Override
@@ -153,29 +121,5 @@ public class Board implements Model {
   @Override
   public void notifyObservers() {
     observers.forEach(View::update);
-  }
-}
-
-class CountDownTimer extends Thread {
-  static final double nanoFactor = Math.pow(10, 9);
-  static final long maxTurnTime = (long) (60 * nanoFactor);
-  private final long turnStartTime;
-  private final Board board;
-
-  CountDownTimer(long turnStartTime, Board board) {
-    this.turnStartTime = turnStartTime;
-    this.board = board;
-  }
-
-  @Override
-  public void run() {
-    while ((System.nanoTime() - turnStartTime) < maxTurnTime) {
-      try {
-        Thread.sleep(500);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-      Platform.runLater(board::notifyObservers);
-    }
   }
 }

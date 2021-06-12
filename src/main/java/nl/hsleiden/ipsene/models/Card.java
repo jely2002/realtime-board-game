@@ -18,11 +18,22 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
   private final Playable onPlay;
   private final CardType type;
 
+  /** types: "spawn": 0 "sub": 1 "spawn_step_1": 2 "step_7": 3 "step_4": 4 "step_n": 5 */
+  private static final HashMap<CardType, Playable> onPlayActions =
+          new HashMap<CardType, Playable>();
+
+  static {
+    onPlayActions.put(CardType.SPAWN, Card::playSpawnCard);
+    onPlayActions.put(CardType.SPAWN_STEP_1, Card::playSpawnStep1Card);
+    onPlayActions.put(CardType.STEP_7, Card::playStep7Card);
+    onPlayActions.put(CardType.STEP_4, Card::playStep4Card);
+    onPlayActions.put(CardType.STEP_N, Card::playStepNCard);
+  }
+
   /**
    * binds the appropriate method to be called when Card.play is called and determines the correct
    * steps to use * types: * "spawn": 0 * "sub": 1 * "spawn_step_1": 2 * "step_7": 3 * "step_4": 4 *
    * "step_n": 5
-   *
    * @param type the type of card as an integer
    */
   public Card(CardType type, int steps) {
@@ -38,9 +49,9 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
   public void setIsSelected(boolean selected) {
     isSelected = selected;
   }
+
   /**
    * calls the appropriate method for this card to be played
-   *
    * @param player the player playing this card
    */
   public void play(Player player) {
@@ -58,7 +69,6 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
     // if pawn is out of pool move by 1 else take out of pool
     if (pawn.isOutOfPool()) pawn.addRelativeBoardPosition(1);
     else pawn.takeOutOfPool();
-
     logger.debug("step1 card played");
   }
 
@@ -80,27 +90,13 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
   private static void playStep4Card(Player player, Card card) {
     Pawn pawn = player.getSelectedPawn(true);
     pawn.addRelativeBoardPosition(4);
-
     logger.debug("step4 card played");
   }
 
   private static void playStepNCard(Player player, Card card) {
     Pawn pawn = player.getSelectedPawn(true);
     pawn.addRelativeBoardPosition(card.steps);
-
     logger.debug("n card played with value: {}", card.steps);
-  }
-
-  /** types: "spawn": 0 "sub": 1 "spawn_step_1": 2 "step_7": 3 "step_4": 4 "step_n": 5 */
-  private static final HashMap<CardType, Playable> onPlayActions =
-      new HashMap<CardType, Playable>();
-
-  static {
-    onPlayActions.put(CardType.SPAWN, Card::playSpawnCard);
-    onPlayActions.put(CardType.SPAWN_STEP_1, Card::playSpawnStep1Card);
-    onPlayActions.put(CardType.STEP_7, Card::playStep7Card);
-    onPlayActions.put(CardType.STEP_4, Card::playStep4Card);
-    onPlayActions.put(CardType.STEP_N, Card::playStepNCard);
   }
 
   public CardType getType() {

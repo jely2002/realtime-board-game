@@ -159,17 +159,6 @@ public class LobbyView implements View {
     return lbl;
   }
 
-  // De IsAvailable bool is om aan te geven of de player slot beschikbaar is of niet, ofwel, kan je
-  // nog die slot
-  // joinen of niet.
-  // Deze bool moet je dus aansturen aan de hand van de model op firebase!
-  //
-  // De hex parameter is om de kleur van de speler aan te geven. Ik probeerde het te doen met
-  // de Color.x class van JavaFX, maar dit werkte niet, dus dan maar zo!
-  //
-  // De hex waardes die je nodig hebt voor de player colors staan al in de final variables van deze
-  // functie! lekker handig!
-
   private Label playerDisplayLabel(String txt, boolean isAvailable, String hex) {
     Label lbl = new Label();
     String avIndicator;
