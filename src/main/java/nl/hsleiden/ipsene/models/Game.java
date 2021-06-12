@@ -108,6 +108,9 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     gameHasStarted = document.getBoolean(Firebase.GAME_HAS_STARTED_START_FIELD_NAME);
     token = document.getId();
 
+    // empty the pools so the pawns can add themselves again
+    Board.getInstance().emptyEndPools();
+
     teams.forEach(team -> team.update(document));
     deck.update(document);
 

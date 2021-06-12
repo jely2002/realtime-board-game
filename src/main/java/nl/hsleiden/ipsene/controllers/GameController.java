@@ -19,7 +19,7 @@ public class GameController implements Controller {
 
   private final Game game;
   private final FirebaseService firebaseService;
-  private final int MAX_TURN_TIME = 10;
+  private final int MAX_TURN_TIME = 100;
 
   public GameController(FirebaseService firebaseService, Game game) {
     this.game = game;
@@ -27,7 +27,7 @@ public class GameController implements Controller {
     game.setGameHasStarted(true);
     firebaseService.listen(game.getToken(), this);
   }
-
+  public FirebaseService getFirebaseService() { return firebaseService; }
   private Player getOwnPlayer() {
     return game.getPlayer(game.getOwnPlayer() - 1);
   }
@@ -133,5 +133,9 @@ public class GameController implements Controller {
   public void registerObserver(View v) {
     game.registerObserver(v);
     getOwnPlayer().registerObserver(v);
+  }
+  public void unRegisterObserver(View v) {
+    game.unregisterObserver(v);
+    getOwnPlayer().unregisterObserver(v);
   }
 }

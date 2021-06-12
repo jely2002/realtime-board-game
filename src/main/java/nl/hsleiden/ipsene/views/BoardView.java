@@ -20,6 +20,7 @@ import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.Card;
 import nl.hsleiden.ipsene.models.Pawn;
+import nl.hsleiden.ipsene.models.PlayerColour;
 import nl.hsleiden.ipsene.models.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,13 +52,12 @@ public class BoardView implements View {
 
   public BoardView(Stage s, GameController gameController) {
     primaryStage = s;
-    //victoryView
+    victoryView = VictoryView.getInstance(s, gameController.getFirebaseService());
     this.gameController = gameController;
-    this.boardController = new BoardController();
+    this.boardController = BoardController.getInstance();
     boardController.registerObserver(this);
     gameController.registerObserver(this);
     loadPrimaryStage(createInitialPane());
-    // if our player has passed his turn skip the turn
   }
 
   private void loadPrimaryStage(Pane pane) {
@@ -322,7 +322,21 @@ public class BoardView implements View {
 
   @Override
   public void update() {
-    // reset the x position of the cards to draw them anew
-    Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
+    PlayerColour potentialWinner = boardController.hasGameBeenWon();
+    System.out.println("winner: " + potentialWinner);
+    if (potentialWinner != null) {
+      boardController.unRegisterObserver(this);
+      gameController.unRegisterObserver(this);
+      // someone has won the game
+      victoryView.show(potentialWinner);
+    }
+    else {
+      // reset the x position of the cards to draw them anew
+      Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
+      // if our player has passed his turn skip the turn
+      if (gameController.hasOwnPlayedPassed()) {
+        Platform.runLater(this::advanceTurn);
+      }
+    }
   }
 }

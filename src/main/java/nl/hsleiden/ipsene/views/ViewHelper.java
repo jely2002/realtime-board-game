@@ -253,7 +253,7 @@ public class ViewHelper {
     return vbx;
   }
 
-  public static Label winnerLabelBuilder(boolean hasWon, int winningTeam) {
+  public static Label winnerLabelBuilder(boolean hasWon, String winningTeam) {
     Label lbl = new Label();
     String text = "";
 

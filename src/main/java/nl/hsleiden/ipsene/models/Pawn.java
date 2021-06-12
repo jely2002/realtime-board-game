@@ -56,11 +56,9 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
       if (pos >= Board.HIGHEST_BOARD_POSITION) {
         int diff = Math.abs(pos - Board.HIGHEST_BOARD_POSITION);
         boardPosition = Board.START_POSITION_INDEX + diff;
-        // System.out.println("wrapped around diff: " + diff);
       } else {
         boardPosition = pos;
       }
-      // System.out.println("added: " + pos + " new pos: " + boardPosition);
 
       notifyObservers();
     }
@@ -80,8 +78,8 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
     // dont move if pawn is still inside pool
     if (!isInsidePool || amount != 0) {
       for (int i = 0; i <= amount; i++) {
-        if (Board.isInEndPosition(colour, boardPosition + i)) {
-          Board.putPawnIntoEndPool(colour, this);
+        if (Board.getInstance().isInEndPosition(colour, boardPosition + i)) {
+          Board.getInstance().putPawnIntoEndPool(colour, this);
           break;
         }
       }
@@ -109,6 +107,9 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
    */
   public void update(int position) {
     boardPosition = position;
+    if (Board.getInstance().isInsideEndPool(colour, position)) {
+      Board.getInstance().putPawnIntoEndPool(colour, this);
+    }
   }
 
   private final ArrayList<View> observers = new ArrayList<>();

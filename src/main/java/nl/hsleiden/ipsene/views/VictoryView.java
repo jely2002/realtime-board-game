@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.VictoryController;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.interfaces.View;
+import nl.hsleiden.ipsene.models.PlayerColour;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,8 +25,6 @@ public class VictoryView implements View {
   private final Stage primaryStage;
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
-  private final boolean playerHasWon;
-  private final int winningTeam;
 
   private final FirebaseService firebaseService;
 
@@ -34,28 +33,24 @@ public class VictoryView implements View {
   private static final Effect frostEffect = new BoxBlur(50, 50, 3);
 
   private static VictoryView victoryView = null;
-  public static VictoryView getInstance(Stage primaryStage) {
+  public static VictoryView getInstance(Stage primaryStage, FirebaseService firebaseService) {
     if (victoryView == null) {
-      return new VictoryView(primaryStage, null, false, -1);
+      return new VictoryView(primaryStage, firebaseService);
     }
     else return victoryView;
   }
   /**
    * @param primaryStage give primary stage
-   * @param playerHasWon if the player('s team) has won the game or not
-   * @param winningTeam team number of the winning team
    */
   private VictoryView(
-      Stage primaryStage, FirebaseService firebaseService, boolean playerHasWon, int winningTeam) {
+      Stage primaryStage, FirebaseService firebaseService) {
     this.primaryStage = primaryStage;
-    this.playerHasWon = playerHasWon;
-    this.winningTeam = winningTeam;
     this.firebaseService = firebaseService;
 
   }
 
-  private void show() {
-    loadPrimaryStage(createPane());
+  public void show(PlayerColour winner) {
+    Platform.runLater(() -> loadPrimaryStage(createPane(winner)));
   }
   private void loadPrimaryStage(Pane pane) {
     try {
@@ -69,7 +64,7 @@ public class VictoryView implements View {
     }
   }
 
-  private Pane createPane() {
+  private Pane createPane(PlayerColour winningTeam) {
     Pane pane = new Pane();
 
     ImageView backgroundLogo = ViewHelper.createLogo(null, 900);
@@ -79,7 +74,7 @@ public class VictoryView implements View {
     Rectangle textBackdrop = ViewHelper.createUIDividers(600, 300);
     ViewHelper.setNodeCoordinates(textBackdrop, 500, 300);
 
-    Label winnerLabel = ViewHelper.winnerLabelBuilder(playerHasWon, winningTeam);
+    Label winnerLabel = ViewHelper.winnerLabelBuilder(true, winningTeam.toString());
     winnerLabel.layout();
 
     Platform.runLater(
@@ -112,6 +107,6 @@ public class VictoryView implements View {
 
   @Override
   public void update() {
-    loadPrimaryStage(createPane());
+
   }
 }

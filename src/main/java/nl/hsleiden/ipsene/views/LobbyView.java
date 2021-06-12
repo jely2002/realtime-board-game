@@ -287,10 +287,8 @@ public class LobbyView implements View {
 
   // TODO finetune and check if boardstage really comes after lobbyView
   private void startGame() {
-    System.out.println("check: hasgamestarted: " + lobbyController.hasGameStarted() + " players available: " + (!player1Available && !player2Available && !player3Available && !player4Available));
     // if either all slots are filled or the game has started
     if (lobbyController.hasGameStarted() ||(!player1Available && !player2Available && !player3Available && !player4Available)) {
-      System.out.println("started game");
       GameController gameController = lobbyController.startGame(this);
       new BoardView(primaryStage, gameController);
       gameController.serialize();
