@@ -70,8 +70,8 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     else {
       cardsThisTurnValue = 1;
       deck.regenerate();
-      getAllPlayers().get(getOwnPlayer()).setHasPassed(false);
     }
+    getAllPlayers().get(getOwnPlayer()).setHasPassed(false);
   }
 
   private ArrayList<Team> generateTeams() {

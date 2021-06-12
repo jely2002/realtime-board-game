@@ -335,7 +335,7 @@ public class BoardView implements View {
       Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
       // if our player has passed his turn skip the turn
       if (gameController.hasOwnPlayedPassed()) {
-        Platform.runLater(this::advanceTurn);
+        Platform.runLater(gameController::increasePlayerCounter);
       }
     }
   }
