@@ -2,9 +2,6 @@ package nl.hsleiden.ipsene.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
-
-import com.google.cloud.Tuple;
 import javafx.application.Platform;
 import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
@@ -53,10 +50,10 @@ public class Board implements Model {
     endPoolStartPosition.put(PlayerColour.RED, 32);
   }
 
-  private Board() {
-  }
+  private Board() {}
 
   private static Board board;
+
   public static Board getInstance() {
     if (board == null) {
       return new Board();
@@ -74,6 +71,7 @@ public class Board implements Model {
     pawn.setIsInsideEndPool(true);
     notifyObservers();
   }
+
   public void emptyEndPools() {
     System.out.println("created new pools");
     for (PlayerColour colour : endPools.keySet()) {
@@ -81,9 +79,7 @@ public class Board implements Model {
     }
   }
 
-  /**
-   * @return null if the game has not been won, else the colour that won the game
-   */
+  /** @return null if the game has not been won, else the colour that won the game */
   public PlayerColour hasTheGameBeenWon() {
     for (PlayerColour colour : endPools.keySet()) {
       ArrayList<Pawn> pool = endPools.get(colour);

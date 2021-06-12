@@ -281,14 +281,14 @@ public class LobbyView implements View {
         public void handle(MouseEvent mouseEvent) {
           lobbyController.setGameHasStarted();
           startGame();
-
         }
       };
 
   // TODO finetune and check if boardstage really comes after lobbyView
   private void startGame() {
     // if either all slots are filled or the game has started
-    if (lobbyController.hasGameStarted() ||(!player1Available && !player2Available && !player3Available && !player4Available)) {
+    if (lobbyController.hasGameStarted()
+        || (!player1Available && !player2Available && !player3Available && !player4Available)) {
       GameController gameController = lobbyController.startGame(this);
       new BoardView(primaryStage, gameController);
       gameController.serialize();

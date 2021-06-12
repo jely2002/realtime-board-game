@@ -83,9 +83,11 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
     if (playerIndex < PLAYERS_PER_TEAM) return players[playerIndex];
     return null;
   }
+
   public final Pawn[] getPawnsFromPlayer(int playerindex) {
     return players[playerindex].getPawns().toArray(new Pawn[0]);
   }
+
   @Override
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serialized = new LinkedHashMap<>();

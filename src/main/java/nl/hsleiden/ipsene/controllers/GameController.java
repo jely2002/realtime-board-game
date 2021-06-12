@@ -4,8 +4,6 @@ import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-
-import com.google.cloud.firestore.ListenerRegistration;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.interfaces.View;
@@ -27,10 +25,15 @@ public class GameController implements Controller {
     game.setGameHasStarted(true);
     firebaseService.listen(game.getToken(), this);
   }
-  public FirebaseService getFirebaseService() { return firebaseService; }
+
+  public FirebaseService getFirebaseService() {
+    return firebaseService;
+  }
+
   private Player getOwnPlayer() {
     return game.getPlayer(game.getOwnPlayer() - 1);
   }
+
   public boolean setOwnPlayerClickedCardIndex(int index) {
     Player ourPlayer = getOwnPlayer();
     if (index < ourPlayer.getCards().size()) {
@@ -39,31 +42,40 @@ public class GameController implements Controller {
     }
     return false;
   }
+
   public boolean hasOwnPlayedPassed() {
     return getOwnPlayer().hasPassed();
   }
+
   public boolean isPlayerOwnPlayer(Team team, int index) {
     Player p = team.getPlayer(index);
     return p.equals(getOwnPlayer());
   }
+
   public final ArrayList<Card> getOwnPlayerCards() {
     return getOwnPlayer().getCards();
   }
+
   public boolean isOwnPlayerCurrentPlayer() {
     return getIdCurrentPlayer() == getOwnPlayer().getId();
   }
+
   public void setOwnPlayerSelectedPawnIndex(int index) {
     getOwnPlayer().setSelectedPawnIndex(index);
   }
+
   public boolean doOwnPlayerTurn() {
     return getOwnPlayer().doTurn();
   }
+
   public Integer getIdCurrentPlayer() {
     return game.getDoingTurn();
   }
+
   public final Pawn[] getOwnPlayerPawns() {
     return getOwnPlayer().getPawns().toArray(new Pawn[0]);
   }
+
   public final ArrayList<Team> getTeams() {
     return game.getTeams();
   }
@@ -72,7 +84,9 @@ public class GameController implements Controller {
     return game.getRound();
   }
 
-  public boolean hasGameStarted() { return game.hasGameStarted(); }
+  public boolean hasGameStarted() {
+    return game.hasGameStarted();
+  }
 
   /**
    * Adds 1 to the id of the current player or wraps around when the highest value is reached. If
@@ -134,6 +148,7 @@ public class GameController implements Controller {
     game.registerObserver(v);
     getOwnPlayer().registerObserver(v);
   }
+
   public void unRegisterObserver(View v) {
     game.unregisterObserver(v);
     getOwnPlayer().unregisterObserver(v);
