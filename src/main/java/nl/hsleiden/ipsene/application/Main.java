@@ -22,11 +22,7 @@ public class Main extends Application {
       FirebaseService firebaseService =
           new FirebaseService("/firestoretest-5c4e4-52601abc4d0c.json", "games");
       LobbyController lobbyController = new LobbyController(firebaseService, primaryStage);
-
-      // todo gamecontroller would normally go through LobbyController#startGame
-      // GameController gameController = new GameController(firebaseService, game);
-      // gameController.join("20999");
-      // BoardView brd = new BoardView(primaryStage, gameController);
+      primaryStage.setResizable(false);
     } catch (IOException e) {
       logger.error(e.getMessage(), e);
     }
