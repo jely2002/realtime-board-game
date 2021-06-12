@@ -75,6 +75,10 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
     return null; // do NOT remove NULL is used by Player
   }
 
+  public Player[] getPlayers() {
+    return players;
+  }
+
   public Player getPlayer(int playerIndex) {
     if (playerIndex < PLAYERS_PER_TEAM) return players[playerIndex];
     return null;
