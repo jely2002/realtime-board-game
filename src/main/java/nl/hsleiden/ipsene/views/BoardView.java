@@ -326,7 +326,7 @@ public class BoardView implements View {
     System.out.println("winner: " + potentialWinner);
     if (potentialWinner != null) {
       boardController.unRegisterObserver(this);
-      gameController.unRegisterObserver(this);
+      gameController.unregisterobserver(this);
       // someone has won the game
       victoryView.show(potentialWinner);
     }

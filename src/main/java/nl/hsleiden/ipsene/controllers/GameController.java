@@ -134,7 +134,7 @@ public class GameController implements Controller {
     game.registerObserver(v);
     getOwnPlayer().registerObserver(v);
   }
-  public void unRegisterObserver(View v) {
+  public void unregisterobserver(View v) {
     game.unregisterObserver(v);
     getOwnPlayer().unregisterObserver(v);
   }
