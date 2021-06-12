@@ -32,8 +32,9 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
 
     // each different card appears once for every player, nCards are added separately
     final int AMOUNT_NORMAL_CARDS = CardType.values().length - 1;
+    // add an extra set of cards because the sub card type was removed, but the deck does need to have 52 cards
     final int TOTAL_AMOUNT_OF_CARDS =
-        (AMOUNT_NORMAL_CARDS * amountOfPlayers) + (POSSIBLE_N_CARDS.length * amountOfPlayers);
+        (AMOUNT_NORMAL_CARDS * amountOfPlayers) + (POSSIBLE_N_CARDS.length * amountOfPlayers) + amountOfPlayers;
     Card[] cards = new Card[TOTAL_AMOUNT_OF_CARDS];
 
     int index = 0;
@@ -43,6 +44,11 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
         cards[index] = new Card(CardType.get(i), CardType.get(i).getSteps());
         ++index;
       }
+    }
+    // add replacement for sub cards
+    for (int i = 0; i < amountOfPlayers; i++) {
+      cards[index] = new Card(CardType.SPAWN, 0);
+      ++index;
     }
     // add nCards
     for (int i = 0; i < amountOfPlayers * POSSIBLE_N_CARDS.length; i++) {

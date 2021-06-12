@@ -249,14 +249,12 @@ public class BoardView implements View {
         @Override
         public void handle(MouseEvent mouseEvent) {
           if (cardSelected) {
-            // timerThread.interrupt();
             Player ourPlayer = gameController.getOwnPlayer();
             Pawn closestPawn =
                 ViewHelper.getPawnClosestToPoint(
                     gameController, mouseEvent.getSceneX(), mouseEvent.getSceneY());
             ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
             if (ourPlayer.doTurn()) gameController.serialize();
-            // timerThread.start();
           }
         }
       };

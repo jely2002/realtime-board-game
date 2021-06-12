@@ -23,7 +23,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
   private Team team;
   private ArrayList<Pawn> pawns;
 
-  private int selectedPawnIndex = 0;
+  private int selectedPawnIndex = -1;
   private int selectedPawnIndex2 = -1;
   private int selectedCardIndex = 0;
 
@@ -62,12 +62,24 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
    * @param i the index of the pawn
    */
   public void setSelectedPawnIndex(int i) {
-    selectedPawnIndex = i;
+    // if first pawn was already selected
+    if (selectedPawnIndex != -1) {
+      // if second pawn could not be selected
+      if (!setSecondSelectedPawnIndex(i)) {
+        // set first pawn index
+        selectedPawnIndex = i;
+      }
+    }
+    else
+      selectedPawnIndex = i;
   }
 
-  public void setSecondSelectedPawnIndex(int i) {
-
-    if (cards.get(selectedCardIndex).getType().isTwoPawnCard()) selectedPawnIndex2 = i;
+  public boolean setSecondSelectedPawnIndex(int i) {
+    if (cards.get(selectedCardIndex).getType().isTwoPawnCard()) {
+      selectedPawnIndex2 = i;
+      return true;
+    }
+    return false;
   }
 
   public void setSelectedCardIndex(int i) {
@@ -100,11 +112,9 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
       if (!getSelectedPawn(true).isOutOfPool()) return false;
     }
     playCard();
+    selectedPawnIndex = -1;
+    selectedPawnIndex2 = -1;
     return true;
-  }
-
-  public boolean isFirstPawnSelected() {
-    return selectedPawnIndex != -1;
   }
 
   public Pawn getSelectedPawn(boolean firstPawn) {
