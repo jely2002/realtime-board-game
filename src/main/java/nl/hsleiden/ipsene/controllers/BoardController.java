@@ -6,10 +6,7 @@ import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.Board;
 import nl.hsleiden.ipsene.models.Deck;
 
-import java.awt.*;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 public class BoardController implements Controller {
 
@@ -57,11 +54,11 @@ public class BoardController implements Controller {
     board.startTurnTimer();
   }
 
-  public static void openWebpage(String url) throws URISyntaxException, IOException {
-
-    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-      Desktop.getDesktop().browse(new URI(url));
+  public static void openWebpage(String url) {
+    try {
+      java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+    } catch (java.io.IOException e) {
+      System.out.println(e.getMessage());
     }
-
   }
 }
