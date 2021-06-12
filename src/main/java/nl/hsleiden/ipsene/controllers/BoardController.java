@@ -28,7 +28,8 @@ public class BoardController implements Controller {
     board.registerObserver(v);
   }
 
-  public void unRegisterObserver(View v) {
+  public void unregisterObserver(View v) {
+
     board.unregisterObserver(v);
   }
 
