@@ -1,6 +1,7 @@
 package nl.hsleiden.ipsene.views;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -291,7 +292,11 @@ public class BoardView implements View {
             @Override
             public void handle(MouseEvent e) {
               logger.debug("gameRules webpage opened");
-              BoardController.openWebpage("https://github.com/jely2002/IIPSENE/wiki/Rules");
+              try {
+                BoardController.openWebpage("https://github.com/jely2002/IIPSENE/wiki/Rules");
+              } catch (URISyntaxException | IOException uriSyntaxException) {
+                uriSyntaxException.printStackTrace();
+              }
             }
           };
 
