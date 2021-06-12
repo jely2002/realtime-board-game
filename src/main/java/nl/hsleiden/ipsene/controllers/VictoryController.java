@@ -8,11 +8,14 @@ import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.interfaces.View;
 
 public class VictoryController implements Controller {
+
   @Override
   public void update(DocumentSnapshot ds) {}
 
   @Override
-  public void registerObserver(View v) {}
+  public void registerObserver(View v) {
+
+  }
 
   public void backToMainMenu(Stage primaryStage, FirebaseService firebaseService)
       throws IOException {

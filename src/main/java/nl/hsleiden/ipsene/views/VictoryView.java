@@ -33,21 +33,30 @@ public class VictoryView implements View {
 
   private static final Effect frostEffect = new BoxBlur(50, 50, 3);
 
+  private static VictoryView victoryView = null;
+  public static VictoryView getInstance(Stage primaryStage) {
+    if (victoryView == null) {
+      return new VictoryView(primaryStage, null, false, -1);
+    }
+    else return victoryView;
+  }
   /**
    * @param primaryStage give primary stage
    * @param playerHasWon if the player('s team) has won the game or not
    * @param winningTeam team number of the winning team
    */
-  public VictoryView(
+  private VictoryView(
       Stage primaryStage, FirebaseService firebaseService, boolean playerHasWon, int winningTeam) {
     this.primaryStage = primaryStage;
     this.playerHasWon = playerHasWon;
     this.winningTeam = winningTeam;
     this.firebaseService = firebaseService;
 
-    loadPrimaryStage(createPane());
   }
 
+  private void show() {
+    loadPrimaryStage(createPane());
+  }
   private void loadPrimaryStage(Pane pane) {
     try {
       Pane root = pane;

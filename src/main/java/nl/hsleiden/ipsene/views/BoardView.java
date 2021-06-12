@@ -47,18 +47,17 @@ public class BoardView implements View {
 
   BoardController boardController;
   private final GameController gameController;
+  private VictoryView victoryView;
 
   public BoardView(Stage s, GameController gameController) {
     primaryStage = s;
+    //victoryView
     this.gameController = gameController;
     this.boardController = new BoardController();
     boardController.registerObserver(this);
     gameController.registerObserver(this);
     loadPrimaryStage(createInitialPane());
     // if our player has passed his turn skip the turn
-    if (gameController.hasOwnPlayedPassed()) {
-      advanceTurn();
-    }
   }
 
   private void loadPrimaryStage(Pane pane) {
