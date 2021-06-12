@@ -78,7 +78,6 @@ public class CountdownTimer implements Runnable {
             if (gameController.isOwnPlayerCurrentPlayer()) {
               // pass turn and sent to firebase
               gameController.passTurn();
-              gameController.serialize();
             }
           });
     }

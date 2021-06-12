@@ -189,7 +189,6 @@ public class BoardView implements View {
         @Override
         public void handle(MouseEvent mouseEvent) {
           gameController.advanceTurn();
-          gameController.serialize();
         }
       };
 
@@ -197,9 +196,10 @@ public class BoardView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          gameController.passTurn();
-          gameController.serialize();
-          loadPrimaryStage(createInitialPane());
+          if (gameController.isOwnPlayerCurrentPlayer()) {
+            gameController.passTurn();
+            loadPrimaryStage(createInitialPane());
+          }
         }
       };
 
@@ -254,13 +254,14 @@ public class BoardView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          // todo check if this is our turn
-          double mousex = mouseEvent.getSceneX();
-          // get the index of the card we clicked on
-          int clickedCardIndex = (int) ((mousex - CARD_START_X_POSITION) / CARD_SEPERATION_VALUE);
-          if (gameController.setOwnPlayerClickedCardIndex(clickedCardIndex)) {
-            cardSelected = true;
-            loadPrimaryStage(createInitialPane());
+          if (gameController.isOwnPlayerCurrentPlayer()) {
+            double mousex = mouseEvent.getSceneX();
+            // get the index of the card we clicked on
+            int clickedCardIndex = (int) ((mousex - CARD_START_X_POSITION) / CARD_SEPERATION_VALUE);
+            if (gameController.setOwnPlayerClickedCardIndex(clickedCardIndex)) {
+              cardSelected = true;
+              loadPrimaryStage(createInitialPane());
+            }
           }
         }
       };
@@ -301,11 +302,11 @@ public class BoardView implements View {
       // someone has won the game
       victoryView.show(potentialWinner);
     } else {
-      // reset the x position of the cards to draw them anew
       Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
-      // if our player has passed his turn skip the turn
-      if (gameController.hasOwnPlayedPassed()) {
-        Platform.runLater(gameController::increasePlayerCounter);
+      if (gameController.isOwnPlayerCurrentPlayer()) {
+        if (gameController.hasOwnPlayerPassed()) {
+          Platform.runLater(() -> gameController.passTurn());
+        }
       }
     }
   }
