@@ -12,21 +12,16 @@ import org.slf4j.LoggerFactory;
 public class BoardController implements Controller {
 
   private static final Logger logger = LoggerFactory.getLogger(BoardController.class.getName());
-
-  static BoardController boardController = null;
-  private Board board;
+  
+  static BoardController boardController;
+  private final Board board;
 
   private Deck cards;
-  private TeamController teamController;
-  private boolean gameHasEnded = false;
-  private final int AMOUNT_OF_PLAYERS;
+  private final boolean gameHasEnded = false;
 
-  public BoardController(int amount_of_players) {
+  public BoardController() {
     this.board = new Board();
-    AMOUNT_OF_PLAYERS = amount_of_players;
   }
-
-  public static void getInstance() {}
 
   @Override
   public void update(DocumentSnapshot ds) {}
@@ -36,9 +31,9 @@ public class BoardController implements Controller {
     board.registerObserver(v);
   }
 
-  public static BoardController getInstance(int amount_of_players) {
+  public static BoardController getInstance() {
     if (boardController == null) {
-      boardController = new BoardController(amount_of_players);
+      boardController = new BoardController();
     }
     return boardController;
   }
@@ -70,6 +65,7 @@ public class BoardController implements Controller {
       }
     } catch (Exception e) {
       logger.warn(e.getMessage(), e);
+
     }
   }
 }

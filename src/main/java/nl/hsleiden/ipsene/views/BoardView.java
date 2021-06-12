@@ -19,7 +19,10 @@ import nl.hsleiden.ipsene.application.Main;
 import nl.hsleiden.ipsene.controllers.BoardController;
 import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.interfaces.View;
-import nl.hsleiden.ipsene.models.*;
+import nl.hsleiden.ipsene.models.Card;
+import nl.hsleiden.ipsene.models.Pawn;
+import nl.hsleiden.ipsene.models.Player;
+import nl.hsleiden.ipsene.models.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,18 +42,18 @@ public class BoardView implements View {
   private final String GREEN = "#00FF00";
   private final String YELLOW = "#FFFF00";
 
-  private Stage primaryStage;
+  private final Stage primaryStage;
 
   private static BoardView boardView;
   private Thread timerThread;
 
   BoardController boardController;
-  private GameController gameController;
+  private final GameController gameController;
 
   public BoardView(Stage s, GameController gameController) {
     primaryStage = s;
     this.gameController = gameController;
-    this.boardController = new BoardController(4);
+    this.boardController = new BoardController();
     boardController.registerObserver(this);
     gameController.registerObserver(this);
     gameController.getOwnPlayer().registerObserver(this);
@@ -125,12 +128,16 @@ public class BoardView implements View {
 
     // menu buttons
     Button gameRulesButton = buildMenuButton("RULES");
-    ViewHelper.setNodeCoordinates(gameRulesButton, 5 , 5);
+    ViewHelper.setNodeCoordinates(gameRulesButton, 5, 5);
     gameRulesButton.addEventFilter(MouseEvent.MOUSE_CLICKED, openGameRulesButtonClicked);
 
     Button returnToMainMenuButton = buildMenuButton("EXIT");
     ViewHelper.setNodeCoordinates(returnToMainMenuButton, 85, 5);
     returnToMainMenuButton.addEventFilter(MouseEvent.MOUSE_CLICKED, returnToMainMenuButtonClicked);
+
+    // surrender button
+    Button surrenderButton = buildSurrenderButton();
+    surrenderButton.addEventFilter(MouseEvent.MOUSE_CLICKED, surrenderEvent);
 
     pane.getChildren()
         .addAll(
@@ -141,7 +148,8 @@ public class BoardView implements View {
             timerLabel,
             timerHeader,
             playersTurnDisplay,
-            skipTurnButton);
+            skipTurnButton,
+            surrenderButton);
     pane.getChildren().addAll(cardsText, roundNumberDisplay);
     pane.getChildren().addAll(gameRulesButton, returnToMainMenuButton);
     pane.getChildren().addAll(pawns);
@@ -155,13 +163,24 @@ public class BoardView implements View {
     button.setText("skip turn");
     button.setPrefWidth(125);
     button.setPrefHeight(125);
-    ViewHelper.setNodeCoordinates(button, 1220, 710);
+    ViewHelper.setNodeCoordinates(button, 1020, 710);
     button.setStyle("-fx-font-size: 20; -fx-background-color: " + RED);
     ViewHelper.applyDropShadow(button);
     return button;
   }
 
-  private Button buildMenuButton(String text){
+  private Button buildSurrenderButton() {
+    Button button = new Button();
+    button.setText("Surrender");
+    button.setPrefWidth(170);
+    button.setPrefHeight(170);
+    ViewHelper.setNodeCoordinates(button, 1165, 715);
+    button.setStyle("-fx-font-size: 20; -fx-background-color: " + RED);
+    ViewHelper.applyDropShadow(button);
+    return button;
+  }
+
+  private Button buildMenuButton(String text) {
     Button button = new Button();
 
     button.setText(text);
@@ -181,6 +200,18 @@ public class BoardView implements View {
           loadPrimaryStage(createInitialPane());
         }
       };
+
+  EventHandler<MouseEvent> surrenderEvent =
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+          System.out.println("surrenderEvent pressed");
+          gameController.surrender();
+          gameController.serialize();
+          loadPrimaryStage(createInitialPane());
+        }
+      };
+
   /**
    * gets all pawns in the game and builds polygons for them
    *
@@ -266,14 +297,12 @@ public class BoardView implements View {
         @Override
         public void handle(MouseEvent mouseEvent) {
           if (cardSelected) {
-            // timerThread.interrupt();
             Player ourPlayer = gameController.getOwnPlayer();
             Pawn closestPawn =
                 ViewHelper.getPawnClosestToPoint(
                     gameController, mouseEvent.getSceneX(), mouseEvent.getSceneY());
             ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
             if (ourPlayer.doTurn()) gameController.serialize();
-            // timerThread.start();
           }
         }
       };

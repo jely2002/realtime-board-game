@@ -20,8 +20,7 @@ public class GameController implements Controller {
 
   private final Game game;
   private final FirebaseService firebaseService;
-
-  private final int MAX_TURN_TIME = 60;
+  private final int MAX_TURN_TIME = 6000;
 
   public GameController(FirebaseService firebaseService, Game game) {
     this.game = game;
@@ -48,6 +47,19 @@ public class GameController implements Controller {
     return game.getRound();
   }
 
+  /**
+   * Adds 1 to the id of the current player or wraps around when the highest value is reached. If
+   * there are no players left who have cards, we go to the next round.
+   */
+  public void increasePlayerCounter() {
+    int nextPlayer = game.getDoingTurn() + 1;
+    int highestPlayer = (Team.PLAYERS_PER_TEAM * Game.AMOUNT_OF_TEAMS) - 1;
+    game.setDoingTurnPlayer((nextPlayer <= highestPlayer) ? nextPlayer : 0);
+    if (game.amountOfPlayersWithCards() == 0) {
+      game.advanceRound();
+    }
+  }
+
   public int getTimeLeft() {
     Timestamp startTime = game.getTurnStartTime();
     if (startTime == null) {
@@ -57,17 +69,12 @@ public class GameController implements Controller {
     return MAX_TURN_TIME - secondsPast;
   }
 
-  /**
-   * adds 1 to the id of the current player or wraps around when the highst value is reached if the
-   * highst value is reached redistributes cards and advance round
-   */
-  public void increasePlayerCounter() {
-    int nextPlayer = game.getDoingTurn() + 1;
-    int highestPlayer = (Team.PLAYERS_PER_TEAM * Game.AMOUNT_OF_TEAMS) - 1;
-    game.setDoingTurnPlayer((nextPlayer <= highestPlayer) ? nextPlayer : 0);
-    if (game.getDoingTurn() == 0) {
-      game.advanceRound();
-    }
+  /** Remove all cards from the player and end turn. */
+  public void surrender() {
+    System.out.println("Surrendering...");
+    getOwnPlayer().emptyCards();
+    System.out.println("Surrendered");
+    increasePlayerCounter();
   }
 
   public Pawn getOwnPlayerPawn(int pawn) {
@@ -76,7 +83,6 @@ public class GameController implements Controller {
 
   public void serialize() {
     try {
-      game.setTurnStartTime(Timestamp.now());
       firebaseService.set(game.getToken(), game.serialize());
     } catch (ExecutionException | InterruptedException e) {
       logger.error(e.getMessage(), e);
@@ -84,7 +90,11 @@ public class GameController implements Controller {
   }
 
   public void backToMainMenu() {
-    this.game.backToMainMenu();
+    game.backToMainMenu();
+  }
+
+  public ArrayList<Player> getAllPlayers() {
+    return game.getAllPlayers();
   }
 
   @Override

@@ -2,7 +2,10 @@ package nl.hsleiden.ipsene.models;
 
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Random;
 import nl.hsleiden.ipsene.controllers.LobbyController;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
@@ -31,7 +34,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   private int cardsPerPlayerNextRound = 5;
   private int cardsThisTurnValue = 2;
 
-  private LobbyController lobbyController;
+  private final LobbyController lobbyController;
 
   public Game(LobbyController lobbyController) {
     this.token = generateToken(TOKEN_LENGTH);
@@ -177,6 +180,36 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
   public void backToMainMenu() {
     this.lobbyController.backToMainMenu();
+  }
+
+  /**
+   * Get all the Players objects in the game. We currently have 4 of them.
+   *
+   * @return ArrayList with Player objects.
+   */
+  public ArrayList<Player> getAllPlayers() {
+    ArrayList<Team> teams = getTeams();
+    ArrayList<Player> players = new ArrayList<Player>();
+    for (Team team : teams) {
+      for (Player player : team.getPlayers()) {
+        players.add(player);
+      }
+    }
+    Player player = teams.get(0).getPlayer(0);
+    return players;
+  }
+
+  /**
+   * Loops through all the players and counts how many of them have cards.
+   *
+   * @return the amount of players that have one or more cards.
+   */
+  public int amountOfPlayersWithCards() {
+    int count = 0;
+    for (Player player : getAllPlayers()) {
+      if (!player.getCards().isEmpty()) count++;
+    }
+    return count;
   }
 
   @Override

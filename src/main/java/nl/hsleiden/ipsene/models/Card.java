@@ -15,8 +15,8 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
 
   public final int steps;
   private boolean isSelected = false;
-  private Playable onPlay;
-  private CardType type;
+  private final Playable onPlay;
+  private final CardType type;
 
   /**
    * binds the appropriate method to be called when Card.play is called and determines the correct
@@ -53,50 +53,41 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
     logger.debug("spawn card played");
   }
 
-  private static void playSubCard(Player player, Card card) {
-    playSpawnCard(player, card);
-    logger.debug("sub card played");
-  }
-
   private static void playSpawnStep1Card(Player player, Card card) {
-    // System.out.println("played spawn step 1");
     Pawn pawn = player.getSelectedPawn(true);
+    // if pawn is out of pool move by 1 else take out of pool
     if (pawn.isOutOfPool()) pawn.addRelativeBoardPosition(1);
     else pawn.takeOutOfPool();
-    // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
 
     logger.debug("step1 card played");
   }
 
   private static void playStep7Card(Player player, Card card) {
-    // System.out.println("played 7 card");
     Pawn pawn = player.getSelectedPawn(true);
     Pawn pawn2 = player.getSelectedPawn(false);
+    // if pawn 2 was selected
     if (pawn2 != null) {
+      // divide the amount to move
       pawn.addRelativeBoardPosition(3);
       pawn2.addRelativeBoardPosition(3);
     } else {
+      // else move pawn by 7
       pawn.addRelativeBoardPosition(7);
     }
-    // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
     logger.debug("step7 card played");
   }
 
   private static void playStep4Card(Player player, Card card) {
-    // System.out.println("played 4 card");
     Pawn pawn = player.getSelectedPawn(true);
     pawn.addRelativeBoardPosition(4);
-    // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
 
     logger.debug("step4 card played");
   }
 
   private static void playStepNCard(Player player, Card card) {
-    // System.out.println("played n card value: " + card.steps);
     Pawn pawn = player.getSelectedPawn(true);
     pawn.addRelativeBoardPosition(card.steps);
 
-    // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
     logger.debug("n card played with value: {}", card.steps);
   }
 
@@ -106,7 +97,6 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
 
   static {
     onPlayActions.put(CardType.SPAWN, Card::playSpawnCard);
-    onPlayActions.put(CardType.SUB, Card::playSubCard);
     onPlayActions.put(CardType.SPAWN_STEP_1, Card::playSpawnStep1Card);
     onPlayActions.put(CardType.STEP_7, Card::playStep7Card);
     onPlayActions.put(CardType.STEP_4, Card::playStep4Card);

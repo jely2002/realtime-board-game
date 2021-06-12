@@ -14,9 +14,8 @@ public class VictoryController implements Controller {
   @Override
   public void registerObserver(View v) {}
 
-  public void backToMainMenu(Stage primaryStage) throws IOException {
-    FirebaseService firebaseService =
-        new FirebaseService("/firestoretest-5c4e4-52601abc4d0c.json", "games");
+  public void backToMainMenu(Stage primaryStage, FirebaseService firebaseService)
+      throws IOException {
     LobbyController lobbyController = new LobbyController(firebaseService, primaryStage);
   }
 }

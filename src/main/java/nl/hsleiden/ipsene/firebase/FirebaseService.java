@@ -13,8 +13,8 @@ public class FirebaseService {
 
   private static final Logger logger = LoggerFactory.getLogger(FirebaseService.class.getName());
 
-  private Firestore firestore;
-  private CollectionReference colRef;
+  private final Firestore firestore;
+  private final CollectionReference colRef;
 
   public FirebaseService(String privateKeyPath, String collection) throws IOException {
     Firebase fb = new Firebase(privateKeyPath);

@@ -25,7 +25,7 @@ public class LobbyView implements View {
 
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
-  private Stage primaryStage;
+  private final Stage primaryStage;
   private final String RED = "#FF0000";
   private final String BLUE = "#0000FF";
   private final String GREEN = "#00FF00";
@@ -100,7 +100,7 @@ public class LobbyView implements View {
     ViewHelper.setNodeCoordinates(startButton, 1400, 700);
     startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, playButtonClicked);
 
-    this.waitingForPlayersLabel = WaitingForPlayersLabelBuilder("Waiting for players");
+    this.waitingForPlayersLabel = WaitingForPlayersLabelBuilder("Waiting on players");
     ViewHelper.setNodeCoordinates(waitingForPlayersLabel, 10, 790);
     WaitingForPlayersThread wfpt = new WaitingForPlayersThread(waitingForPlayersLabel);
     Thread wfptThread = new Thread(wfpt);

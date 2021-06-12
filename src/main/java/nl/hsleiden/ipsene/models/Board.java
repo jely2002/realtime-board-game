@@ -11,7 +11,7 @@ public class Board implements Model {
   public static final int STEPS_BETWEEN_TEAMS = 15;
   public static final int START_POSITION_INDEX = 37;
   public static final int POOL_PLUS_END_SIZE = 9;
-  public static final int HIGHEST_BOARD_POSITION = 99;
+  public static final int HIGHEST_BOARD_POSITION = 101;
 
   private static final HashMap<PlayerColour, Integer> poolStartPosition =
       new HashMap<PlayerColour, Integer>();
@@ -19,10 +19,10 @@ public class Board implements Model {
       new HashMap<PlayerColour, Integer>();
   private static final HashMap<PlayerColour, Integer> endPositions =
       new HashMap<PlayerColour, Integer>();
-  private static HashMap<PlayerColour, ArrayList<Pawn>> endPools = new HashMap<>();
-  private static HashMap<PlayerColour, Integer> endPoolStartPosition = new HashMap<>();
+  private static final HashMap<PlayerColour, ArrayList<Pawn>> endPools = new HashMap<>();
+  private static final HashMap<PlayerColour, Integer> endPoolStartPosition = new HashMap<>();
   static long turnStartTime;
-  private ArrayList<View> observers = new ArrayList<>();
+  private final ArrayList<View> observers = new ArrayList<>();
 
   static {
     for (PlayerColour c : PlayerColour.values()) {
@@ -30,23 +30,23 @@ public class Board implements Model {
     }
     poolStartPosition.put(PlayerColour.GREEN, 1);
     startPositions.put(PlayerColour.GREEN, 37);
-    endPositions.put(PlayerColour.GREEN, 99);
-    endPoolStartPosition.put(PlayerColour.GREEN, 4);
+    endPositions.put(PlayerColour.GREEN, 100);
+    endPoolStartPosition.put(PlayerColour.GREEN, 5);
 
     poolStartPosition.put(PlayerColour.BLUE, 10);
     startPositions.put(PlayerColour.BLUE, 52);
-    endPositions.put(PlayerColour.BLUE, 50);
-    endPoolStartPosition.put(PlayerColour.BLUE, 13);
+    endPositions.put(PlayerColour.BLUE, 51);
+    endPoolStartPosition.put(PlayerColour.BLUE, 14);
 
     poolStartPosition.put(PlayerColour.YELLOW, 19);
     startPositions.put(PlayerColour.YELLOW, 69);
-    endPositions.put(PlayerColour.YELLOW, 67);
-    endPoolStartPosition.put(PlayerColour.YELLOW, 22);
+    endPositions.put(PlayerColour.YELLOW, 68);
+    endPoolStartPosition.put(PlayerColour.YELLOW, 23);
 
     poolStartPosition.put(PlayerColour.RED, 28);
     startPositions.put(PlayerColour.RED, 84);
-    endPositions.put(PlayerColour.RED, 82);
-    endPoolStartPosition.put(PlayerColour.GREEN, 31);
+    endPositions.put(PlayerColour.RED, 83);
+    endPoolStartPosition.put(PlayerColour.RED, 32);
   }
 
   public Board() {}
