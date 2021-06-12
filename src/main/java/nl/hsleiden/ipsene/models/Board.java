@@ -9,30 +9,64 @@ import nl.hsleiden.ipsene.interfaces.View;
 public class Board implements Model {
 
   public static final int STEPS_BETWEEN_TEAMS = 15;
-  public static final int START_POSITION_INDEX = 35;
+  public static final int START_POSITION_INDEX = 37;
   public static final int POOL_PLUS_END_SIZE = 9;
+  public static final int HIGHEST_BOARD_POSITION = 99;
 
-  private static final HashMap<PlayerColour, Integer> boardOffset =
+  private static final HashMap<PlayerColour, Integer> poolStartPosition =
       new HashMap<PlayerColour, Integer>();
-
+  private static final HashMap<PlayerColour, Integer> startPositions =
+      new HashMap<PlayerColour, Integer>();
+  private static final HashMap<PlayerColour, Integer> endPositions =
+      new HashMap<PlayerColour, Integer>();
+  private static HashMap<PlayerColour, ArrayList<Pawn>> endPools = new HashMap<>();
+  private static HashMap<PlayerColour, Integer> endPoolStartPosition = new HashMap<>();
   static long turnStartTime;
   private ArrayList<View> observers = new ArrayList<>();
 
   static {
-    boardOffset.put(PlayerColour.GREEN, 0);
-    boardOffset.put(PlayerColour.BLUE, 1);
-    boardOffset.put(PlayerColour.YELLOW, 2);
-    boardOffset.put(PlayerColour.RED, 3);
+    for (PlayerColour c : PlayerColour.values()) {
+      endPools.put(c, new ArrayList<Pawn>());
+    }
+    poolStartPosition.put(PlayerColour.GREEN, 1);
+    startPositions.put(PlayerColour.GREEN, 37);
+    endPositions.put(PlayerColour.GREEN, 99);
+    endPoolStartPosition.put(PlayerColour.GREEN, 4);
+
+    poolStartPosition.put(PlayerColour.BLUE, 10);
+    startPositions.put(PlayerColour.BLUE, 52);
+    endPositions.put(PlayerColour.BLUE, 50);
+    endPoolStartPosition.put(PlayerColour.BLUE, 13);
+
+    poolStartPosition.put(PlayerColour.YELLOW, 19);
+    startPositions.put(PlayerColour.YELLOW, 69);
+    endPositions.put(PlayerColour.YELLOW, 67);
+    endPoolStartPosition.put(PlayerColour.YELLOW, 22);
+
+    poolStartPosition.put(PlayerColour.RED, 28);
+    startPositions.put(PlayerColour.RED, 84);
+    endPositions.put(PlayerColour.RED, 82);
+    endPoolStartPosition.put(PlayerColour.GREEN, 31);
   }
 
   public Board() {}
 
+  public static boolean isInEndPosition(PlayerColour colour, int pos) {
+    return endPositions.get(colour) == pos;
+  }
+
+  public static void putPawnIntoEndPool(PlayerColour colour, Pawn pawn) {
+    endPools.get(colour).add(pawn);
+    pawn.setBoardPosition(endPoolStartPosition.get(colour) + endPools.get(colour).size());
+    pawn.setIsInsideEndPool(true);
+  }
+
   public static int getFirstPoolPosition(PlayerColour team) {
-    return POOL_PLUS_END_SIZE * boardOffset.get(team);
+    return poolStartPosition.get(team);
   }
 
   public static int getFirstBoardPosition(PlayerColour team) {
-    return START_POSITION_INDEX + (STEPS_BETWEEN_TEAMS * boardOffset.get(team));
+    return startPositions.get(team);
   }
 
   public static boolean isInsidePool(PlayerColour team, int position) {

@@ -32,7 +32,6 @@ public class BoardView implements View {
 
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
-  private final int MAXTURNTIME = 60;
 
   private final String RED = "#FF0000";
   private final String BLUE = "#0000FF";
@@ -75,9 +74,8 @@ public class BoardView implements View {
     Pane pane = new Pane();
     // TODO: hoe veel tijd er nog voor de zet over is, aansturen a.d.h.v firebase(ik weet niet hoe
     // dit moet!)
-    int timer = MAXTURNTIME;
+    int timer = gameController.getTimeLeft();
 
-    // Welke ronde we nu in zitten in een coole integer!
     int roundNumber = gameController.getRound();
 
     // TODO: de huidige speler die aan de beurt is hier doorgeven
@@ -177,14 +175,6 @@ public class BoardView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          System.out.println("skipTurnEvent pressed");
-          // this is just for testing: simulates actually playing a card {{{
-          gameController
-              .getAllPlayers()
-              .get(gameController.getIdCurrentPlayer())
-              .getCards()
-              .remove(0);
-          // }}}
           gameController.increasePlayerCounter();
           gameController.serialize();
           loadPrimaryStage(createInitialPane());
@@ -222,9 +212,6 @@ public class BoardView implements View {
               && gameController.getIdCurrentPlayer() == gameController.getOwnPlayer().getId()) {
             poly.addEventFilter(MouseEvent.MOUSE_CLICKED, pawnClickedEvent);
           }
-          // for hover functionality
-          //          poly.addEventFilter(MouseEvent.MOUSE_ENTERED, pawnHoverEvent);
-          //          poly.addEventFilter(MouseEvent.MOUSE_EXITED, pawnHoverEvent);
           allpawns.add(poly);
         }
       }
@@ -239,7 +226,6 @@ public class BoardView implements View {
    */
   private ArrayList<ImageView> buildCards() {
     // show all our players cards
-    cardSelected = false;
     Player ourPlayer = gameController.getOwnPlayer();
     ArrayList<ImageView> cards = new ArrayList<>();
     for (Card card : ourPlayer.getCards()) {
@@ -275,6 +261,7 @@ public class BoardView implements View {
           if (clickedCardIndex < ourPlayer.getCards().size()) {
             ourPlayer.setSelectedCardIndex(clickedCardIndex);
             cardSelected = true;
+
             loadPrimaryStage(createInitialPane());
           }
         }
@@ -290,14 +277,14 @@ public class BoardView implements View {
         @Override
         public void handle(MouseEvent mouseEvent) {
           if (cardSelected) {
-            // TODO This may be broken (11/06/2021)
-            timerThread.interrupt();
+            // timerThread.interrupt();
             Player ourPlayer = gameController.getOwnPlayer();
-            Pawn closestPawn = ourPlayer.getPawn(0);
+            Pawn closestPawn =
+                ViewHelper.getPawnClosestToPoint(
+                    gameController, mouseEvent.getSceneX(), mouseEvent.getSceneY());
             ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
-            ourPlayer.doTurn();
-            gameController.serialize();
-            timerThread.start();
+            if (ourPlayer.doTurn()) gameController.serialize();
+            // timerThread.start();
           }
         }
       };

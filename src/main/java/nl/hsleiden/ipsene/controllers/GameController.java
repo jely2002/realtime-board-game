@@ -1,5 +1,6 @@
 package nl.hsleiden.ipsene.controllers;
 
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -19,6 +20,8 @@ public class GameController implements Controller {
 
   private final Game game;
   private final FirebaseService firebaseService;
+
+  private final int MAX_TURN_TIME = 60;
 
   public GameController(FirebaseService firebaseService, Game game) {
     this.game = game;
@@ -45,22 +48,14 @@ public class GameController implements Controller {
     return game.getRound();
   }
 
-  /**
-   * @param pawnNumber sets the selected pawn in our own player, then calls Player#doTurn, increases
-   *     the player counter and sends to firebase
-   */
-  public boolean doTurn(int pawnNumber) {
 
-    /* This doesn't do anything because this method is called when the users presses a card, but the
-    if statement is only true if the player has no cards.*/
-    // if (getOwnPlayer().getCards().isEmpty()) return true;
-
-    if (getOwnPlayer().isFirstPawnSelected()) {
-      getOwnPlayer().setSecondSelectedPawnIndex(pawnNumber);
-    } else {
-      getOwnPlayer().setSelectedPawnIndex(pawnNumber);
+  public int getTimeLeft() {
+    Timestamp startTime = game.getTurnStartTime();
+    if (startTime == null) {
+      startTime = Timestamp.now();
     }
-    return getOwnPlayer().doTurn();
+    int secondsPast = startTime.compareTo(Timestamp.now());
+    return MAX_TURN_TIME - secondsPast;
   }
 
   /**
@@ -90,9 +85,10 @@ public class GameController implements Controller {
 
   public void serialize() {
     try {
+      game.setTurnStartTime(Timestamp.now());
       firebaseService.set(game.getToken(), game.serialize());
     } catch (ExecutionException | InterruptedException e) {
-      logger.error("execution/interrupt exception", e);
+      logger.error(e.getMessage(), e);
     }
   }
 

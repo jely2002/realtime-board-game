@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ViewHelper {
-  private static final ArrayList<Vec2d> coordinates = new ArrayList<>();
+  public static final ArrayList<Vec2d> coordinates = new ArrayList<>();
   private static final String RED = "#FF0000";
   private static final String BLUE = "#0000FF";
   private static final String GREEN = "#00FF00";
@@ -318,7 +318,7 @@ public class ViewHelper {
   /**
    * Creates a JavaFX Polygon in the shape of a pawn
    *
-   * @param color Infill color of the pawn
+   * @param pawn the pawn
    * @return returns polygon with specified infill color in the shape of a pawn
    */
   public static Polygon createPawn(Pawn pawn) {
