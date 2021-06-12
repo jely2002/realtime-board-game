@@ -75,8 +75,10 @@ public class CountdownTimer implements Runnable {
       }
       Platform.runLater(
           () -> {
-            if (gameController.getIdCurrentPlayer() == gameController.getOwnPlayer().getId()) {
-              gameController.surrender();
+            if (gameController.isOwnPlayerCurrentPlayer()) {
+              // pass turn and sent to firebase
+              gameController.passTurn();
+              gameController.serialize();
             }
           });
     }

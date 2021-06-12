@@ -33,6 +33,14 @@ public class LobbyController implements Controller {
     this.stage = stage;
   }
 
+  public boolean hasGameStarted() {
+    return game.hasGameStarted();
+  }
+  // todo remove is just for debugging
+  public void setGameHasStarted() {
+    game.setGameHasStarted(true);
+  }
+
   @Override
   public void update(DocumentSnapshot document) {
     logger.info("Received update from firebase"); // TODO Remove in production

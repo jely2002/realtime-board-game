@@ -7,10 +7,7 @@ import java.util.concurrent.ExecutionException;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.interfaces.View;
-import nl.hsleiden.ipsene.models.Game;
-import nl.hsleiden.ipsene.models.Pawn;
-import nl.hsleiden.ipsene.models.Player;
-import nl.hsleiden.ipsene.models.Team;
+import nl.hsleiden.ipsene.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,31 +17,75 @@ public class GameController implements Controller {
 
   private final Game game;
   private final FirebaseService firebaseService;
-  private final int MAX_TURN_TIME = 6000;
+  private final int MAX_TURN_TIME = 100;
 
   public GameController(FirebaseService firebaseService, Game game) {
     this.game = game;
     this.firebaseService = firebaseService;
+    game.setGameHasStarted(true);
+    firebaseService.listen(game.getToken(), this);
   }
 
-  public Game getGame() {
-    return game;
+  public FirebaseService getFirebaseService() {
+    return firebaseService;
   }
 
-  public Player getOwnPlayer() {
+  private Player getOwnPlayer() {
     return game.getPlayer(game.getOwnPlayer() - 1);
+  }
+
+  public boolean setOwnPlayerClickedCardIndex(int index) {
+    Player ourPlayer = getOwnPlayer();
+    if (index < ourPlayer.getCards().size()) {
+      ourPlayer.setSelectedCardIndex(index);
+      return true;
+    }
+    return false;
+  }
+
+  public boolean hasOwnPlayedPassed() {
+    return getOwnPlayer().hasPassed();
+  }
+
+  public boolean isPlayerOwnPlayer(Team team, int index) {
+    Player p = team.getPlayer(index);
+    return p.equals(getOwnPlayer());
+  }
+
+  public final ArrayList<Card> getOwnPlayerCards() {
+    return getOwnPlayer().getCards();
+  }
+
+  public boolean isOwnPlayerCurrentPlayer() {
+    return getIdCurrentPlayer() == getOwnPlayer().getId();
+  }
+
+  public void setOwnPlayerSelectedPawnIndex(int index) {
+    getOwnPlayer().setSelectedPawnIndex(index);
+  }
+
+  public boolean doOwnPlayerTurn() {
+    return getOwnPlayer().doTurn();
   }
 
   public Integer getIdCurrentPlayer() {
     return game.getDoingTurn();
   }
 
-  public ArrayList<Team> getTeams() {
+  public final Pawn[] getOwnPlayerPawns() {
+    return getOwnPlayer().getPawns().toArray(new Pawn[0]);
+  }
+
+  public final ArrayList<Team> getTeams() {
     return game.getTeams();
   }
 
   public int getRound() {
     return game.getRound();
+  }
+
+  public boolean hasGameStarted() {
+    return game.hasGameStarted();
   }
 
   /**
@@ -70,18 +111,17 @@ public class GameController implements Controller {
   }
 
   /** Remove all cards from the player and end turn. */
-  public void surrender() {
-    System.out.println("Surrendering...");
-    getOwnPlayer().emptyCards();
-    System.out.println("Surrendered");
+  public void passTurn() {
+    getOwnPlayer().passTurn();
     increasePlayerCounter();
   }
 
-  public Pawn getOwnPlayerPawn(int pawn) {
+  public final Pawn getOwnPlayerPawn(int pawn) {
     return getOwnPlayer().getPawn(pawn);
   }
 
   public void serialize() {
+    System.out.println("serialize");
     try {
       firebaseService.set(game.getToken(), game.serialize());
     } catch (ExecutionException | InterruptedException e) {
@@ -93,7 +133,7 @@ public class GameController implements Controller {
     game.backToMainMenu();
   }
 
-  public ArrayList<Player> getAllPlayers() {
+  public final ArrayList<Player> getAllPlayers() {
     return game.getAllPlayers();
   }
 
@@ -106,5 +146,11 @@ public class GameController implements Controller {
   @Override
   public void registerObserver(View v) {
     game.registerObserver(v);
+    getOwnPlayer().registerObserver(v);
+  }
+
+  public void unRegisterObserver(View v) {
+    game.unregisterObserver(v);
+    getOwnPlayer().unregisterObserver(v);
   }
 }

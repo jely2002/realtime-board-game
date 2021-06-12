@@ -12,6 +12,7 @@ public class Board implements Model {
   public static final int START_POSITION_INDEX = 37;
   public static final int POOL_PLUS_END_SIZE = 9;
   public static final int HIGHEST_BOARD_POSITION = 101;
+  public static final int END_POOL_SIZE = 4;
 
   private static final HashMap<PlayerColour, Integer> poolStartPosition =
       new HashMap<PlayerColour, Integer>();
@@ -19,9 +20,9 @@ public class Board implements Model {
       new HashMap<PlayerColour, Integer>();
   private static final HashMap<PlayerColour, Integer> endPositions =
       new HashMap<PlayerColour, Integer>();
-  private static final HashMap<PlayerColour, ArrayList<Pawn>> endPools = new HashMap<>();
+  private static HashMap<PlayerColour, ArrayList<Pawn>> endPools = new HashMap<>();
   private static final HashMap<PlayerColour, Integer> endPoolStartPosition = new HashMap<>();
-  static long turnStartTime;
+  private static long turnStartTime;
   private final ArrayList<View> observers = new ArrayList<>();
 
   static {
@@ -49,28 +50,76 @@ public class Board implements Model {
     endPoolStartPosition.put(PlayerColour.RED, 32);
   }
 
-  public Board() {}
+  private Board() {}
 
-  public static boolean isInEndPosition(PlayerColour colour, int pos) {
+  private static Board board;
+
+  public static Board getInstance() {
+    if (board == null) {
+      return new Board();
+    }
+    return board;
+  }
+
+  public boolean isInEndPosition(PlayerColour colour, int pos) {
     return endPositions.get(colour) == pos;
   }
 
-  public static void putPawnIntoEndPool(PlayerColour colour, Pawn pawn) {
+  public void putPawnIntoEndPool(PlayerColour colour, Pawn pawn) {
     endPools.get(colour).add(pawn);
     pawn.setBoardPosition(endPoolStartPosition.get(colour) + endPools.get(colour).size());
     pawn.setIsInsideEndPool(true);
+    notifyObservers();
+  }
+
+  public void emptyEndPools() {
+    System.out.println("created new pools");
+    for (PlayerColour colour : endPools.keySet()) {
+      endPools.get(colour).clear();
+    }
+  }
+
+  /** @return null if the game has not been won, else the colour that won the game */
+  public PlayerColour hasTheGameBeenWon() {
+    for (PlayerColour colour : endPools.keySet()) {
+      ArrayList<Pawn> pool = endPools.get(colour);
+      System.out.println("colour: " + colour.toString() + " size: " + pool.size());
+      if (pool.size() >= END_POOL_SIZE) {
+        return colour;
+      }
+    }
+    return null;
   }
 
   public static int getFirstPoolPosition(PlayerColour team) {
     return poolStartPosition.get(team);
   }
 
-  public static int getFirstBoardPosition(PlayerColour team) {
-    return startPositions.get(team);
+  /**
+   * @param colour the team
+   * @return gets the start position on the board for the team
+   */
+  public static int getFirstBoardPosition(PlayerColour colour) {
+    return startPositions.get(colour);
   }
 
-  public static boolean isInsidePool(PlayerColour team, int position) {
-    return (position < getFirstBoardPosition(team));
+  /**
+   * @param colour the colour
+   * @param position the position
+   * @return wheter the position is inside the starting pool of the given colour
+   */
+  public static boolean isInsidePool(PlayerColour colour, int position) {
+    return (position < getFirstBoardPosition(colour));
+  }
+
+  /**
+   * @param team the pawns team
+   * @param position the pawns position
+   * @return wheter this position is inside the teams end pool
+   */
+  public boolean isInsideEndPool(PlayerColour team, int position) {
+    int startpos = endPoolStartPosition.get(team);
+    return (position > startpos && position <= END_POOL_SIZE + startpos);
   }
 
   /**

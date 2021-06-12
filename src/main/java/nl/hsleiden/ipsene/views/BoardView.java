@@ -20,7 +20,7 @@ import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.Card;
 import nl.hsleiden.ipsene.models.Pawn;
-import nl.hsleiden.ipsene.models.Player;
+import nl.hsleiden.ipsene.models.PlayerColour;
 import nl.hsleiden.ipsene.models.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,14 +48,15 @@ public class BoardView implements View {
 
   BoardController boardController;
   private final GameController gameController;
+  private VictoryView victoryView;
 
   public BoardView(Stage s, GameController gameController) {
     primaryStage = s;
+    victoryView = VictoryView.getInstance(s, gameController.getFirebaseService());
     this.gameController = gameController;
-    this.boardController = new BoardController();
+    this.boardController = BoardController.getInstance();
     boardController.registerObserver(this);
     gameController.registerObserver(this);
-    gameController.getOwnPlayer().registerObserver(this);
     loadPrimaryStage(createInitialPane());
   }
 
@@ -194,9 +195,8 @@ public class BoardView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          gameController.increasePlayerCounter();
+          advanceTurn();
           gameController.serialize();
-          loadPrimaryStage(createInitialPane());
         }
       };
 
@@ -204,8 +204,7 @@ public class BoardView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          System.out.println("surrenderEvent pressed");
-          gameController.surrender();
+          gameController.passTurn();
           gameController.serialize();
           loadPrimaryStage(createInitialPane());
         }
@@ -217,18 +216,16 @@ public class BoardView implements View {
    * @return a list of all the pawnlygons
    */
   private ArrayList<Node> buildPawns() {
-    Player ourPlayer = gameController.getOwnPlayer();
     // -1 for the player number to player index
     ArrayList<Node> allpawns = new ArrayList<>();
-    for (Team t : gameController.getTeams()) {
+    for (final Team team : gameController.getTeams()) {
       for (int i = 0; i < Team.PLAYERS_PER_TEAM; i++) {
-        Player p = t.getPlayer(i);
-        for (final Pawn pawn : p.getPawns()) {
+        for (final Pawn pawn : team.getPawnsFromPlayer(i)) {
           Polygon poly = ViewHelper.createPawn(pawn);
           ViewHelper.setPawnPosition(poly, pawn.getBoardPosition());
           // only add event when this is one of our pawns and it is our turn
-          if (p.equals(ourPlayer)
-              && gameController.getIdCurrentPlayer() == gameController.getOwnPlayer().getId()) {
+          if (gameController.isPlayerOwnPlayer(team, i)
+              && gameController.isOwnPlayerCurrentPlayer()) {
             poly.addEventFilter(MouseEvent.MOUSE_CLICKED, pawnClickedEvent);
           }
           allpawns.add(poly);
@@ -245,9 +242,8 @@ public class BoardView implements View {
    */
   private ArrayList<ImageView> buildCards() {
     // show all our players cards
-    Player ourPlayer = gameController.getOwnPlayer();
     ArrayList<ImageView> cards = new ArrayList<>();
-    for (Card card : ourPlayer.getCards()) {
+    for (Card card : gameController.getOwnPlayerCards()) {
       ImageView cardview = ViewHelper.showCard(card.getType(), card.steps);
       cardview.addEventFilter(MouseEvent.MOUSE_CLICKED, cardClicked);
       int ycoordinate = (card.isSelected()) ? 740 : 705;
@@ -276,11 +272,8 @@ public class BoardView implements View {
           double mousex = mouseEvent.getSceneX();
           // get the index of the card we clicked on
           int clickedCardIndex = (int) ((mousex - CARD_START_X_POSITION) / CARD_SEPERATION_VALUE);
-          Player ourPlayer = gameController.getOwnPlayer();
-          if (clickedCardIndex < ourPlayer.getCards().size()) {
-            ourPlayer.setSelectedCardIndex(clickedCardIndex);
+          if (gameController.setOwnPlayerClickedCardIndex(clickedCardIndex)) {
             cardSelected = true;
-
             loadPrimaryStage(createInitialPane());
           }
         }
@@ -296,15 +289,22 @@ public class BoardView implements View {
         @Override
         public void handle(MouseEvent mouseEvent) {
           if (cardSelected) {
-            Player ourPlayer = gameController.getOwnPlayer();
             Pawn closestPawn =
                 ViewHelper.getPawnClosestToPoint(
                     gameController, mouseEvent.getSceneX(), mouseEvent.getSceneY());
-            ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
-            if (ourPlayer.doTurn()) gameController.serialize();
+            gameController.setOwnPlayerSelectedPawnIndex(closestPawn.getPawnNumber());
+            // if turn was successful
+            if (gameController.doOwnPlayerTurn()) {
+              advanceTurn();
+            }
           }
         }
       };
+
+  private void advanceTurn() {
+    gameController.increasePlayerCounter();
+    gameController.serialize();
+  }
 
   EventHandler<MouseEvent> returnToMainMenuButtonClicked =
       new EventHandler<MouseEvent>() {
@@ -325,7 +325,20 @@ public class BoardView implements View {
 
   @Override
   public void update() {
-    // reset the x position of the cards to draw them anew
-    Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
+    PlayerColour potentialWinner = boardController.hasGameBeenWon();
+    System.out.println("winner: " + potentialWinner);
+    if (potentialWinner != null) {
+      boardController.unRegisterObserver(this);
+      gameController.unRegisterObserver(this);
+      // someone has won the game
+      victoryView.show(potentialWinner);
+    } else {
+      // reset the x position of the cards to draw them anew
+      Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
+      // if our player has passed his turn skip the turn
+      if (gameController.hasOwnPlayedPassed()) {
+        Platform.runLater(this::advanceTurn);
+      }
+    }
   }
 }

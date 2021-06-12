@@ -37,6 +37,11 @@ public class LobbyView implements View {
   private Button player4Join;
   private Button startButton;
 
+  private boolean player1Available = false;
+  private boolean player2Available = false;
+  private boolean player3Available = false;
+  private boolean player4Available = false;
+
   private Label waitingForPlayersLabel;
 
   public LobbyView(Stage primaryStage, LobbyController lobbyController) {
@@ -50,14 +55,10 @@ public class LobbyView implements View {
     Pane pane = new Pane();
 
     // TODO: dit koppelen met Firebase voor aansturen van de view op de model
-    boolean player1Available = lobbyController.getPlayerAvailable(1);
-    boolean player2Available = lobbyController.getPlayerAvailable(2);
-    boolean player3Available = lobbyController.getPlayerAvailable(3);
-    boolean player4Available = lobbyController.getPlayerAvailable(4);
-
-    if (!player1Available && !player2Available && !player3Available && !player4Available) {
-      startGame();
-    }
+    player1Available = lobbyController.getPlayerAvailable(1);
+    player2Available = lobbyController.getPlayerAvailable(2);
+    player3Available = lobbyController.getPlayerAvailable(3);
+    player4Available = lobbyController.getPlayerAvailable(4);
 
     String lobbyID = lobbyController.getToken();
 
@@ -278,18 +279,25 @@ public class LobbyView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
+          lobbyController.setGameHasStarted();
           startGame();
         }
       };
 
   // TODO finetune and check if boardstage really comes after lobbyView
   private void startGame() {
-    GameController gameController = lobbyController.startGame(this);
-    new BoardView(primaryStage, gameController);
+    // if either all slots are filled or the game has started
+    if (lobbyController.hasGameStarted()
+        || (!player1Available && !player2Available && !player3Available && !player4Available)) {
+      GameController gameController = lobbyController.startGame(this);
+      new BoardView(primaryStage, gameController);
+      gameController.serialize();
+    }
   }
 
   @Override
   public void update() {
     Platform.runLater(() -> loadPrimaryStage(createPane()));
+    Platform.runLater(() -> startGame());
   }
 }

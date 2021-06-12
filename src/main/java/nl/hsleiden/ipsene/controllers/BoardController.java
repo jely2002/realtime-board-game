@@ -5,7 +5,7 @@ import com.sun.javafx.PlatformUtil;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.Board;
-import nl.hsleiden.ipsene.models.Deck;
+import nl.hsleiden.ipsene.models.PlayerColour;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +16,8 @@ public class BoardController implements Controller {
   static BoardController boardController;
   private final Board board;
 
-  private Deck cards;
-  private final boolean gameHasEnded = false;
-
-  public BoardController() {
-    this.board = new Board();
+  private BoardController() {
+    this.board = Board.getInstance();
   }
 
   @Override
@@ -31,6 +28,10 @@ public class BoardController implements Controller {
     board.registerObserver(v);
   }
 
+  public void unRegisterObserver(View v) {
+    board.unregisterObserver(v);
+  }
+
   public static BoardController getInstance() {
     if (boardController == null) {
       boardController = new BoardController();
@@ -38,6 +39,10 @@ public class BoardController implements Controller {
     return boardController;
   }
 
+  /** @return null if the game has not been won */
+  public PlayerColour hasGameBeenWon() {
+    return board.hasTheGameBeenWon();
+  }
   /**
    * Returns the remaining amount of seconds of a turn from the model
    *

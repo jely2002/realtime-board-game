@@ -30,6 +30,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
   private final int id;
   private boolean available;
   private final PlayerColour colour;
+  private boolean hasPassedTheTurn = false;
 
   /**
    * should not be called manually, call through Team#createPlayers
@@ -50,6 +51,19 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
     for (Pawn p : pawns) {
       p.setOwningPlayer(this);
     }
+  }
+
+  public void passTurn() {
+    hasPassedTheTurn = true;
+    emptyCards();
+  }
+
+  public boolean hasPassed() {
+    return hasPassedTheTurn;
+  }
+
+  public void setHasPassed(boolean p) {
+    hasPassedTheTurn = p;
   }
 
   public boolean equals(Player other) {
@@ -178,6 +192,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
         (ArrayList<HashMap<String, Object>>) ourPlayer.get("pawns");
     ArrayList<HashMap<String, Object>> cards =
         (ArrayList<HashMap<String, Object>>) ourPlayer.get("cards");
+
     // update pawns
     for (int i = 0; i < pawns.size(); i++) {
       HashMap<String, Object> pawn = pawns.get(i);

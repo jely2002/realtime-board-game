@@ -16,6 +16,7 @@ public class Firebase {
   public static final String DOING_TURN_FIELD_NAME = "doingTurn";
   public static final String ROUND_FIELD_NAME = "round";
   public static final String TURN_START_TIME_FIELD_NAME = "turnStartTime";
+  public static final String GAME_HAS_STARTED_START_FIELD_NAME = "gameHasStarted";
   private final Firestore store;
 
   protected Firebase(String privateKeyPath) throws IOException {
