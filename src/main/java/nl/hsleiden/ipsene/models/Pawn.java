@@ -13,15 +13,8 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
   private Player player;
   private int pawnNumber;
   private boolean isInsidePool = true;
-  private boolean isHover = false;
+  private boolean isInsideVictoryPool = false;
 
-  public boolean isHover() {
-    return isHover;
-  }
-
-  public void setHover(boolean hover) {
-    isHover = hover;
-  }
   /**
    * @param colour - the 'type' of the team, from enum TeamType used to get team info and calculate
    *     position
@@ -34,7 +27,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
     boardPosition = pawnNum;
     pawnNumber = pawnNum;
   }
-
+  public void setIsInsideEndPool(boolean val) { isInsideVictoryPool = val; }
   public PlayerColour getPlayerColour() {
     return colour;
   }
@@ -49,25 +42,30 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
 
   public int getBoardPosition() {
     if (isInsidePool) {
-      return Board.getFirstPoolPosition(colour) + boardPosition + 1;
+      return pawnNumber + 1;
     }
     return Board.getFirstBoardPosition(colour) + boardPosition + 1;
   }
 
-  public int getRelativeRealBoardPosition() {
-    return boardPosition;
-  }
-
-  private void setRelativeBoardposition(int pos) {
-    if (!isInsidePool) {
-      boardPosition = pos;
+  public void setBoardPosition(int pos) {
+    System.out.println("new pos: " + pos);
+    if (!isInsidePool && !isInsideVictoryPool) {
+      // wrap around if necessary
+      if (getBoardPosition() >= Board.HIGHEST_BOARD_POSITION) {
+        int diff = getBoardPosition() - Board.HIGHEST_BOARD_POSITION;
+        boardPosition = Board.START_POSITION_INDEX + diff;
+      }
+      else {
+        boardPosition = pos;
+      }
       notifyObservers();
     }
   }
 
   public void takeOutOfPool() {
-    isInsidePool = true;
-    setRelativeBoardposition(Board.getFirstBoardPosition(getPlayerColour()));
+    isInsidePool = false;
+    System.out.println("team: " + colour.toString() + " pos: " + Board.getFirstBoardPosition(getPlayerColour()));
+    setBoardPosition(0);
   }
 
   public boolean isOutOfPool() {
@@ -76,19 +74,22 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
 
   /** @param amount the amount of 'tiles' to add to the pawns position */
   public void addRelativeBoardPosition(int amount) {
-    // if pos has changed then pawn is now outside pool
-    if (isInsidePool && amount != 0) {
-      isInsidePool = false;
-      setRelativeBoardposition(amount);
-      boardPosition = 0;
+    // dont move if pawn is still inside pool
+    if (!isInsidePool || amount != 0) {
+      for (int i = 0; i <= amount; i++) {
+        if (Board.isInEndPosition(colour, boardPosition + i)) {
+          Board.putPawnIntoEndPool(colour, this);
+          break;
+        }
+      }
+      setBoardPosition(boardPosition + amount);
     }
-    setRelativeBoardposition(boardPosition + amount);
   }
 
   @Override
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serializedPawn = new LinkedHashMap<>();
-    serializedPawn.put("location", getRelativeRealBoardPosition());
+    serializedPawn.put("location", getBoardPosition());
     serializedPawn.put("owner", player.getId());
     return serializedPawn;
   }
@@ -97,7 +98,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
   public void update(DocumentSnapshot document) {}
 
   public void update(int position) {
-    this.setRelativeBoardposition(position);
+    this.setBoardPosition(position);
   }
 
   private final ArrayList<View> observers = new ArrayList<>();

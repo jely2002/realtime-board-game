@@ -56,6 +56,7 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
 
   private static void playSubCard(Player player, Card card) {
     System.out.println("played sub card");
+    playSpawnCard(player, card);
     logger.debug("sub card played");
   }
 
@@ -85,7 +86,6 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
   private static void playStep4Card(Player player, Card card) {
     // System.out.println("played 4 card");
     Pawn pawn = player.getSelectedPawn(true);
-    int p = pawn.getBoardPosition();
     pawn.addRelativeBoardPosition(4);
     // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
 
@@ -95,8 +95,8 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
   private static void playStepNCard(Player player, Card card) {
     // System.out.println("played n card value: " + card.steps);
     Pawn pawn = player.getSelectedPawn(true);
-    int p = pawn.getBoardPosition();
     pawn.addRelativeBoardPosition(card.steps);
+
     // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
     logger.debug("n card played with value: {}", card.steps);
   }

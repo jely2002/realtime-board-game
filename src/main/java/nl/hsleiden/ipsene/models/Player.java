@@ -97,8 +97,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
     if (cards.get(selectedCardIndex).getType().isTwoPawnCard()) {
       if (selectedPawnIndex2 == -1) return false;
     }
-    System.out.println("do turn");
-    // if the pawn we play this on is not out of its pool yet
+    // if the pawn we play this on is not out of its pool yet and we are not taking it out return false
     if (cards.get(selectedCardIndex).getType() != CardType.SPAWN) {
       if (!getSelectedPawn(true).isOutOfPool()) return false;
     }
@@ -121,6 +120,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
   }
 
   private void playCard() {
+
     if (selectedCardIndex != -1) {
       Card c = cards.get(selectedCardIndex);
       c.play(this);

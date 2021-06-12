@@ -1,6 +1,8 @@
 package nl.hsleiden.ipsene.views;
 
 import java.util.ArrayList;
+
+import com.sun.javafx.geom.Vec2d;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -187,9 +189,6 @@ public class BoardView implements View {
               && gameController.getIdCurrentPlayer() == gameController.getOwnPlayer().getId()) {
             poly.addEventFilter(MouseEvent.MOUSE_CLICKED, pawnClickedEvent);
           }
-          // for hover functionality
-          //          poly.addEventFilter(MouseEvent.MOUSE_ENTERED, pawnHoverEvent);
-          //          poly.addEventFilter(MouseEvent.MOUSE_EXITED, pawnHoverEvent);
           allpawns.add(poly);
         }
       }
@@ -204,7 +203,6 @@ public class BoardView implements View {
    */
   private ArrayList<ImageView> buildCards() {
     // show all our players cards
-    cardSelected = false;
     Player ourPlayer = gameController.getOwnPlayer();
     ArrayList<ImageView> cards = new ArrayList<>();
     for (Card card : ourPlayer.getCards()) {
@@ -240,6 +238,7 @@ public class BoardView implements View {
           if (clickedCardIndex < ourPlayer.getCards().size()) {
             ourPlayer.setSelectedCardIndex(clickedCardIndex);
             cardSelected = true;
+
             loadPrimaryStage(createInitialPane());
           }
         }
@@ -255,14 +254,13 @@ public class BoardView implements View {
         @Override
         public void handle(MouseEvent mouseEvent) {
           if (cardSelected) {
-            // TODO This may be broken (11/06/2021)
-            timerThread.interrupt();
+            //timerThread.interrupt();
             Player ourPlayer = gameController.getOwnPlayer();
             Pawn closestPawn = ourPlayer.getPawn(0);
             ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
             ourPlayer.doTurn();
             gameController.serialize();
-            timerThread.start();
+            //timerThread.start();
           }
         }
       };
