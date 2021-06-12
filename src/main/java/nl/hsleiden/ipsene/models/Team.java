@@ -70,20 +70,22 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
    * @param pawnIndex index of the pawn to get
    * @return the corresponding pawn
    */
-  public Pawn getPawn(int playerIndex, int pawnIndex) {
+  public final Pawn getPawn(int playerIndex, int pawnIndex) {
     if (playerIndex < PLAYERS_PER_TEAM) return players[playerIndex].getPawn(pawnIndex);
     return null; // do NOT remove NULL is used by Player
   }
 
-  public Player[] getPlayers() {
+  public final Player[] getPlayers() {
     return players;
   }
 
-  public Player getPlayer(int playerIndex) {
+  public final Player getPlayer(int playerIndex) {
     if (playerIndex < PLAYERS_PER_TEAM) return players[playerIndex];
     return null;
   }
-
+  public final Pawn[] getPawnsFromPlayer(int playerindex) {
+    return players[playerindex].getPawns().toArray(new Pawn[0]);
+  }
   @Override
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serialized = new LinkedHashMap<>();

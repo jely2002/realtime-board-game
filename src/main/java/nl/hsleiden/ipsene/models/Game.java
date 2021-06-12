@@ -2,10 +2,9 @@ package nl.hsleiden.ipsene.models;
 
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Random;
+
+import java.util.*;
+
 import nl.hsleiden.ipsene.controllers.LobbyController;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
@@ -33,6 +32,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   private Timestamp turnStartTime;
   private int cardsPerPlayerNextRound = 5;
   private int cardsThisTurnValue = 2;
+  private boolean gameHasStarted = false;
 
   private final LobbyController lobbyController;
 
@@ -45,6 +45,9 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     this.doingTurn = 0;
     distributeCards();
   }
+
+  public boolean hasGameStarted() { return gameHasStarted; }
+  public void setGameHasStarted(boolean started) { gameHasStarted = started; }
 
   public int getRound() {
     return round;
@@ -98,6 +101,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     doingTurn = Math.toIntExact(document.getLong(Firebase.DOING_TURN_FIELD_NAME));
     round = Math.toIntExact(document.getLong(Firebase.ROUND_FIELD_NAME));
     turnStartTime = document.getTimestamp(Firebase.TURN_START_TIME_FIELD_NAME);
+    gameHasStarted = document.getBoolean(Firebase.GAME_HAS_STARTED_START_FIELD_NAME);
     token = document.getId();
 
     teams.forEach(team -> team.update(document));
@@ -120,6 +124,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     serializedGame.put(Firebase.ROUND_FIELD_NAME, round);
     serializedGame.put(Firebase.TURN_START_TIME_FIELD_NAME, turnStartTime);
     serializedGame.put(Firebase.DOING_TURN_FIELD_NAME, doingTurn);
+    serializedGame.put(Firebase.GAME_HAS_STARTED_START_FIELD_NAME, gameHasStarted);
 
     return serializedGame;
   }
@@ -191,9 +196,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     ArrayList<Team> teams = getTeams();
     ArrayList<Player> players = new ArrayList<Player>();
     for (Team team : teams) {
-      for (Player player : team.getPlayers()) {
-        players.add(player);
-      }
+      players.addAll(Arrays.asList(team.getPlayers()));
     }
     Player player = teams.get(0).getPlayer(0);
     return players;

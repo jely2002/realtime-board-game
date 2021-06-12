@@ -55,8 +55,8 @@ public class BoardView implements View {
     this.boardController = new BoardController();
     boardController.registerObserver(this);
     gameController.registerObserver(this);
-    gameController.getOwnPlayer().registerObserver(this);
     loadPrimaryStage(createInitialPane());
+    System.out.println("created new boardview");
   }
 
   private void loadPrimaryStage(Pane pane) {
@@ -217,18 +217,15 @@ public class BoardView implements View {
    * @return a list of all the pawnlygons
    */
   private ArrayList<Node> buildPawns() {
-    Player ourPlayer = gameController.getOwnPlayer();
     // -1 for the player number to player index
     ArrayList<Node> allpawns = new ArrayList<>();
-    for (Team t : gameController.getTeams()) {
+    for (final Team team : gameController.getTeams()) {
       for (int i = 0; i < Team.PLAYERS_PER_TEAM; i++) {
-        Player p = t.getPlayer(i);
-        for (final Pawn pawn : p.getPawns()) {
+        for (final Pawn pawn : team.getPawnsFromPlayer(i)) {
           Polygon poly = ViewHelper.createPawn(pawn);
           ViewHelper.setPawnPosition(poly, pawn.getBoardPosition());
           // only add event when this is one of our pawns and it is our turn
-          if (p.equals(ourPlayer)
-              && gameController.getIdCurrentPlayer() == gameController.getOwnPlayer().getId()) {
+          if (gameController.isPlayerOwnPlayer(team, i) && gameController.isOwnPlayerCurrentPlayer()) {
             poly.addEventFilter(MouseEvent.MOUSE_CLICKED, pawnClickedEvent);
           }
           allpawns.add(poly);
@@ -245,9 +242,8 @@ public class BoardView implements View {
    */
   private ArrayList<ImageView> buildCards() {
     // show all our players cards
-    Player ourPlayer = gameController.getOwnPlayer();
     ArrayList<ImageView> cards = new ArrayList<>();
-    for (Card card : ourPlayer.getCards()) {
+    for (Card card : gameController.getOwnPlayerCards()) {
       ImageView cardview = ViewHelper.showCard(card.getType(), card.steps);
       cardview.addEventFilter(MouseEvent.MOUSE_CLICKED, cardClicked);
       int ycoordinate = (card.isSelected()) ? 740 : 705;
@@ -276,11 +272,8 @@ public class BoardView implements View {
           double mousex = mouseEvent.getSceneX();
           // get the index of the card we clicked on
           int clickedCardIndex = (int) ((mousex - CARD_START_X_POSITION) / CARD_SEPERATION_VALUE);
-          Player ourPlayer = gameController.getOwnPlayer();
-          if (clickedCardIndex < ourPlayer.getCards().size()) {
-            ourPlayer.setSelectedCardIndex(clickedCardIndex);
+          if (gameController.setOwnPlayerClickedCardIndex(clickedCardIndex)) {
             cardSelected = true;
-
             loadPrimaryStage(createInitialPane());
           }
         }
@@ -296,12 +289,15 @@ public class BoardView implements View {
         @Override
         public void handle(MouseEvent mouseEvent) {
           if (cardSelected) {
-            Player ourPlayer = gameController.getOwnPlayer();
             Pawn closestPawn =
                 ViewHelper.getPawnClosestToPoint(
                     gameController, mouseEvent.getSceneX(), mouseEvent.getSceneY());
-            ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
-            if (ourPlayer.doTurn()) gameController.serialize();
+            gameController.setOwnPlayerSelectedPawnIndex(closestPawn.getPawnNumber());
+            // if turn was successful
+            if (gameController.doOwnPlayerTurn()) {
+              gameController.increasePlayerCounter();
+              gameController.serialize();
+            }
           }
         }
       };

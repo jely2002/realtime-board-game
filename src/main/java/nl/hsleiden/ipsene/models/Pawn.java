@@ -97,11 +97,18 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
     return serializedPawn;
   }
 
+  /** DON'T use this method, it does nothing
+   * use Pawn#update(int position) instead directly from the player for better performance
+   * @param document the document received from firebase
+   */
   @Override
-  public void update(DocumentSnapshot document) {}
+  public void update(DocumentSnapshot document) { }
 
+  /** sets the pawns position, should be used to update from firebase in the player
+   * @param position the new position
+   */
   public void update(int position) {
-    this.setBoardPosition(position);
+    boardPosition = position;
   }
 
   private final ArrayList<View> observers = new ArrayList<>();
