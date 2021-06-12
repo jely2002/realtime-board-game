@@ -69,7 +69,6 @@ public class GameController implements Controller {
     return MAX_TURN_TIME - secondsPast;
   }
 
-
   /** Remove all cards from the player and end turn. */
   public void surrender() {
     System.out.println("Surrendering...");

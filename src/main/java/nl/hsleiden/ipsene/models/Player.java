@@ -69,9 +69,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
         // set first pawn index
         selectedPawnIndex = i;
       }
-    }
-    else
-      selectedPawnIndex = i;
+    } else selectedPawnIndex = i;
   }
 
   public boolean setSecondSelectedPawnIndex(int i) {

@@ -8,7 +8,7 @@ import java.util.Map;
 /* source: https://stackoverflow.com/questions/5021246/conveniently-map-between-enum-and-int-string */
 public enum CardType {
   SPAWN(0),
-  //SUB(1),
+  // SUB(1),
   SPAWN_STEP_1(1),
   STEP_7(2),
   STEP_4(3),
