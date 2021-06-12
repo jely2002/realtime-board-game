@@ -6,8 +6,6 @@ import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.Board;
 import nl.hsleiden.ipsene.models.Deck;
 
-import java.io.IOException;
-
 public class BoardController implements Controller {
 
   static BoardController boardController;

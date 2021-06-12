@@ -1,6 +1,5 @@
 package nl.hsleiden.ipsene.views;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -125,7 +124,7 @@ public class BoardView implements View {
 
     // menu buttons
     Button gameRulesButton = buildMenuButton("RULES");
-    ViewHelper.setNodeCoordinates(gameRulesButton, 5 , 5);
+    ViewHelper.setNodeCoordinates(gameRulesButton, 5, 5);
     gameRulesButton.addEventFilter(MouseEvent.MOUSE_CLICKED, openGameRulesButtonClicked);
 
     Button returnToMainMenuButton = buildMenuButton("EXIT");
@@ -177,7 +176,7 @@ public class BoardView implements View {
     return button;
   }
 
-  private Button buildMenuButton(String text){
+  private Button buildMenuButton(String text) {
     Button button = new Button();
 
     button.setText(text);
@@ -307,21 +306,21 @@ public class BoardView implements View {
       };
 
   EventHandler<MouseEvent> returnToMainMenuButtonClicked =
-          new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-              logger.debug("Back to menu button clicked");
-              gameController.backToMainMenu();
-            }
-          };
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+          logger.debug("Back to menu button clicked");
+          gameController.backToMainMenu();
+        }
+      };
   EventHandler<MouseEvent> openGameRulesButtonClicked =
-          new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-              logger.debug("gameRules webpage opened");
-              BoardController.openWebpage("https://github.com/jely2002/IIPSENE/wiki/Rules");
-            }
-          };
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+          logger.debug("gameRules webpage opened");
+          BoardController.openWebpage("https://github.com/jely2002/IIPSENE/wiki/Rules");
+        }
+      };
 
   @Override
   public void update() {
