@@ -96,7 +96,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
       if (selectedPawnIndex2 == -1) return false;
     }
     // if the card is not a spawn card and the selected pawn is not out of the pool yet return false
-    if (!cards.get(selectedCardIndex).getType().isSpawnCard() ) {
+    if (!cards.get(selectedCardIndex).getType().isSpawnCard()) {
       if (!getSelectedPawn(true).isOutOfPool()) return false;
     }
     playCard();

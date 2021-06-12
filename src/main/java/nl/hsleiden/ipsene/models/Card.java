@@ -61,10 +61,8 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
   private static void playSpawnStep1Card(Player player, Card card) {
     // System.out.println("played spawn step 1");
     Pawn pawn = player.getSelectedPawn(true);
-    if (pawn.isOutOfPool())
-      pawn.addRelativeBoardPosition(1);
-    else
-      pawn.takeOutOfPool();
+    if (pawn.isOutOfPool()) pawn.addRelativeBoardPosition(1);
+    else pawn.takeOutOfPool();
     // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
 
     logger.debug("step1 card played");

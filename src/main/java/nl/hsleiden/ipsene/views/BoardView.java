@@ -1,8 +1,6 @@
 package nl.hsleiden.ipsene.views;
 
 import java.util.ArrayList;
-
-import com.sun.javafx.geom.Vec2d;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -253,12 +251,14 @@ public class BoardView implements View {
         @Override
         public void handle(MouseEvent mouseEvent) {
           if (cardSelected) {
-            //timerThread.interrupt();
+            // timerThread.interrupt();
             Player ourPlayer = gameController.getOwnPlayer();
-            Pawn closestPawn = ViewHelper.getPawnClosestToPoint(gameController, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+            Pawn closestPawn =
+                ViewHelper.getPawnClosestToPoint(
+                    gameController, mouseEvent.getSceneX(), mouseEvent.getSceneY());
             ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
             if (ourPlayer.doTurn()) gameController.serialize();
-            //timerThread.start();
+            // timerThread.start();
           }
         }
       };

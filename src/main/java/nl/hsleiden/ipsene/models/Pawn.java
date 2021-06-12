@@ -27,7 +27,11 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
     boardPosition = Board.getFirstPoolPosition(colour) + pawnNum;
     pawnNumber = pawnNum;
   }
-  public void setIsInsideEndPool(boolean val) { isInsideVictoryPool = val; }
+
+  public void setIsInsideEndPool(boolean val) {
+    isInsideVictoryPool = val;
+  }
+
   public PlayerColour getPlayerColour() {
     return colour;
   }
@@ -50,12 +54,11 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
       if (pos >= Board.HIGHEST_BOARD_POSITION) {
         int diff = Math.abs(pos - Board.HIGHEST_BOARD_POSITION);
         boardPosition = Board.START_POSITION_INDEX + diff;
-        //System.out.println("wrapped around diff: " + diff);
-      }
-      else {
+        // System.out.println("wrapped around diff: " + diff);
+      } else {
         boardPosition = pos;
       }
-      //System.out.println("added: " + pos + " new pos: " + boardPosition);
+      // System.out.println("added: " + pos + " new pos: " + boardPosition);
 
       notifyObservers();
     }

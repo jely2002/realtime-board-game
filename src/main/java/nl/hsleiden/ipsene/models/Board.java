@@ -16,9 +16,9 @@ public class Board implements Model {
   private static final HashMap<PlayerColour, Integer> poolStartPosition =
       new HashMap<PlayerColour, Integer>();
   private static final HashMap<PlayerColour, Integer> startPositions =
-          new HashMap<PlayerColour, Integer>();
+      new HashMap<PlayerColour, Integer>();
   private static final HashMap<PlayerColour, Integer> endPositions =
-          new HashMap<PlayerColour, Integer>();
+      new HashMap<PlayerColour, Integer>();
   private static HashMap<PlayerColour, ArrayList<Pawn>> endPools = new HashMap<>();
   private static HashMap<PlayerColour, Integer> endPoolStartPosition = new HashMap<>();
   static long turnStartTime;
@@ -47,17 +47,20 @@ public class Board implements Model {
     startPositions.put(PlayerColour.RED, 84);
     endPositions.put(PlayerColour.RED, 82);
     endPoolStartPosition.put(PlayerColour.GREEN, 31);
-
   }
 
   public Board() {}
 
-  public static boolean isInEndPosition(PlayerColour colour, int pos) { return endPositions.get(colour) == pos; }
+  public static boolean isInEndPosition(PlayerColour colour, int pos) {
+    return endPositions.get(colour) == pos;
+  }
+
   public static void putPawnIntoEndPool(PlayerColour colour, Pawn pawn) {
     endPools.get(colour).add(pawn);
     pawn.setBoardPosition(endPoolStartPosition.get(colour) + endPools.get(colour).size());
     pawn.setIsInsideEndPool(true);
   }
+
   public static int getFirstPoolPosition(PlayerColour team) {
     return poolStartPosition.get(team);
   }
