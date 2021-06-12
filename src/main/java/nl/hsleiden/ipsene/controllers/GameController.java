@@ -46,10 +46,15 @@ public class GameController implements Controller {
   }
 
   /**
-   * @param pawnNumber sets the selected pawn in our own player, the calls Player#doTurn, increases
-   *     the player counter and sents to firebase
+   * @param pawnNumber sets the selected pawn in our own player, then calls Player#doTurn, increases
+   *     the player counter and sends to firebase
    */
   public boolean doTurn(int pawnNumber) {
+
+    /* This doesn't do anything because this method is called when the users presses a card, but the
+    if statement is only true if the player has no cards.*/
+    // if (getOwnPlayer().getCards().isEmpty()) return true;
+
     if (getOwnPlayer().isFirstPawnSelected()) {
       getOwnPlayer().setSecondSelectedPawnIndex(pawnNumber);
     } else {
@@ -59,16 +64,24 @@ public class GameController implements Controller {
   }
 
   /**
-   * adds 1 to the id of the current player or wraps around when the highst value is reached if the
-   * highst value is reached redistributes cards and advance round
+   * Adds 1 to the id of the current player or wraps around when the highest value is reached. If
+   * there are no players left who have cards, we go to the next round.
    */
   public void increasePlayerCounter() {
     int nextPlayer = game.getDoingTurn() + 1;
     int highestPlayer = (Team.PLAYERS_PER_TEAM * Game.AMOUNT_OF_TEAMS) - 1;
     game.setDoingTurnPlayer((nextPlayer <= highestPlayer) ? nextPlayer : 0);
-    if (game.getDoingTurn() == 0) {
+    if (game.amountOfPlayersWithCards() == 0) {
       game.advanceRound();
     }
+  }
+
+  /** Remove all cards from the player and end turn. */
+  public void surrender() {
+    System.out.println("Surrendering...");
+    getOwnPlayer().emptyCards();
+    System.out.println("Surrendered");
+    increasePlayerCounter();
   }
 
   public Pawn getOwnPlayerPawn(int pawn) {
@@ -84,7 +97,11 @@ public class GameController implements Controller {
   }
 
   public void backToMainMenu() {
-    this.game.backToMainMenu();
+    game.backToMainMenu();
+  }
+
+  public ArrayList<Player> getAllPlayers() {
+    return game.getAllPlayers();
   }
 
   @Override

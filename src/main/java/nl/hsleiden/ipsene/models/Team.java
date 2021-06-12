@@ -15,6 +15,7 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
 
   private final Game game;
 
+
   private final Player[] players;
   public static final int PAWNS_PER_PLAYER = 4;
   public static final int PLAYERS_PER_TEAM = 2;
@@ -73,6 +74,10 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
   public Pawn getPawn(int playerIndex, int pawnIndex) {
     if (playerIndex < PLAYERS_PER_TEAM) return players[playerIndex].getPawn(pawnIndex);
     return null; // do NOT remove NULL is used by Player
+  }
+
+  public Player[] getPlayers() {
+    return players;
   }
 
   public Player getPlayer(int playerIndex) {

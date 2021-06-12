@@ -50,7 +50,7 @@ public class BoardView implements View {
   public BoardView(Stage s, GameController gameController) {
     primaryStage = s;
     this.gameController = gameController;
-    this.boardController = new BoardController(4);
+    this.boardController = new BoardController();
     boardController.registerObserver(this);
     gameController.registerObserver(this);
     gameController.getOwnPlayer().registerObserver(this);
@@ -129,6 +129,10 @@ public class BoardView implements View {
     Button skipTurnButton = buildSkipTurnButton();
     skipTurnButton.addEventFilter(MouseEvent.MOUSE_CLICKED, skipTurnEvent);
 
+    // surrender button
+    Button surrenderButton = buildSurrenderButton();
+    surrenderButton.addEventFilter(MouseEvent.MOUSE_CLICKED, surrenderEvent);
+
     pane.getChildren()
         .addAll(
             gameBoard,
@@ -138,7 +142,8 @@ public class BoardView implements View {
             timerLabel,
             timerHeader,
             playersTurnDisplay,
-            skipTurnButton);
+            skipTurnButton,
+            surrenderButton);
     pane.getChildren().addAll(cardsText, roundNumberDisplay);
     pane.getChildren().addAll(pawns);
     pane.getChildren().addAll(cards);
@@ -151,7 +156,18 @@ public class BoardView implements View {
     button.setText("skip turn");
     button.setPrefWidth(125);
     button.setPrefHeight(125);
-    ViewHelper.setNodeCoordinates(button, 1220, 710);
+    ViewHelper.setNodeCoordinates(button, 1020, 710);
+    button.setStyle("-fx-font-size: 20; -fx-background-color: " + RED);
+    ViewHelper.applyDropShadow(button);
+    return button;
+  }
+
+  private Button buildSurrenderButton() {
+    Button button = new Button();
+    button.setText("Surrender");
+    button.setPrefWidth(170);
+    button.setPrefHeight(170);
+    ViewHelper.setNodeCoordinates(button, 1165, 715);
     button.setStyle("-fx-font-size: 20; -fx-background-color: " + RED);
     ViewHelper.applyDropShadow(button);
     return button;
@@ -161,12 +177,31 @@ public class BoardView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          System.out.println("pressed");
+          System.out.println("skipTurnEvent pressed");
+          // this is just for testing: simulates actually playing a card {{{
+          gameController
+              .getAllPlayers()
+              .get(gameController.getIdCurrentPlayer())
+              .getCards()
+              .remove(0);
+          // }}}
           gameController.increasePlayerCounter();
           gameController.serialize();
           loadPrimaryStage(createInitialPane());
         }
       };
+
+  EventHandler<MouseEvent> surrenderEvent =
+      new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+          System.out.println("surrenderEvent pressed");
+          gameController.surrender();
+          gameController.serialize();
+          loadPrimaryStage(createInitialPane());
+        }
+      };
+
   /**
    * gets all pawns in the game and builds polygons for them
    *
