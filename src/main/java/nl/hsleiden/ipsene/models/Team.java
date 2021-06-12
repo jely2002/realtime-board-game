@@ -15,7 +15,6 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
 
   private final Game game;
 
-
   private final Player[] players;
   public static final int PAWNS_PER_PLAYER = 4;
   public static final int PLAYERS_PER_TEAM = 2;

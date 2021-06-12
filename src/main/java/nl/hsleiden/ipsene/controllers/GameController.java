@@ -48,7 +48,6 @@ public class GameController implements Controller {
     return game.getRound();
   }
 
-
   public int getTimeLeft() {
     Timestamp startTime = game.getTurnStartTime();
     if (startTime == null) {

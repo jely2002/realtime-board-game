@@ -181,6 +181,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
   /**
    * Get all the Players objects in the game. We currently have 4 of them.
+   *
    * @return ArrayList with Player objects.
    */
   public ArrayList<Player> getAllPlayers() {
