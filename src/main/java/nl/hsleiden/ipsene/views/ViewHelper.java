@@ -318,7 +318,7 @@ public class ViewHelper {
   /**
    * Creates a JavaFX Polygon in the shape of a pawn
    *
-   * @param color Infill color of the pawn
+   * @param pawn the pawn
    * @return returns polygon with specified infill color in the shape of a pawn
    */
   public static Polygon createPawn(Pawn pawn) {

@@ -163,7 +163,6 @@ public class BoardView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          System.out.println("pressed");
           gameController.increasePlayerCounter();
           gameController.serialize();
           loadPrimaryStage(createInitialPane());
@@ -256,10 +255,9 @@ public class BoardView implements View {
           if (cardSelected) {
             //timerThread.interrupt();
             Player ourPlayer = gameController.getOwnPlayer();
-            Pawn closestPawn = ourPlayer.getPawn(0);
+            Pawn closestPawn = ViewHelper.getPawnClosestToPoint(gameController, mouseEvent.getSceneX(), mouseEvent.getSceneY());
             ourPlayer.setSelectedPawnIndex(closestPawn.getPawnNumber());
-            ourPlayer.doTurn();
-            gameController.serialize();
+            if (ourPlayer.doTurn()) gameController.serialize();
             //timerThread.start();
           }
         }

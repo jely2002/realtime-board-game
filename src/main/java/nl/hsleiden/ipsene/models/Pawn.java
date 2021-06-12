@@ -24,7 +24,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
   public Pawn(PlayerColour colour, int pawnNum, Game game) {
     this.game = game;
     this.colour = colour;
-    boardPosition = pawnNum;
+    boardPosition = Board.getFirstPoolPosition(colour) + pawnNum;
     pawnNumber = pawnNum;
   }
   public void setIsInsideEndPool(boolean val) { isInsideVictoryPool = val; }
@@ -41,31 +41,29 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
   }
 
   public int getBoardPosition() {
-    if (isInsidePool) {
-      return Board.getFirstPoolPosition(colour) + pawnNumber + 1;
-    }
-    return Board.getFirstBoardPosition(colour) + boardPosition + 1;
+    return boardPosition;
   }
 
   public void setBoardPosition(int pos) {
-    System.out.println("new pos: " + pos);
     if (!isInsidePool && !isInsideVictoryPool) {
       // wrap around if necessary
-      if (getBoardPosition() >= Board.HIGHEST_BOARD_POSITION) {
-        int diff = getBoardPosition() - Board.HIGHEST_BOARD_POSITION;
+      if (pos >= Board.HIGHEST_BOARD_POSITION) {
+        int diff = Math.abs(pos - Board.HIGHEST_BOARD_POSITION);
         boardPosition = Board.START_POSITION_INDEX + diff;
+        //System.out.println("wrapped around diff: " + diff);
       }
       else {
         boardPosition = pos;
       }
+      //System.out.println("added: " + pos + " new pos: " + boardPosition);
+
       notifyObservers();
     }
   }
 
   public void takeOutOfPool() {
     isInsidePool = false;
-    System.out.println("team: " + colour.toString() + " pos: " + Board.getFirstBoardPosition(getPlayerColour()));
-    setBoardPosition(0);
+    setBoardPosition(Board.getFirstBoardPosition(colour));
   }
 
   public boolean isOutOfPool() {

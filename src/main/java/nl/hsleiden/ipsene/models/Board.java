@@ -9,11 +9,11 @@ import nl.hsleiden.ipsene.interfaces.View;
 public class Board implements Model {
 
   public static final int STEPS_BETWEEN_TEAMS = 15;
-  public static final int START_POSITION_INDEX = 36;
+  public static final int START_POSITION_INDEX = 37;
   public static final int POOL_PLUS_END_SIZE = 9;
   public static final int HIGHEST_BOARD_POSITION = 99;
 
-  private static final HashMap<PlayerColour, Integer> boardOffset =
+  private static final HashMap<PlayerColour, Integer> poolStartPosition =
       new HashMap<PlayerColour, Integer>();
   private static final HashMap<PlayerColour, Integer> startPositions =
           new HashMap<PlayerColour, Integer>();
@@ -28,25 +28,25 @@ public class Board implements Model {
     for (PlayerColour c : PlayerColour.values()) {
       endPools.put(c, new ArrayList<Pawn>());
     }
-    boardOffset.put(PlayerColour.GREEN, 0);
-    startPositions.put(PlayerColour.GREEN, 36);
+    poolStartPosition.put(PlayerColour.GREEN, 1);
+    startPositions.put(PlayerColour.GREEN, 37);
     endPositions.put(PlayerColour.GREEN, 99);
-    endPoolStartPosition.put(PlayerColour.GREEN, 0);
+    endPoolStartPosition.put(PlayerColour.GREEN, 4);
 
-    boardOffset.put(PlayerColour.BLUE, 1);
-    startPositions.put(PlayerColour.BLUE, 51);
+    poolStartPosition.put(PlayerColour.BLUE, 10);
+    startPositions.put(PlayerColour.BLUE, 52);
     endPositions.put(PlayerColour.BLUE, 50);
-    endPoolStartPosition.put(PlayerColour.BLUE, 9);
+    endPoolStartPosition.put(PlayerColour.BLUE, 13);
 
-    boardOffset.put(PlayerColour.YELLOW, 2);
-    startPositions.put(PlayerColour.YELLOW, 68);
+    poolStartPosition.put(PlayerColour.YELLOW, 19);
+    startPositions.put(PlayerColour.YELLOW, 69);
     endPositions.put(PlayerColour.YELLOW, 67);
-    endPoolStartPosition.put(PlayerColour.YELLOW, 18);
+    endPoolStartPosition.put(PlayerColour.YELLOW, 22);
 
-    boardOffset.put(PlayerColour.RED, 3);
-    startPositions.put(PlayerColour.RED, 83);
+    poolStartPosition.put(PlayerColour.RED, 28);
+    startPositions.put(PlayerColour.RED, 84);
     endPositions.put(PlayerColour.RED, 82);
-    endPoolStartPosition.put(PlayerColour.GREEN, 27);
+    endPoolStartPosition.put(PlayerColour.GREEN, 31);
 
   }
 
@@ -59,7 +59,7 @@ public class Board implements Model {
     pawn.setIsInsideEndPool(true);
   }
   public static int getFirstPoolPosition(PlayerColour team) {
-    return POOL_PLUS_END_SIZE * boardOffset.get(team);
+    return poolStartPosition.get(team);
   }
 
   public static int getFirstBoardPosition(PlayerColour team) {

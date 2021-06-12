@@ -48,14 +48,12 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
   }
 
   private static void playSpawnCard(Player player, Card card) {
-    System.out.println("played spawn card");
     Pawn pawn = player.getSelectedPawn(true);
     pawn.takeOutOfPool();
     logger.debug("spawn card played");
   }
 
   private static void playSubCard(Player player, Card card) {
-    System.out.println("played sub card");
     playSpawnCard(player, card);
     logger.debug("sub card played");
   }
@@ -63,7 +61,10 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
   private static void playSpawnStep1Card(Player player, Card card) {
     // System.out.println("played spawn step 1");
     Pawn pawn = player.getSelectedPawn(true);
-    pawn.addRelativeBoardPosition(1);
+    if (pawn.isOutOfPool())
+      pawn.addRelativeBoardPosition(1);
+    else
+      pawn.takeOutOfPool();
     // System.out.println("n pawn at pos: " + p + " new pos: " + pawn.getBoardPosition());
 
     logger.debug("step1 card played");

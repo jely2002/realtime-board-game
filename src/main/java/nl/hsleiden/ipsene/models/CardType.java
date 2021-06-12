@@ -37,6 +37,10 @@ public enum CardType {
         || code == CardType.STEP_4.code
         || code == CardType.STEP_N.code);
   }
+  public boolean isSpawnCard() {
+    return (code == CardType.SPAWN_STEP_1.code
+        || code == CardType.SPAWN.code);
+  }
 
   public boolean isTwoPawnCard() {
     return (code == CardType.SUB.code || code == CardType.STEP_7.code);
