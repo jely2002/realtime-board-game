@@ -6,6 +6,8 @@ import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.Board;
 import nl.hsleiden.ipsene.models.Deck;
 
+import java.io.IOException;
+
 public class BoardController implements Controller {
 
   static BoardController boardController = null;
@@ -50,5 +52,13 @@ public class BoardController implements Controller {
   /** Starts the turnTimer by calling the model */
   public void startTurnTimer() {
     board.startTurnTimer();
+  }
+
+  public static void openWebpage(String url) {
+    try {
+      java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+    } catch (java.io.IOException e) {
+      System.out.println(e.getMessage());
+    }
   }
 }
