@@ -7,7 +7,6 @@ import java.util.Map;
 /** types: "spawn": 0 "sub": 1 "spawn_step_1": 2 "step_7": 3 "step_4": 4 "step_n": 5 */
 public enum CardType {
   SPAWN(0),
-  // SUB(1),
   SPAWN_STEP_1(1),
   STEP_7(2),
   STEP_4(3),
@@ -27,14 +26,6 @@ public enum CardType {
     if (code == CardType.STEP_7.code) return 7;
     if (code == CardType.STEP_4.code) return 4;
     return 0;
-  }
-
-  /** @return if this cardtype allows taking steps */
-  public boolean isStepCard() {
-    return (code == CardType.SPAWN_STEP_1.code
-        || code == CardType.STEP_7.code
-        || code == CardType.STEP_4.code
-        || code == CardType.STEP_N.code);
   }
 
   public boolean isSpawnCard() {

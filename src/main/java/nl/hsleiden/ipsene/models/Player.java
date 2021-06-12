@@ -14,11 +14,8 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
 
   private static final Logger logger = LoggerFactory.getLogger(Player.class.getName());
 
-  private final Game game;
-
   private final ArrayList<Card> cards;
-  /** index of the player in its team */
-  private final int playerIndex;
+  private final int globalPlayerIndex;
 
   private final Team team;
   private final ArrayList<Pawn> pawns;
@@ -29,7 +26,6 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
 
   private final int id;
   private boolean available;
-  private final PlayerColour colour;
   private boolean hasPassedTheTurn = false;
 
   /**
@@ -39,13 +35,11 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
    * @param index the players index within its team
    */
   public Player(
-      Team team, PlayerColour colour, int id, int index, ArrayList<Pawn> pawns, Game game) {
-    this.colour = colour;
-    cards = new ArrayList<Card>();
-    this.game = game;
+      Team team, int id, int index, ArrayList<Pawn> pawns) {
+    cards = new ArrayList<>();
     this.id = id;
     this.team = team;
-    this.playerIndex = index;
+    this.globalPlayerIndex = index;
     this.pawns = pawns;
     this.available = true;
     for (Pawn p : pawns) {
@@ -131,7 +125,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
 
   public Pawn getSelectedPawn(boolean firstPawn) {
     int index = (firstPawn) ? selectedPawnIndex : selectedPawnIndex2;
-    return team.getPawn(playerIndex, index);
+    return team.getPawn(globalPlayerIndex, index);
   }
 
   public void addCard(Card card) {

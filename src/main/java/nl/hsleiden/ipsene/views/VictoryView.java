@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 public class VictoryView implements View {
   private static final Logger logger = LoggerFactory.getLogger(MenuView.class.getName());
+
   private final Stage primaryStage;
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
@@ -57,7 +58,7 @@ public class VictoryView implements View {
       primaryStage.setTitle("Keezbord");
       primaryStage.show();
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error(e.getMessage(), e);
     }
   }
 
@@ -90,17 +91,17 @@ public class VictoryView implements View {
   }
 
   EventHandler<MouseEvent> quitButtonClicked =
-      new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent e) {
-          logger.debug("Back to menu button clicked");
-          try {
-            victoryController.backToMainMenu(primaryStage, firebaseService);
-          } catch (IOException ioException) {
-            ioException.printStackTrace();
-          }
-        }
-      };
+          new EventHandler<>() {
+            @Override
+            public void handle(MouseEvent event) {
+              logger.debug("Back to menu button clicked");
+              try {
+                victoryController.backToMainMenu(primaryStage, firebaseService);
+              } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+              }
+            }
+          };
 
   @Override
   public void update() {}

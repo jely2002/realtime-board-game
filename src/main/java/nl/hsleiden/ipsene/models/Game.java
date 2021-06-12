@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 
 public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
-  private static final Logger logger = LoggerFactory.getLogger(Game.class.getName());
-
   public static final int AMOUNT_OF_TEAMS = 2;
   private static final int TOKEN_LENGTH = 5;
 
@@ -56,7 +54,10 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     return round;
   }
 
-  /** */
+
+  /**
+   * Empties all decks and regenerates cards for them
+   */
   public void advanceRound() {
     round += 1;
     cardsPerPlayerNextRound = (cardsThisTurnValue == 1) ? 5 : 4;
@@ -73,8 +74,8 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     else {
       cardsThisTurnValue = 1;
       deck.regenerate();
-      getAllPlayers().get(getOwnPlayer()).setHasPassed(false);
     }
+    getAllPlayers().get(getOwnPlayer()).setHasPassed(false);
   }
 
   private ArrayList<Team> generateTeams() {
@@ -83,7 +84,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
       {PlayerColour.RED, PlayerColour.GREEN}, {PlayerColour.BLUE, PlayerColour.YELLOW}
     };
     for (int i = 0; i < AMOUNT_OF_TEAMS; i++) {
-      teams.add(new Team(types[i], i, this));
+      teams.add(new Team(types[i], i));
     }
     return teams;
   }
@@ -95,48 +96,13 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     return sb.toString();
   }
 
-  /** distributes cards to all teams */
+  /**
+   * Distribute cards to all teams
+   */
   private void distributeCards() {
     for (Team team : this.teams) {
       team.distributeCards(cardsPerPlayerNextRound, deck);
     }
-  }
-
-  @Override
-  public void update(DocumentSnapshot document) {
-
-    doingTurn = Math.toIntExact(document.getLong(Firebase.DOING_TURN_FIELD_NAME));
-    round = Math.toIntExact(document.getLong(Firebase.ROUND_FIELD_NAME));
-    turnStartTime = document.getTimestamp(Firebase.TURN_START_TIME_FIELD_NAME);
-    gameHasStarted = document.getBoolean(Firebase.GAME_HAS_STARTED_START_FIELD_NAME);
-    token = document.getId();
-
-    // empty the pools so the pawns can add themselves again
-    Board.getInstance().emptyEndPools();
-
-    teams.forEach(team -> team.update(document));
-    deck.update(document);
-
-    notifyObservers();
-  }
-
-  @Override
-  public Map<String, Object> serialize() {
-    LinkedHashMap<String, Object> serializedGame = new LinkedHashMap<>();
-
-    LinkedHashMap<String, Object> serializedPlayers = new LinkedHashMap<>();
-    for (Team team : teams) {
-      serializedPlayers.putAll(team.serialize());
-    }
-
-    serializedGame.put(Firebase.PLAYER_FIELD_NAME, serializedPlayers);
-    serializedGame.put(Firebase.CARD_FIELD_NAME, deck.serialize());
-    serializedGame.put(Firebase.ROUND_FIELD_NAME, round);
-    serializedGame.put(Firebase.TURN_START_TIME_FIELD_NAME, turnStartTime);
-    serializedGame.put(Firebase.DOING_TURN_FIELD_NAME, doingTurn);
-    serializedGame.put(Firebase.GAME_HAS_STARTED_START_FIELD_NAME, gameHasStarted);
-
-    return serializedGame;
   }
 
   public Integer getOwnPlayer() {
@@ -181,16 +147,8 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     this.doingTurn = doingTurn;
   }
 
-  public void setRound(int round) {
-    this.round = round;
-  }
-
   public Timestamp getTurnStartTime() {
     return turnStartTime;
-  }
-
-  public void setTurnStartTime(Timestamp turnStartTime) {
-    this.turnStartTime = turnStartTime;
   }
 
   public void backToMainMenu() {
@@ -199,22 +157,19 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
   /**
    * Get all the Players objects in the game. We currently have 4 of them.
-   *
    * @return ArrayList with Player objects.
    */
   public ArrayList<Player> getAllPlayers() {
     ArrayList<Team> teams = getTeams();
-    ArrayList<Player> players = new ArrayList<Player>();
+    ArrayList<Player> players = new ArrayList<>();
     for (Team team : teams) {
       players.addAll(Arrays.asList(team.getPlayers()));
     }
-    Player player = teams.get(0).getPlayer(0);
     return players;
   }
 
   /**
    * Loops through all the players and counts how many of them have cards.
-   *
    * @return the amount of players that have one or more cards.
    */
   public int amountOfPlayersWithCards() {
@@ -223,6 +178,42 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
       if (!player.getCards().isEmpty()) count++;
     }
     return count;
+  }
+
+  @Override
+  public void update(DocumentSnapshot document) {
+    doingTurn = Math.toIntExact(document.getLong(Firebase.DOING_TURN_FIELD_NAME));
+    round = Math.toIntExact(document.getLong(Firebase.ROUND_FIELD_NAME));
+    turnStartTime = document.getTimestamp(Firebase.TURN_START_TIME_FIELD_NAME);
+    gameHasStarted = document.getBoolean(Firebase.GAME_HAS_STARTED_START_FIELD_NAME);
+    token = document.getId();
+
+    // empty the pools so the pawns can add themselves again
+    Board.emptyEndPools();
+
+    teams.forEach(team -> team.update(document));
+    deck.update(document);
+
+    notifyObservers();
+  }
+
+  @Override
+  public Map<String, Object> serialize() {
+    LinkedHashMap<String, Object> serializedGame = new LinkedHashMap<>();
+
+    LinkedHashMap<String, Object> serializedPlayers = new LinkedHashMap<>();
+    for (Team team : teams) {
+      serializedPlayers.putAll(team.serialize());
+    }
+
+    serializedGame.put(Firebase.PLAYER_FIELD_NAME, serializedPlayers);
+    serializedGame.put(Firebase.CARD_FIELD_NAME, deck.serialize());
+    serializedGame.put(Firebase.ROUND_FIELD_NAME, round);
+    serializedGame.put(Firebase.TURN_START_TIME_FIELD_NAME, turnStartTime);
+    serializedGame.put(Firebase.DOING_TURN_FIELD_NAME, doingTurn);
+    serializedGame.put(Firebase.GAME_HAS_STARTED_START_FIELD_NAME, gameHasStarted);
+
+    return serializedGame;
   }
 
   @Override

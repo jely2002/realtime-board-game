@@ -4,10 +4,13 @@ import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+
+import javafx.event.Event;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.*;
+import nl.hsleiden.ipsene.views.ViewHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -121,12 +124,39 @@ public class GameController implements Controller {
   }
 
   public void serialize() {
-    System.out.println("serialize");
     try {
       firebaseService.set(game.getToken(), game.serialize());
     } catch (ExecutionException | InterruptedException e) {
       logger.error(e.getMessage(), e);
     }
+  }
+
+  public void advanceTurn() {
+    increasePlayerCounter();
+    serialize();
+  }
+
+  public void clickPawn(boolean cardSelected, double x, double y) {
+    if (cardSelected) {
+      Pawn closestPawn =
+              getPawnClosestToPoint(
+                      x, y);
+      setOwnPlayerSelectedPawnIndex(closestPawn.getPawnNumber());
+      // if turn was successful
+      if (doOwnPlayerTurn()) {
+        advanceTurn();
+      }
+    }
+  }
+
+  private Pawn getPawnClosestToPoint(double closestPawnDistance, double pawnDistance) {
+    Pawn closestPawn = getOwnPlayerPawn(0);
+    // get the closest pawn to our click position
+    for (int i = 1; i < Team.PAWNS_PER_PLAYER; i++) {
+      Pawn p = getOwnPlayerPawn(i);
+      closestPawn = (closestPawnDistance < pawnDistance) ? closestPawn : p;
+    }
+    return closestPawn;
   }
 
   public void backToMainMenu() {
