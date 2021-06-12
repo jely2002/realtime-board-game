@@ -94,7 +94,7 @@ public class VictoryView implements View {
       new EventHandler<>() {
         @Override
         public void handle(MouseEvent event) {
-          logger.debug("Back to menu button clicked");
+          logger.debug("back to menu button clicked");
           try {
             victoryController.backToMainMenu(primaryStage, firebaseService);
           } catch (IOException e) {
