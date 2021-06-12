@@ -33,25 +33,22 @@ public class VictoryView implements View {
   private static final Effect frostEffect = new BoxBlur(50, 50, 3);
 
   private static VictoryView victoryView = null;
+
   public static VictoryView getInstance(Stage primaryStage, FirebaseService firebaseService) {
     if (victoryView == null) {
       return new VictoryView(primaryStage, firebaseService);
-    }
-    else return victoryView;
+    } else return victoryView;
   }
-  /**
-   * @param primaryStage give primary stage
-   */
-  private VictoryView(
-      Stage primaryStage, FirebaseService firebaseService) {
+  /** @param primaryStage give primary stage */
+  private VictoryView(Stage primaryStage, FirebaseService firebaseService) {
     this.primaryStage = primaryStage;
     this.firebaseService = firebaseService;
-
   }
 
   public void show(PlayerColour winner) {
     Platform.runLater(() -> loadPrimaryStage(createPane(winner)));
   }
+
   private void loadPrimaryStage(Pane pane) {
     try {
       Pane root = pane;
@@ -106,7 +103,5 @@ public class VictoryView implements View {
       };
 
   @Override
-  public void update() {
-
-  }
+  public void update() {}
 }

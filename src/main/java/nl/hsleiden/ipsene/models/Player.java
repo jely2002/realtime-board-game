@@ -52,13 +52,20 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
       p.setOwningPlayer(this);
     }
   }
+
   public void passTurn() {
     hasPassedTheTurn = true;
     emptyCards();
   }
 
-  public boolean hasPassed() { return hasPassedTheTurn; }
-  public void setHasPassed(boolean p) { hasPassedTheTurn = p; }
+  public boolean hasPassed() {
+    return hasPassedTheTurn;
+  }
+
+  public void setHasPassed(boolean p) {
+    hasPassedTheTurn = p;
+  }
+
   public boolean equals(Player other) {
     return (team.teamIndex == other.team.teamIndex && id == other.id);
   }

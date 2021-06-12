@@ -224,7 +224,8 @@ public class BoardView implements View {
           Polygon poly = ViewHelper.createPawn(pawn);
           ViewHelper.setPawnPosition(poly, pawn.getBoardPosition());
           // only add event when this is one of our pawns and it is our turn
-          if (gameController.isPlayerOwnPlayer(team, i) && gameController.isOwnPlayerCurrentPlayer()) {
+          if (gameController.isPlayerOwnPlayer(team, i)
+              && gameController.isOwnPlayerCurrentPlayer()) {
             poly.addEventFilter(MouseEvent.MOUSE_CLICKED, pawnClickedEvent);
           }
           allpawns.add(poly);
@@ -299,10 +300,12 @@ public class BoardView implements View {
           }
         }
       };
+
   private void advanceTurn() {
     gameController.increasePlayerCounter();
     gameController.serialize();
   }
+
   EventHandler<MouseEvent> returnToMainMenuButtonClicked =
       new EventHandler<MouseEvent>() {
         @Override
@@ -329,8 +332,7 @@ public class BoardView implements View {
       gameController.unregisterobserver(this);
       // someone has won the game
       victoryView.show(potentialWinner);
-    }
-    else {
+    } else {
       // reset the x position of the cards to draw them anew
       Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
       // if our player has passed his turn skip the turn
