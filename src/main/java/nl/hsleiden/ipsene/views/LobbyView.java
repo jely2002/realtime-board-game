@@ -1,5 +1,6 @@
 package nl.hsleiden.ipsene.views;
 
+import java.io.FileNotFoundException;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -15,8 +16,6 @@ import nl.hsleiden.ipsene.controllers.LobbyController;
 import nl.hsleiden.ipsene.interfaces.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.FileNotFoundException;
 
 public class LobbyView implements View {
 

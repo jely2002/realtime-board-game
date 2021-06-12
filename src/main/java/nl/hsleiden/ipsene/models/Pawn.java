@@ -1,13 +1,12 @@
 package nl.hsleiden.ipsene.models;
 
 import com.google.cloud.firestore.DocumentSnapshot;
-import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
-import nl.hsleiden.ipsene.interfaces.Model;
-import nl.hsleiden.ipsene.interfaces.View;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
+import nl.hsleiden.ipsene.interfaces.Model;
+import nl.hsleiden.ipsene.interfaces.View;
 
 public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
   private final Game game;

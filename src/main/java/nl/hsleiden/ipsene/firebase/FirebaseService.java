@@ -2,13 +2,12 @@ package nl.hsleiden.ipsene.firebase;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import nl.hsleiden.ipsene.interfaces.Controller;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import nl.hsleiden.ipsene.interfaces.Controller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FirebaseService {
 

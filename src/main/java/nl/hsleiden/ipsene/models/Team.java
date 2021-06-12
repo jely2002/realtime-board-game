@@ -1,14 +1,13 @@
 package nl.hsleiden.ipsene.models;
 
 import com.google.cloud.firestore.DocumentSnapshot;
-import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Team implements FirebaseSerializable<Map<String, Object>> {
 

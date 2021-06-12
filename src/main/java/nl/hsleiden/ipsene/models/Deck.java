@@ -1,11 +1,10 @@
 package nl.hsleiden.ipsene.models;
 
 import com.google.cloud.firestore.DocumentSnapshot;
-import nl.hsleiden.ipsene.firebase.Firebase;
-import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
-
 import java.util.*;
 import java.util.stream.Collectors;
+import nl.hsleiden.ipsene.firebase.Firebase;
+import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 
 public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
   private ArrayList<Card> cards = new ArrayList<Card>();

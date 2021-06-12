@@ -2,6 +2,7 @@ package nl.hsleiden.ipsene.controllers;
 
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.ListenerRegistration;
+import java.util.concurrent.ExecutionException;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.exceptions.GameNotFoundException;
@@ -14,8 +15,6 @@ import nl.hsleiden.ipsene.models.Player;
 import nl.hsleiden.ipsene.views.MenuView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.ExecutionException;
 
 public class LobbyController implements Controller {
 

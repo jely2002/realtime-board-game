@@ -1,5 +1,6 @@
 package nl.hsleiden.ipsene.views;
 
+import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -23,8 +24,6 @@ import nl.hsleiden.ipsene.models.Player;
 import nl.hsleiden.ipsene.models.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
 
 public class BoardView implements View {
   private static final Logger logger = LoggerFactory.getLogger(Main.class.getName());

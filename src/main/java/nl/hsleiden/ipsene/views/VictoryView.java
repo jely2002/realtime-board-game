@@ -1,5 +1,6 @@
 package nl.hsleiden.ipsene.views;
 
+import java.io.IOException;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -17,8 +18,6 @@ import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.interfaces.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 public class VictoryView implements View {
   private static final Logger logger = LoggerFactory.getLogger(MenuView.class.getName());
@@ -39,7 +38,8 @@ public class VictoryView implements View {
    * @param playerHasWon if the player('s team) has won the game or not
    * @param winningTeam team number of the winning team
    */
-  public VictoryView(Stage primaryStage, FirebaseService firebaseService, boolean playerHasWon, int winningTeam) {
+  public VictoryView(
+      Stage primaryStage, FirebaseService firebaseService, boolean playerHasWon, int winningTeam) {
     this.primaryStage = primaryStage;
     this.playerHasWon = playerHasWon;
     this.winningTeam = winningTeam;

@@ -13,10 +13,7 @@ public class WaitingForPlayersThread implements Runnable {
   }
 
   private void doAndWait(String suffix) throws InterruptedException {
-    Platform.runLater(
-        () ->
-            label.setText(
-                PREFIX + suffix));
+    Platform.runLater(() -> label.setText(PREFIX + suffix));
     Thread.sleep(DELAY);
   }
 

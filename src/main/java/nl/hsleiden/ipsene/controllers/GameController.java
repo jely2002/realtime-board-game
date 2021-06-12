@@ -2,6 +2,8 @@ package nl.hsleiden.ipsene.controllers;
 
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.interfaces.View;
@@ -11,9 +13,6 @@ import nl.hsleiden.ipsene.models.Player;
 import nl.hsleiden.ipsene.models.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class GameController implements Controller {
 

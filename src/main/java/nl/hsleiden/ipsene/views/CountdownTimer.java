@@ -75,7 +75,7 @@ public class CountdownTimer implements Runnable {
       }
       Platform.runLater(
           () -> {
-            if(gameController.getIdCurrentPlayer() == gameController.getOwnPlayer().getId()) {
+            if (gameController.getIdCurrentPlayer() == gameController.getOwnPlayer().getId()) {
               gameController.surrender();
             }
           });

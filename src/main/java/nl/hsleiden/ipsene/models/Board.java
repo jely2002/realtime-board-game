@@ -1,11 +1,10 @@
 package nl.hsleiden.ipsene.models;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import javafx.application.Platform;
 import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Board implements Model {
 
