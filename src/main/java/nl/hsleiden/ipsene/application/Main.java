@@ -20,7 +20,7 @@ public class Main extends Application {
   public void start(Stage primaryStage) {
     try {
       FirebaseService firebaseService =
-              new FirebaseService("/firestoretest-5c4e4-52601abc4d0c.json", "games");
+          new FirebaseService("/firestoretest-5c4e4-52601abc4d0c.json", "games");
       LobbyController lobbyController = new LobbyController(firebaseService, primaryStage);
       primaryStage.setResizable(false);
     } catch (IOException e) {
