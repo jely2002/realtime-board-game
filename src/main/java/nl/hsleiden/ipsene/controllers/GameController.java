@@ -39,6 +39,9 @@ public class GameController implements Controller {
     }
     return false;
   }
+  public boolean hasOwnPlayedPassed() {
+    return getOwnPlayer().hasPassed();
+  }
   public boolean isPlayerOwnPlayer(Team team, int index) {
     Player p = team.getPlayer(index);
     return p.equals(getOwnPlayer());
@@ -94,10 +97,8 @@ public class GameController implements Controller {
   }
 
   /** Remove all cards from the player and end turn. */
-  public void surrender() {
-    System.out.println("Surrendering...");
-    getOwnPlayer().emptyCards();
-    System.out.println("Surrendered");
+  public void passTurn() {
+    getOwnPlayer().passTurn();
     increasePlayerCounter();
   }
 

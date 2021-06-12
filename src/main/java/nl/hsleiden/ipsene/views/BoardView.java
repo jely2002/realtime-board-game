@@ -20,7 +20,6 @@ import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.Card;
 import nl.hsleiden.ipsene.models.Pawn;
-import nl.hsleiden.ipsene.models.Player;
 import nl.hsleiden.ipsene.models.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +55,10 @@ public class BoardView implements View {
     boardController.registerObserver(this);
     gameController.registerObserver(this);
     loadPrimaryStage(createInitialPane());
-    System.out.println("created new boardview");
+    // if our player has passed his turn skip the turn
+    if (gameController.hasOwnPlayedPassed()) {
+      advanceTurn();
+    }
   }
 
   private void loadPrimaryStage(Pane pane) {
@@ -194,9 +196,8 @@ public class BoardView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          gameController.increasePlayerCounter();
+          advanceTurn();
           gameController.serialize();
-          loadPrimaryStage(createInitialPane());
         }
       };
 
@@ -204,8 +205,7 @@ public class BoardView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          System.out.println("surrenderEvent pressed");
-          gameController.surrender();
+          gameController.passTurn();
           gameController.serialize();
           loadPrimaryStage(createInitialPane());
         }
@@ -295,13 +295,15 @@ public class BoardView implements View {
             gameController.setOwnPlayerSelectedPawnIndex(closestPawn.getPawnNumber());
             // if turn was successful
             if (gameController.doOwnPlayerTurn()) {
-              gameController.increasePlayerCounter();
-              gameController.serialize();
+              advanceTurn();
             }
           }
         }
       };
-
+  private void advanceTurn() {
+    gameController.increasePlayerCounter();
+    gameController.serialize();
+  }
   EventHandler<MouseEvent> returnToMainMenuButtonClicked =
       new EventHandler<MouseEvent>() {
         @Override

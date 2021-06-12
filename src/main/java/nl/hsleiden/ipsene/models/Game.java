@@ -62,11 +62,15 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
       team.emptyCards();
     }
     distributeCards();
+    // if 4 cards
     if (cardsThisTurnValue < 3) {
       cardsThisTurnValue = cardsThisTurnValue + 1;
-    } else {
+    }
+    // if 5 cards
+    else {
       cardsThisTurnValue = 1;
       deck.regenerate();
+      getAllPlayers().get(getOwnPlayer()).setHasPassed(false);
     }
   }
 
