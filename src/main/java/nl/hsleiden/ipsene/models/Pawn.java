@@ -9,7 +9,6 @@ import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
 
 public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
-  private final Game game;
   private int boardPosition;
   private final PlayerColour colour;
   private Player player;
@@ -23,8 +22,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
    * @param pawnNum - the number of the pawn, acts as an id and is used to determine initial board
    *     position
    */
-  public Pawn(PlayerColour colour, int pawnNum, Game game) {
-    this.game = game;
+  public Pawn(PlayerColour colour, int pawnNum) {
     this.colour = colour;
     boardPosition = Board.getFirstPoolPosition(colour) + pawnNum;
     pawnNumber = pawnNum;
@@ -96,11 +94,12 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
   }
 
   /**
-   * DON'T use this method, it does nothing use Pawn#update(int position) instead directly from the
-   * player for better performance
+   * No longer does anything as there is a better alternative.
    *
    * @param document the document received from firebase
+   * @deprecated Don't use this, use update in the player. Pawn is already updated in player.
    */
+  @Deprecated(forRemoval = true)
   @Override
   public void update(DocumentSnapshot document) {}
 
@@ -111,7 +110,7 @@ public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
    */
   public void update(int position) {
     boardPosition = position;
-    if (Board.getInstance().isInsideEndPool(colour, position)) {
+    if (Board.isInsideEndPool(colour, position)) {
       Board.getInstance().putPawnIntoEndPool(colour, this);
     }
   }

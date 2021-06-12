@@ -24,10 +24,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import nl.hsleiden.ipsene.application.Main;
-import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.models.CardType;
 import nl.hsleiden.ipsene.models.Pawn;
-import nl.hsleiden.ipsene.models.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -152,13 +150,13 @@ public class ViewHelper {
           }
         case 1:
           {
-            playerColor = BLUE;
+            playerColor = GREEN;
             playerText += "2" + suffix;
             break;
           }
         case 2:
           {
-            playerColor = GREEN;
+            playerColor = BLUE;
             playerText += "3" + suffix;
             break;
           }
@@ -325,13 +323,7 @@ public class ViewHelper {
    * @return returns polygon with specified infill color in the shape of a pawn
    */
   public static Polygon createPawn(Pawn pawn) {
-    String colour =
-        //    if (pawn.isHover()) {
-        //      // black
-        //      colour = "#ffffff";
-        //    }
-        //    else
-        colour = pawn.getPlayerColour().getCode();
+    String colour = pawn.getPlayerColour().getCode();
 
     Polygon poly = new Polygon();
 
@@ -367,17 +359,6 @@ public class ViewHelper {
     }
   }
 
-  public static Pawn getPawnClosestToPoint(GameController gameController, double x, double y) {
-    Pawn closestPawn = gameController.getOwnPlayerPawn(0);
-    // get the closest pawn to our click position
-    for (int i = 1; i < Team.PAWNS_PER_PLAYER; i++) {
-      Pawn p = gameController.getOwnPlayerPawn(i);
-      double closestPawnDistance = getPawnDistanceFromMouse(closestPawn, x, y);
-      double pawnDistance = getPawnDistanceFromMouse(p, x, y);
-      closestPawn = (closestPawnDistance < pawnDistance) ? closestPawn : p;
-    }
-    return closestPawn;
-  }
   /**
    * gets the distance between a pawn and a position on screen
    *

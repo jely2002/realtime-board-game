@@ -44,19 +44,6 @@ public class BoardController implements Controller {
   public PlayerColour hasGameBeenWon() {
     return board.hasTheGameBeenWon();
   }
-  /**
-   * Returns the remaining amount of seconds of a turn from the model
-   *
-   * @return remaining amount of seconds
-   */
-  public int getCurrentTurnTime() {
-    return board.getCurrentTurnTime();
-  }
-
-  /** Starts the turnTimer by calling the model */
-  public void startTurnTimer() {
-    board.startTurnTimer();
-  }
 
   public static void openWebpage(String url) {
     try {
@@ -64,10 +51,10 @@ public class BoardController implements Controller {
         java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
       }
       if (PlatformUtil.isLinux()) {
-        Runtime.getRuntime().exec(String.format("xdg-open " + url));
+        Runtime.getRuntime().exec("xdg-open " + url);
       }
       if (PlatformUtil.isMac()) {
-        Runtime.getRuntime().exec(String.format("open " + url));
+        Runtime.getRuntime().exec("open " + url);
       }
     } catch (Exception e) {
       logger.warn(e.getMessage(), e);

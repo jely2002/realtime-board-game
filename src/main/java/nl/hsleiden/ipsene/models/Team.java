@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import nl.hsleiden.ipsene.exceptions.OverdrawException;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,33 +14,29 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
 
   private static final Logger logger = LoggerFactory.getLogger(Team.class.getName());
 
-  private final Game game;
-
   private final Player[] players;
   public static final int PAWNS_PER_PLAYER = 4;
   public static final int PLAYERS_PER_TEAM = 2;
   public final int teamIndex;
 
   /** @param playerColours the type of the team, given to the pawns created in the constructor */
-  public Team(PlayerColour[] playerColours, int teamIndex, Game game) {
-    this.game = game;
+  public Team(PlayerColour[] playerColours, int teamIndex) {
     this.teamIndex = teamIndex;
 
     players = new Player[PLAYERS_PER_TEAM];
-    int position = 0;
     for (int i = 0; i < PLAYERS_PER_TEAM; i++) {
       ArrayList<Pawn> pawns = new ArrayList<>(PAWNS_PER_PLAYER);
       int pawnNumber = 0;
 
       for (int j = 0; j < PAWNS_PER_PLAYER; j++) {
-        pawns.add(new Pawn(playerColours[i], pawnNumber, game));
+        pawns.add(new Pawn(playerColours[i], pawnNumber));
         ++pawnNumber;
       }
       int absolutePlayerId = i;
       if (teamIndex > 0) {
         absolutePlayerId = i + (teamIndex + 1);
       }
-      players[i] = new Player(this, playerColours[i], absolutePlayerId, i, pawns, game);
+      players[i] = new Player(this, absolutePlayerId, i, pawns);
     }
   }
 
@@ -52,7 +49,11 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
   public void distributeCards(int amountOfCardsPerPlayer, Deck deck) {
     for (int i = 0; i < players.length; i++) {
       for (int j = 0; j < amountOfCardsPerPlayer; j++) {
-        players[i].addCard(deck.drawCard());
+        try {
+          players[i].addCard(deck.drawCard());
+        } catch (OverdrawException e) {
+          logger.error(e.getMessage(), e);
+        }
       }
     }
   }
@@ -72,7 +73,7 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
    */
   public final Pawn getPawn(int playerIndex, int pawnIndex) {
     if (playerIndex < PLAYERS_PER_TEAM) return players[playerIndex].getPawn(pawnIndex);
-    return null; // do NOT remove NULL is used by Player
+    return null; // must return null to indicate the second pawn has not been selected
   }
 
   public final Player[] getPlayers() {
@@ -84,15 +85,14 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
     return null;
   }
 
-  public final Pawn[] getPawnsFromPlayer(int playerindex) {
-    return players[playerindex].getPawns().toArray(new Pawn[0]);
+  public final Pawn[] getPawnsFromPlayer(int playerIndex) {
+    return players[playerIndex].getPawns().toArray(new Pawn[0]);
   }
 
   @Override
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> serialized = new LinkedHashMap<>();
     for (Player player : players) {
-
       serialized.put(String.valueOf(player.getId()), player.serialize());
     }
     return serialized;

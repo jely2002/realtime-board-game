@@ -2,8 +2,14 @@ package nl.hsleiden.ipsene.views;
 
 import javafx.application.Platform;
 import javafx.scene.control.Label;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WaitingForPlayersThread implements Runnable {
+
+  private static final Logger logger =
+      LoggerFactory.getLogger(WaitingForPlayersThread.class.getName());
+
   private final Label label;
   private final int DELAY = 750;
   private final String PREFIX = "Waiting on players";
@@ -27,7 +33,7 @@ public class WaitingForPlayersThread implements Runnable {
         doAndWait("...");
       }
     } catch (InterruptedException e) {
-      e.printStackTrace();
+      logger.error(e.getMessage(), e);
     }
   }
 }
