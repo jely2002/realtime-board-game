@@ -1,15 +1,16 @@
 package nl.hsleiden.ipsene.models;
 
 import com.google.cloud.firestore.DocumentSnapshot;
-import java.util.*;
-import java.util.stream.Collectors;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
   private ArrayList<Card> cards = new ArrayList<Card>();
   private final Game game;
-  private int amountOfPlayers;
+  private final int amountOfPlayers;
   // all possible values for nCards filled by generateDeck, slowly emptied over the course of the
   // game
   private ArrayList<Integer> nCardDeck = new ArrayList<Integer>();

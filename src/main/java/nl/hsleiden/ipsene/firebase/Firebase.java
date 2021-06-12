@@ -5,10 +5,11 @@ import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
+import nl.hsleiden.ipsene.views.ViewHelper;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import nl.hsleiden.ipsene.views.ViewHelper;
 
 public class Firebase {
   public static final String CARD_FIELD_NAME = "cards";

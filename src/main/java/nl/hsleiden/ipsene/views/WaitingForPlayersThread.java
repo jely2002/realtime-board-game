@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 
 public class WaitingForPlayersThread implements Runnable {
-  private Label label;
+  private final Label label;
   private final int DELAY = 750;
   private final String PREFIX = "Waiting on players";
 
@@ -16,7 +16,7 @@ public class WaitingForPlayersThread implements Runnable {
     Platform.runLater(
         () ->
             label.setText(
-                PREFIX + suffix)); // Nodig om JavaFX acties in een aparte Thread uit te voeren
+                PREFIX + suffix));
     Thread.sleep(DELAY);
   }
 

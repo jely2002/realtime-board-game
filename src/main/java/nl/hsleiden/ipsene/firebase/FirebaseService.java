@@ -2,19 +2,20 @@ package nl.hsleiden.ipsene.firebase;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class FirebaseService {
 
   private static final Logger logger = LoggerFactory.getLogger(FirebaseService.class.getName());
 
-  private Firestore firestore;
-  private CollectionReference colRef;
+  private final Firestore firestore;
+  private final CollectionReference colRef;
 
   public FirebaseService(String privateKeyPath, String collection) throws IOException {
     Firebase fb = new Firebase(privateKeyPath);

@@ -1,8 +1,6 @@
 package nl.hsleiden.ipsene.models;
 
 import com.google.cloud.firestore.DocumentSnapshot;
-import java.util.*;
-import java.util.stream.Collectors;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import nl.hsleiden.ipsene.interfaces.Model;
@@ -10,26 +8,29 @@ import nl.hsleiden.ipsene.interfaces.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 public class Player implements FirebaseSerializable<Map<String, Object>>, Model {
 
   private static final Logger logger = LoggerFactory.getLogger(Player.class.getName());
 
   private final Game game;
 
-  private ArrayList<Card> cards;
+  private final ArrayList<Card> cards;
   /** index of the player in its team */
-  private int playerIndex;
+  private final int playerIndex;
 
-  private Team team;
-  private ArrayList<Pawn> pawns;
+  private final Team team;
+  private final ArrayList<Pawn> pawns;
 
   private int selectedPawnIndex = -1;
   private int selectedPawnIndex2 = -1;
   private int selectedCardIndex = 0;
 
-  private int id;
+  private final int id;
   private boolean available;
-  private PlayerColour colour;
+  private final PlayerColour colour;
 
   /**
    * should not be called manually, call through Team#createPlayers

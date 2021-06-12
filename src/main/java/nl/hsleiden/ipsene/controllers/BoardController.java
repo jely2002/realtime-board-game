@@ -9,11 +9,10 @@ import nl.hsleiden.ipsene.models.Deck;
 public class BoardController implements Controller {
 
   static BoardController boardController;
-  private Board board;
+  private final Board board;
 
   private Deck cards;
-  private TeamController teamController;
-  private boolean gameHasEnded = false;
+  private final boolean gameHasEnded = false;
 
   public BoardController() {
     this.board = new Board();

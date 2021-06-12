@@ -10,13 +10,13 @@ public enum PlayerColour {
   BLUE("#0000ff"),
   YELLOW("#ffff00");
 
-  private String colour;
+  private final String colour;
 
   public String getCode() {
     return colour;
   }
 
-  private PlayerColour(String code) {
+  PlayerColour(String code) {
     this.colour = code;
   }
 

@@ -3,11 +3,6 @@ package nl.hsleiden.ipsene.views;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sun.javafx.geom.Vec2d;
-import java.io.*;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,6 +22,15 @@ import nl.hsleiden.ipsene.models.Pawn;
 import nl.hsleiden.ipsene.models.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ViewHelper {
   public static final ArrayList<Vec2d> coordinates = new ArrayList<>();

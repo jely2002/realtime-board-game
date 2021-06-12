@@ -2,7 +2,6 @@ package nl.hsleiden.ipsene.controllers;
 
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.ListenerRegistration;
-import java.util.concurrent.ExecutionException;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import nl.hsleiden.ipsene.exceptions.GameNotFoundException;
@@ -16,6 +15,8 @@ import nl.hsleiden.ipsene.views.MenuView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.ExecutionException;
+
 public class LobbyController implements Controller {
 
   private static final Logger logger = LoggerFactory.getLogger(LobbyController.class.getName());
@@ -24,7 +25,7 @@ public class LobbyController implements Controller {
   private final FirebaseService firebaseService;
   private ListenerRegistration registration;
   private MenuView menuView;
-  private Stage stage;
+  private final Stage stage;
 
   public LobbyController(FirebaseService firebaseService, Stage stage) {
     this.firebaseService = firebaseService;

@@ -1,10 +1,11 @@
 package nl.hsleiden.ipsene.models;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import javafx.application.Platform;
 import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Board implements Model {
 
@@ -19,10 +20,10 @@ public class Board implements Model {
       new HashMap<PlayerColour, Integer>();
   private static final HashMap<PlayerColour, Integer> endPositions =
       new HashMap<PlayerColour, Integer>();
-  private static HashMap<PlayerColour, ArrayList<Pawn>> endPools = new HashMap<>();
-  private static HashMap<PlayerColour, Integer> endPoolStartPosition = new HashMap<>();
+  private static final HashMap<PlayerColour, ArrayList<Pawn>> endPools = new HashMap<>();
+  private static final HashMap<PlayerColour, Integer> endPoolStartPosition = new HashMap<>();
   static long turnStartTime;
-  private ArrayList<View> observers = new ArrayList<>();
+  private final ArrayList<View> observers = new ArrayList<>();
 
   static {
     for (PlayerColour c : PlayerColour.values()) {

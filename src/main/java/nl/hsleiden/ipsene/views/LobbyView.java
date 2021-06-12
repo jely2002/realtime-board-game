@@ -1,6 +1,5 @@
 package nl.hsleiden.ipsene.views;
 
-import java.io.FileNotFoundException;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -17,6 +16,8 @@ import nl.hsleiden.ipsene.interfaces.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
+
 public class LobbyView implements View {
 
   private static final Logger logger = LoggerFactory.getLogger(LobbyView.class.getName());
@@ -25,7 +26,7 @@ public class LobbyView implements View {
 
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
-  private Stage primaryStage;
+  private final Stage primaryStage;
   private final String RED = "#FF0000";
   private final String BLUE = "#0000FF";
   private final String GREEN = "#00FF00";
@@ -100,7 +101,7 @@ public class LobbyView implements View {
     ViewHelper.setNodeCoordinates(startButton, 1400, 700);
     startButton.addEventFilter(MouseEvent.MOUSE_CLICKED, playButtonClicked);
 
-    this.waitingForPlayersLabel = WaitingForPlayersLabelBuilder("Waiting for players");
+    this.waitingForPlayersLabel = WaitingForPlayersLabelBuilder("Waiting on players");
     ViewHelper.setNodeCoordinates(waitingForPlayersLabel, 10, 790);
     WaitingForPlayersThread wfpt = new WaitingForPlayersThread(waitingForPlayersLabel);
     Thread wfptThread = new Thread(wfpt);
