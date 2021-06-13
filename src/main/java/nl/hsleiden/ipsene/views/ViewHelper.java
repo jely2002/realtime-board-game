@@ -140,40 +140,37 @@ public class ViewHelper {
 
     Label lbl = new Label();
 
-    try {
-      switch (player) {
-        case 0:
-          {
-            playerColor = RED;
-            playerText += "1" + suffix;
-            break;
-          }
-        case 1:
-          {
-            playerColor = GREEN;
-            playerText += "2" + suffix;
-            break;
-          }
-        case 2:
-          {
-            playerColor = BLUE;
-            playerText += "3" + suffix;
-            break;
-          }
-        case 3:
-          {
-            playerColor = YELLOW;
-            playerText += "4" + suffix;
-            break;
-          }
-        default:
-          {
-            throw new IllegalStateException("Unexpected value: " + player);
-          }
-      }
-    } catch (IllegalStateException e) {
-      logger.error(e.getMessage(), e);
+    switch (player) {
+      case 0:
+        {
+          playerColor = RED;
+          playerText += "1" + suffix;
+          break;
+        }
+      case 1:
+        {
+          playerColor = GREEN;
+          playerText += "2" + suffix;
+          break;
+        }
+      case 2:
+        {
+          playerColor = BLUE;
+          playerText += "3" + suffix;
+          break;
+        }
+      case 3:
+        {
+          playerColor = YELLOW;
+          playerText += "4" + suffix;
+          break;
+        }
+      default:
+        {
+          throw new IllegalStateException("Unexpected value: " + player);
+        }
     }
+    lbl.setId("turnsDisplay");
     lbl.setText(playerText);
     lbl.setStyle(
         ""
