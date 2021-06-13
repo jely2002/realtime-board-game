@@ -72,7 +72,8 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
    */
   public void advanceBigRound() {
     bigRound++;
-    playerToGoFirst = indexToNextPlayer(playerToGoFirst);
+    indexToNextPlayerToGoFirst();
+    indexToNextPlayer();
     deck.regenerate(); // Shuffle the deck
     startNewSmallRound();
   }
@@ -98,34 +99,20 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     }
   }
 
-  /** Will be called after completing a turn. */
-  public void advanceTurn() {
-    // We go to the next smallRound if no player has any cards left
-    if (noPlayerHasCardsLeft()) {
-      System.out.println("noPlayerHasCardsLeft");
-      EndOfSmallRound();
-      serialize();
-      return;
+  public void indexToNextPlayer() {
+    if (doingTurn == AMOUNT_OF_PLAYERS - 1) {
+      doingTurn = 0;
+    } else {
+      doingTurn++;
     }
-
-    // Give the turn to the next player
-    doingTurn = indexToNextPlayer(doingTurn);
-    while (getPlayer(doingTurn).getCards().isEmpty()) {
-      doingTurn = indexToNextPlayer(doingTurn);
-    }
-
-    // We are ready to give the turn to the next player now
-    serialize();
   }
 
-  /** @param index the index that needs to go to the next player */
-  private int indexToNextPlayer(int index) {
-    if (index == AMOUNT_OF_PLAYERS - 1) {
-      index = 0;
+  public void indexToNextPlayerToGoFirst() {
+    if (playerToGoFirst == AMOUNT_OF_PLAYERS - 1) {
+      playerToGoFirst = 0;
     } else {
-      index++;
+      playerToGoFirst++;
     }
-    return index;
   }
 
   /**
@@ -140,28 +127,6 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     }
     return true;
   }
-
-  // /** Empties all decks and regenerates cards for them */
-  // public void advanceRound() {
-  //   for (Player player : getAllPlayers()) {
-  //     player.setHasPassed(false);
-  //   }
-  //   round += 1;
-  //   cardsPerPlayerNextRound = (cardsThisTurnValue == 1) ? 5 : 4;
-  //   for (Team team : teams) {
-  //     team.emptyCards();
-  //   }
-  //   distributeCards();
-  //   // if 4 cards
-  //   if (cardsThisTurnValue < 3) {
-  //     cardsThisTurnValue = cardsThisTurnValue + 1;
-  //   }
-  //   // if 5 cards
-  //   else {
-  //     cardsThisTurnValue = 1;
-  //     deck.regenerate();
-  //   }
-  // }
 
   private ArrayList<Team> generateTeams() {
     ArrayList<Team> teams = new ArrayList<>();
