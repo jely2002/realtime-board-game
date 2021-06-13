@@ -35,7 +35,7 @@ public class DeckTest {
 
   @Test
   @DisplayName("Should be able to draw all 52 cards from the deck")
-  public void generatedTokenTest() throws OverdrawException {
+  public void drawTest() throws OverdrawException {
     Card drawnCard;
     for (int i = 0; i < 52; i++) {
       drawnCard = deck.drawCard();

@@ -140,52 +140,49 @@ public class ViewHelper {
 
     Label lbl = new Label();
 
-    try {
-      switch (player) {
-        case 0:
-          {
-            playerColor = RED;
-            playerText += "1" + suffix;
-            break;
-          }
-        case 1:
-          {
-            playerColor = GREEN;
-            playerText += "2" + suffix;
-            break;
-          }
-        case 2:
-          {
-            playerColor = BLUE;
-            playerText += "3" + suffix;
-            break;
-          }
-        case 3:
-          {
-            playerColor = YELLOW;
-            playerText += "4" + suffix;
-            break;
-          }
-        default:
-          {
-            throw new IllegalStateException("Unexpected value: " + player);
-          }
+    switch (player) {
+      case 0:
+      {
+        playerColor = RED;
+        playerText += "1" + suffix;
+        break;
       }
-    } catch (IllegalStateException e) {
-      logger.error(e.getMessage(), e);
+      case 1:
+      {
+        playerColor = GREEN;
+        playerText += "2" + suffix;
+        break;
+      }
+      case 2:
+      {
+        playerColor = BLUE;
+        playerText += "3" + suffix;
+        break;
+      }
+      case 3:
+      {
+        playerColor = YELLOW;
+        playerText += "4" + suffix;
+        break;
+      }
+      default:
+      {
+        throw new IllegalStateException("Unexpected value: " + player);
+      }
     }
+    lbl.setId("turnsDisplay");
     lbl.setText(playerText);
     lbl.setStyle(
-        ""
-            + " -fx-font-family: 'Comic Sans MS';"
-            + " -fx-text-fill: #000000;"
-            + " -fx-background-color: grey;"
-            + " -fx-font-size: 30;"
-            + " -fx-label-padding: 15;"
-            + " -fx-border-width: 5;"
-            + " -fx-border-color: "
-            + playerColor
-            + ";");
+            ""
+                    + " -fx-font-family: 'Comic Sans MS';"
+                    + " -fx-text-fill: #000000;"
+                    + " -fx-background-color: grey;"
+                    + " -fx-font-size: 30;"
+                    + " -fx-label-padding: 15;"
+                    + " -fx-border-width: 5;"
+                    + " -fx-border-color: "
+                    + playerColor
+                    + ";");
     lbl.setMaxWidth(250);
     lbl.setMinWidth(250);
 
@@ -220,7 +217,7 @@ public class ViewHelper {
     subroundNumberLabel.setTranslateX(55);
 
     vbx.getChildren()
-        .addAll(roundNumberHeader, roundNumberLabel, subroundNumberHeader, subroundNumberLabel);
+            .addAll(roundNumberHeader, roundNumberLabel, subroundNumberHeader, subroundNumberLabel);
 
     return vbx;
   }
@@ -242,9 +239,9 @@ public class ViewHelper {
       Text txt = new Text();
       txt.setText(charsAsString);
       txt.setStyle(
-          " -fx-text-fill: #000000;"
-              + " -fx-font-size: 27.5;"
-              + " -fx-font-family: 'Comic Sans MS';");
+              " -fx-text-fill: #000000;"
+                      + " -fx-font-size: 27.5;"
+                      + " -fx-font-family: 'Comic Sans MS';");
       vbx.getChildren().add(txt);
     }
 
@@ -328,20 +325,20 @@ public class ViewHelper {
     Polygon poly = new Polygon();
 
     poly.getPoints()
-        .addAll(
-            5.0, 0.0,
-            15.0, 0.0,
-            17.5, 2.5,
-            17.5, 5.0,
-            15.0, 7.5,
-            15.0, 10.0,
-            20.0, 22.0,
-            20.0, 25.0,
-            0.0, 25.0,
-            0.0, 22.0,
-            5.0, 7.5,
-            2.4, 2.5,
-            2.4, 5.0);
+            .addAll(
+                    5.0, 0.0,
+                    15.0, 0.0,
+                    17.5, 2.5,
+                    17.5, 5.0,
+                    15.0, 7.5,
+                    15.0, 10.0,
+                    20.0, 22.0,
+                    20.0, 25.0,
+                    0.0, 25.0,
+                    0.0, 22.0,
+                    5.0, 7.5,
+                    2.4, 2.5,
+                    2.4, 5.0);
     poly.setStyle("-fx-fill: " + colour + "; -fx-stroke: black; -fx-stroke-width: 1;");
     poly.setStrokeType(StrokeType.INSIDE);
 
