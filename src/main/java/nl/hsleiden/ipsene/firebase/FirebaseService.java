@@ -95,5 +95,6 @@ public class FirebaseService {
    */
   public void delete(String documentId) {
     ApiFuture<WriteResult> writeResult = this.colRef.document(documentId).delete();
+    logger.info("Removed game with token {} from firebase", documentId);
   }
 }

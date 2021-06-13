@@ -301,6 +301,7 @@ public class BoardView implements View {
       gameController.unregisterObserver(this);
       // someone has won the game
       victoryView.show(potentialWinner);
+      gameController.removeGame();
     } else {
       Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
       if (gameController.isOwnPlayerCurrentPlayer()) {

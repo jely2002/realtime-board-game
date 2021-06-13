@@ -91,6 +91,7 @@ public class GameController implements Controller {
   public boolean doesOwnPlayerHaveCards() {
     return getOwnPlayer().getCards().size() != 0;
   }
+
   /**
    * Adds 1 to the id of the current player or wraps around when the highest value is reached. If
    * there are no players left who have cards, we go to the next round.
@@ -122,6 +123,10 @@ public class GameController implements Controller {
   public void advanceTurn() {
     increasePlayerCounter();
     serialize();
+  }
+
+  public void removeGame() {
+    firebaseService.delete(game.getToken());
   }
 
   public final Pawn getOwnPlayerPawn(int pawn) {
@@ -164,8 +169,6 @@ public class GameController implements Controller {
   public final ArrayList<Player> getAllPlayers() {
     return game.getAllPlayers();
   }
-
-  int i = 0;
 
   @Override
   public void update(DocumentSnapshot document) {
