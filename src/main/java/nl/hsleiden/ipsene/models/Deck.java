@@ -95,8 +95,8 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
    * @return the top card or null if deck is empty
    */
   public Card drawCard() throws OverdrawException {
-    if (cards.size() != 0) return cards.remove(cards.size() - 1);
-    else throw new OverdrawException("The game attempted to draw from an empty deck");
+    if (cards.size() != 0) return cards.remove(0);
+    else throw new OverdrawException();
   }
 
   /**
