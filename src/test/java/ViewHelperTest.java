@@ -1,20 +1,16 @@
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.sun.javafx.geom.Vec2d;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
 import javafx.scene.control.Label;
 import nl.hsleiden.ipsene.views.ViewHelper;
-import org.hamcrest.Matcher;
-import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxAssert;
-import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.matcher.control.LabeledMatchers;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for the ViewHelper utility class
@@ -53,7 +49,10 @@ public class ViewHelperTest {
 
     String expectedMessage = "Unexpected value: " + PLAYER_ID;
 
-    assertThrows(IllegalStateException.class, () -> ViewHelper.playersTurnDisplay(PLAYER_ID), expectedMessage);
+    assertThrows(
+        IllegalStateException.class,
+        () -> ViewHelper.playersTurnDisplay(PLAYER_ID),
+        expectedMessage);
   }
 
   @Test
@@ -67,5 +66,4 @@ public class ViewHelperTest {
     FxAssert.verifyThat(resultLabel, LabeledMatchers.hasText("Player 4's turn"));
     assertTrue(resultLabel.getStyle().contains("#FFFF00"));
   }
-
 }
