@@ -185,7 +185,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     token = document.getId();
 
     // empty the pools so the pawns can add themselves again
-    Board.emptyEndPools();
+    Board.getInstance().emptyEndPools();
 
     teams.forEach(team -> team.update(document));
     deck.update(document);
