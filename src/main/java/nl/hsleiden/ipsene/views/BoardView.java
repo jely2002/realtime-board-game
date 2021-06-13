@@ -115,10 +115,6 @@ public class BoardView implements View {
     VBox cardsText = ViewHelper.verticalTextDisplayBuilder("CARDS");
     ViewHelper.setNodeCoordinates(cardsText, 10, 700);
 
-    // skip turn button
-    Button skipTurnButton = buildSkipTurnButton();
-    skipTurnButton.addEventFilter(MouseEvent.MOUSE_CLICKED, skipTurnEvent);
-
     // menu buttons
     Button gameRulesButton = buildMenuButton("RULES");
     ViewHelper.setNodeCoordinates(gameRulesButton, 5, 5);
@@ -141,7 +137,6 @@ public class BoardView implements View {
             timerLabel,
             timerHeader,
             playersTurnDisplay,
-            skipTurnButton,
             surrenderButton);
     pane.getChildren().addAll(cardsText, roundNumberDisplay);
     pane.getChildren().addAll(gameRulesButton, returnToMainMenuButton);
@@ -149,17 +144,6 @@ public class BoardView implements View {
     pane.getChildren().addAll(cards);
 
     return pane;
-  }
-
-  private Button buildSkipTurnButton() {
-    Button button = new Button();
-    button.setText("skip turn");
-    button.setPrefWidth(125);
-    button.setPrefHeight(125);
-    ViewHelper.setNodeCoordinates(button, 1020, 710);
-    button.setStyle("-fx-font-size: 20; -fx-background-color: " + RED);
-    ViewHelper.applyDropShadow(button);
-    return button;
   }
 
   private Button buildSurrenderButton() {
@@ -183,14 +167,6 @@ public class BoardView implements View {
 
     return button;
   }
-
-  EventHandler<MouseEvent> skipTurnEvent =
-      new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-          gameController.advanceTurn();
-        }
-      };
 
   EventHandler<MouseEvent> surrenderEvent =
       new EventHandler<MouseEvent>() {
