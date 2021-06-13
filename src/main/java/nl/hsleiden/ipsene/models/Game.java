@@ -83,7 +83,6 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   public void startNewSmallRound() {
     doingTurn = playerToGoFirst;
     distributeCards();
-    serialize();
   }
 
   /**
@@ -101,23 +100,21 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
   /** Will be called after completing a turn. */
   public void advanceTurn() {
-    System.out.println("ADVANCING TURN...");
-    // We go to the next smallRound if no players have any cards left
+    // We go to the next smallRound if no player has any cards left
     if (noPlayerHasCardsLeft()) {
       System.out.println("noPlayerHasCardsLeft");
       EndOfSmallRound();
+      serialize();
       return;
     }
+
     // Give the turn to the next player
-    System.out.println("Player ID before incrementing" + getPlayer(doingTurn).getId());
     doingTurn = indexToNextPlayer(doingTurn);
-    System.out.println("Player ID after incrementing" + getPlayer(doingTurn).getId());
-    // We immediately go to the next player if the current player does not have any cards
-    if (getPlayer(doingTurn).getCards().isEmpty()) {
-      System.out.println("advancing turn again");
-      advanceTurn();
+    while (getPlayer(doingTurn).getCards().isEmpty()) {
+      doingTurn = indexToNextPlayer(doingTurn);
     }
-    System.out.println("Will serialize now...");
+
+    // We are ready to give the turn to the next player now
     serialize();
   }
 
