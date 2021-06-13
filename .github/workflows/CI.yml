@@ -44,5 +44,6 @@ jobs:
         with:
           java-version: '15'
           distribution: 'adopt'
-      - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots test
+      - name: Run unit-tests with surefire
+        # Exclude tests that require opening the window, as this doesn't work in a headless env.
+        run: mvn --batch-mode --update-snapshots -Dtest=!MainTest* test
