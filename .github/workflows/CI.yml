@@ -46,4 +46,4 @@ jobs:
           distribution: 'adopt'
       - name: Run unit-tests with surefire
         # Exclude tests that require opening the window, as this doesn't work in a headless env.
-        run: mvn --batch-mode --update-snapshots -Dtest=!MainTest* test
+        run: mvn --batch-mode --update-snapshots -Dtest=!MainTest,!ViewHelperTest* test
