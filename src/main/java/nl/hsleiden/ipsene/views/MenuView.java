@@ -66,7 +66,8 @@ public class MenuView implements View {
     Rectangle hostRect = ViewHelper.createUIDividers(600, 150);
     ViewHelper.setNodeCoordinates(hostRect, 500, 500);
 
-    Label hostInstructionsDisplay = HostInstructionsLabelBuilder("Press Host button to host a new game");
+    Label hostInstructionsDisplay =
+        HostInstructionsLabelBuilder("Press Host button to host a new game");
     ViewHelper.setNodeCoordinates(hostInstructionsDisplay, 510, 560);
 
     this.joinLobbyIDInput = textFieldBuilder();
@@ -100,7 +101,8 @@ public class MenuView implements View {
     this.hostInputErrorLabel = errorLabelBuilder();
     ViewHelper.setNodeCoordinates(hostInputErrorLabel, 520, 620);
 
-    pane.getChildren().addAll(joinRect, hostRect, joinLobbyIDInput, hostInstructionsDisplay, joinLobbyIDHeader);
+    pane.getChildren()
+        .addAll(joinRect, hostRect, joinLobbyIDInput, hostInstructionsDisplay, joinLobbyIDHeader);
     pane.getChildren().addAll(hostLobbyIDHeader, joinButton, hostButton, quitButton);
     pane.getChildren().addAll(imageView, joinInputErrorLabel, hostInputErrorLabel);
     return pane;
@@ -124,7 +126,8 @@ public class MenuView implements View {
   private Label HostInstructionsLabelBuilder(String txt) {
     Label lbl = new Label();
 
-    String labelCSS = "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
+    String labelCSS =
+        "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
     lbl.setStyle(labelCSS);
     lbl.setPrefWidth(580);
     lbl.setPrefHeight(50);
@@ -149,7 +152,8 @@ public class MenuView implements View {
     Button btn = new Button();
 
     btn.setText("QUIT");
-    String quitButtonCSS = "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #808080;"
+    String quitButtonCSS =
+        "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #808080;"
             + " -fx-padding: 10 255; -fx-text-fill: #000000";
     btn.setStyle(quitButtonCSS);
     btn.prefWidth(600);

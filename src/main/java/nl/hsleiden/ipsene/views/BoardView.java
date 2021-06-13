@@ -82,7 +82,7 @@ public class BoardView implements View {
     Rectangle cardRect = ViewHelper.createUIDividers(1350, 200);
     ViewHelper.setNodeCoordinates(cardRect, 0, 700);
 
-    ImageView keezBoardLogo = ViewHelper.createLogo( 150);
+    ImageView keezBoardLogo = ViewHelper.createLogo(150);
     ViewHelper.setNodeCoordinates(keezBoardLogo, 1350, 725);
 
     ImageView gameBoard = ViewHelper.drawGameBoard();
