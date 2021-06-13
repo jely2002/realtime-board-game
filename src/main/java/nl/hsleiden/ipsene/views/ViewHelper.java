@@ -293,7 +293,7 @@ public class ViewHelper {
     ImageView imageView = new ImageView(img);
     imageView.setPreserveRatio(true);
     try {
-      fillCoordinateList();
+      fillCoordinateList("/assets/board/positions.json");
     } catch (FileNotFoundException e) {
       logger.error(e.getMessage(), e);
     }
@@ -349,8 +349,8 @@ public class ViewHelper {
   }
 
   /** Fills the Coordinate Arraylist with coordinates for pawn tiles */
-  private static void fillCoordinateList() throws FileNotFoundException {
-    Reader reader = new InputStreamReader(loadResource("/assets/board/positions.json"));
+  public static void fillCoordinateList(String positionsPath) throws FileNotFoundException {
+    Reader reader = new InputStreamReader(loadResource(positionsPath));
     Type listType = new TypeToken<ArrayList<Vec2d>>() {}.getType();
     List<Vec2d> points = new Gson().fromJson(reader, listType);
     for (int i = 0; i < points.size(); i++) {

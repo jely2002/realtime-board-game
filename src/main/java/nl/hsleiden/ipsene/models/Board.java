@@ -68,7 +68,7 @@ public class Board implements Model {
     notifyObservers();
   }
 
-  public static void emptyEndPools() {
+  public void emptyEndPools() {
     for (PlayerColour colour : endPools.keySet()) {
       endPools.get(colour).clear();
     }
