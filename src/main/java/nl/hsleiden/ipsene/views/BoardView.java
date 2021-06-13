@@ -110,7 +110,8 @@ public class BoardView implements View {
     Label playersTurnDisplay = ViewHelper.playersTurnDisplay(turnPlayerNumber);
     ViewHelper.setNodeCoordinates(playersTurnDisplay, 1350, 200);
 
-    VBox roundNumberDisplay = ViewHelper.roundNumberDisplayBuilder(bigRoundNumber, 1);
+    VBox roundNumberDisplay =
+        ViewHelper.roundNumberDisplayBuilder(bigRoundNumber, smallRoundNumber);
     ViewHelper.setNodeCoordinates(roundNumberDisplay, 1375, 280);
 
     // BOTTOM CARD BAR
