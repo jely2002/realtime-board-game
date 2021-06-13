@@ -307,11 +307,6 @@ public class BoardView implements View {
       victoryView.show(potentialWinner);
     } else {
       Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
-      if (gameController.isOwnPlayerCurrentPlayer()) {
-        if (gameController.hasOwnPlayerPassed()) {
-          Platform.runLater(() -> gameController.passTurn());
-        }
-      }
     }
   }
 }
