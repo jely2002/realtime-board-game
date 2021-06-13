@@ -65,7 +65,7 @@ public class VictoryView implements View {
   private Pane createPane(PlayerColour winningTeam) {
     Pane pane = new Pane();
 
-    ImageView backgroundLogo = ViewHelper.createLogo(null, 900);
+    ImageView backgroundLogo = ViewHelper.createLogo(900);
     backgroundLogo.setEffect(frostEffect);
     // Position does not need to be set, as its supposed to be at 0,0
 

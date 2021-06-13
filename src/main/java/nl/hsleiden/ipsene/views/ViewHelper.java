@@ -66,12 +66,11 @@ public class ViewHelper {
   /**
    * Creates a KeezBoard Logo JavaFX Node
    *
-   * @param img Pass a null Image object
    * @param fitHeight Desired height of the logo
    * @return Returns an ImageView Node of the logo
    */
-  public static ImageView createLogo(Image img, int fitHeight) {
-
+  public static ImageView createLogo(int fitHeight) {
+    Image img = null;
     try {
       img = new Image(loadResource("/assets/branding/keez.png"));
     } catch (FileNotFoundException e) {
