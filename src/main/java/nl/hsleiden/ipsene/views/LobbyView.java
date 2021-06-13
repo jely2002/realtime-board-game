@@ -1,12 +1,10 @@
 package nl.hsleiden.ipsene.views;
 
-import java.io.FileNotFoundException;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -54,7 +52,6 @@ public class LobbyView implements View {
   private Pane createPane() {
     Pane pane = new Pane();
 
-    // TODO: dit koppelen met Firebase voor aansturen van de view op de model
     player1Available = lobbyController.getPlayerAvailable(1);
     player2Available = lobbyController.getPlayerAvailable(2);
     player3Available = lobbyController.getPlayerAvailable(3);
@@ -108,16 +105,7 @@ public class LobbyView implements View {
     wfptThread.setDaemon(true); // Zorgt ervoor dat deze thread samen afsluit met de View
     wfptThread.start();
 
-    Image image = null;
-    try {
-      image = new Image(ViewHelper.loadResource("/assets/branding/keez.png"));
-    } catch (FileNotFoundException e) {
-      logger.error(e.getMessage(), e);
-    }
-    ImageView imageView = new ImageView(image);
-    imageView.setPreserveRatio(true);
-    imageView.setFitHeight(400);
-    ViewHelper.applyDropShadow(imageView);
+    ImageView imageView = ViewHelper.createLogo(400);
     ViewHelper.setNodeCoordinates(imageView, 600, 200);
 
     pane.getChildren()

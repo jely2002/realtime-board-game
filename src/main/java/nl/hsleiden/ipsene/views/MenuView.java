@@ -26,19 +26,7 @@ public class MenuView implements View {
   private final int WIDTH = 1600;
   private final int HEIGHT = 900;
 
-  private final String labelCSS =
-      "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
-  private final String textFieldCSS = "-fx-font-size: 20";
-  private final String quitButtonCSS =
-      "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #808080;"
-          + " -fx-padding: 10 255";
-
-  private Button joinButton;
-  private Button hostButton;
-  private Button quitButton;
-
   private TextField joinLobbyIDInput;
-  private Label hostLobbyIDDisplay;
   private final Stage primaryStage;
 
   private Label joinInputErrorLabel;
@@ -72,14 +60,15 @@ public class MenuView implements View {
   private Pane createPane() throws FileNotFoundException {
     Pane pane = new Pane();
 
-    Rectangle joinRect = rectangleBuilder();
+    Rectangle joinRect = ViewHelper.createUIDividers(600, 150);
     ViewHelper.setNodeCoordinates(joinRect, 500, 200);
 
-    Rectangle hostRect = rectangleBuilder();
+    Rectangle hostRect = ViewHelper.createUIDividers(600, 150);
     ViewHelper.setNodeCoordinates(hostRect, 500, 500);
 
-    this.hostLobbyIDDisplay = lobbyIDLabelBuilder("-");
-    ViewHelper.setNodeCoordinates(hostLobbyIDDisplay, 510, 560);
+    Label hostInstructionsDisplay =
+        HostInstructionsLabelBuilder("Press Host button to host a new game");
+    ViewHelper.setNodeCoordinates(hostInstructionsDisplay, 510, 560);
 
     this.joinLobbyIDInput = textFieldBuilder();
     ViewHelper.setNodeCoordinates(joinLobbyIDInput, 510, 260);
@@ -90,19 +79,19 @@ public class MenuView implements View {
     Label hostLobbyIDHeader = ViewHelper.headerLabelBuilder("HOST");
     ViewHelper.setNodeCoordinates(hostLobbyIDHeader, 510, 510);
 
-    this.joinButton = buttonBuilder("JOIN");
+    Button joinButton = buttonBuilder("JOIN");
     ViewHelper.setNodeCoordinates(joinButton, 1110, 250);
-    this.joinButton.addEventFilter(MouseEvent.MOUSE_CLICKED, joinButtonClicked);
+    joinButton.addEventFilter(MouseEvent.MOUSE_CLICKED, joinButtonClicked);
 
-    this.hostButton = buttonBuilder("HOST");
+    Button hostButton = buttonBuilder("HOST");
     ViewHelper.setNodeCoordinates(hostButton, 1110, 550);
-    this.hostButton.addEventFilter(MouseEvent.MOUSE_CLICKED, hostButtonClicked);
+    hostButton.addEventFilter(MouseEvent.MOUSE_CLICKED, hostButtonClicked);
 
-    this.quitButton = quitButtonBuilder();
+    Button quitButton = quitButtonBuilder();
     ViewHelper.setNodeCoordinates(quitButton, 500, 800);
-    this.quitButton.addEventFilter(MouseEvent.MOUSE_CLICKED, quitButtonClicked);
+    quitButton.addEventFilter(MouseEvent.MOUSE_CLICKED, quitButtonClicked);
 
-    ImageView imageView = ViewHelper.createLogo(null, 150);
+    ImageView imageView = ViewHelper.createLogo(150);
     ViewHelper.applyDropShadow(imageView);
     ViewHelper.setNodeCoordinates(imageView, 677, 20);
 
@@ -113,19 +102,10 @@ public class MenuView implements View {
     ViewHelper.setNodeCoordinates(hostInputErrorLabel, 520, 620);
 
     pane.getChildren()
-        .addAll(joinRect, hostRect, joinLobbyIDInput, hostLobbyIDDisplay, joinLobbyIDHeader);
+        .addAll(joinRect, hostRect, joinLobbyIDInput, hostInstructionsDisplay, joinLobbyIDHeader);
     pane.getChildren().addAll(hostLobbyIDHeader, joinButton, hostButton, quitButton);
     pane.getChildren().addAll(imageView, joinInputErrorLabel, hostInputErrorLabel);
     return pane;
-  }
-
-  private Rectangle rectangleBuilder() {
-    Rectangle rect = new Rectangle();
-
-    rect.setWidth(600);
-    rect.setHeight(150);
-    rect.setFill(Color.GREY);
-    return rect;
   }
 
   private TextField textFieldBuilder() {
@@ -137,14 +117,17 @@ public class MenuView implements View {
     txtFld.setMaxWidth(WIDTH);
     txtFld.setPrefHeight(HEIGHT);
     txtFld.setMaxHeight(HEIGHT);
+    String textFieldCSS = "-fx-font-size: 20";
     txtFld.setStyle(textFieldCSS);
 
     return txtFld;
   }
 
-  private Label lobbyIDLabelBuilder(String txt) {
+  private Label HostInstructionsLabelBuilder(String txt) {
     Label lbl = new Label();
 
+    String labelCSS =
+        "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #FFFFFF";
     lbl.setStyle(labelCSS);
     lbl.setPrefWidth(580);
     lbl.setPrefHeight(50);
@@ -169,6 +152,9 @@ public class MenuView implements View {
     Button btn = new Button();
 
     btn.setText("QUIT");
+    String quitButtonCSS =
+        "-fx-font-family: 'Comic Sans MS';-fx-font-size: 30; -fx-background-color: #808080;"
+            + " -fx-padding: 10 255; -fx-text-fill: #000000";
     btn.setStyle(quitButtonCSS);
     btn.prefWidth(600);
     btn.minWidth(600);
