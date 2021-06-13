@@ -202,7 +202,7 @@ public class BoardView implements View {
         public void handle(MouseEvent mouseEvent) {
           if (gameController.isOwnPlayerCurrentPlayer()) {
             gameController.passTurn();
-            loadPrimaryStage(createInitialPane());
+            // loadPrimaryStage(createInitialPane());
           }
         }
       };

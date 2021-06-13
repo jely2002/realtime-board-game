@@ -73,13 +73,14 @@ public class CountdownTimer implements Runnable {
       } catch (InterruptedException e) {
         logger.error(e.getMessage(), e);
       }
-      Platform.runLater(
-          () -> {
-            if (gameController.isOwnPlayerCurrentPlayer()) {
-              // pass turn and sent to firebase
-              gameController.passTurn();
-            }
-          });
-    }
+      // TODO: Resolve conflicts when surrendering at the end of a turn
+      // Platform.runLater(
+      //     () -> {
+      //       if (gameController.isOwnPlayerCurrentPlayer()) {
+      //         // pass turn and sent to firebase
+      //         gameController.passTurn();
+      //       }
+      //     });
+    // }
   }
 }

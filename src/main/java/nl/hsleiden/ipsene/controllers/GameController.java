@@ -43,10 +43,6 @@ public class GameController implements Controller {
     return false;
   }
 
-  public boolean hasOwnPlayerPassed() {
-    return getOwnPlayer().hasPassed();
-  }
-
   public boolean isPlayerOwnPlayer(Team team, int index) {
     Player p = team.getPlayer(index);
     return p.equals(getOwnPlayer());
