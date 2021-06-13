@@ -73,7 +73,9 @@ public class BoardView implements View {
 
     Pane pane = new Pane();
     int timer = gameController.getTimeLeft();
-    int roundNumber = gameController.getRound();
+    // int roundNumber = gameController.getRound();
+    int bigRoundNumber = gameController.getBigRound() + 1;
+    int smallRoundNumber = gameController.getSmallRound() + 1;
     int turnPlayerNumber = gameController.getIdCurrentPlayer();
 
     Rectangle statRect = ViewHelper.createUIDividers(250, 700);
@@ -108,7 +110,7 @@ public class BoardView implements View {
     Label playersTurnDisplay = ViewHelper.playersTurnDisplay(turnPlayerNumber);
     ViewHelper.setNodeCoordinates(playersTurnDisplay, 1350, 200);
 
-    VBox roundNumberDisplay = ViewHelper.roundNumberDisplayBuilder(roundNumber, 1);
+    VBox roundNumberDisplay = ViewHelper.roundNumberDisplayBuilder(bigRoundNumber, 1);
     ViewHelper.setNodeCoordinates(roundNumberDisplay, 1375, 280);
 
     // BOTTOM CARD BAR
@@ -184,11 +186,12 @@ public class BoardView implements View {
     return button;
   }
 
+  // TODO: remove in prod
   EventHandler<MouseEvent> skipTurnEvent =
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          gameController.advanceTurn();
+          gameController.skipTurn();
         }
       };
 

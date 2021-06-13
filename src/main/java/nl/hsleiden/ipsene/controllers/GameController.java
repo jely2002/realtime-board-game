@@ -68,10 +68,6 @@ public class GameController implements Controller {
     getOwnPlayer().setSelectedPawnIndex(index);
   }
 
-  public boolean doOwnPlayerTurn() {
-    return getOwnPlayer().doTurn();
-  }
-
   public Integer getIdCurrentPlayer() {
     return game.getDoingTurn();
   }
@@ -91,18 +87,45 @@ public class GameController implements Controller {
   public boolean doesOwnPlayerHaveCards() {
     return getOwnPlayer().getCards().size() != 0;
   }
-  /**
-   * Adds 1 to the id of the current player or wraps around when the highest value is reached. If
-   * there are no players left who have cards, we go to the next round.
-   */
-  public void increasePlayerCounter() {
-    int nextPlayer = game.getDoingTurn() + 1;
-    int highestPlayer = (Team.PLAYERS_PER_TEAM * Game.AMOUNT_OF_TEAMS) - 1;
-    game.setDoingTurnPlayer((nextPlayer <= highestPlayer) ? nextPlayer : 0);
-    if (game.amountOfPlayersWithCards() == 0) {
-      game.advanceRound();
+
+  public int getBigRound() {
+    return game.getBigRound();
+  }
+
+  public int getSmallRound() {
+    return game.getSmallRound();
+  }
+
+  public boolean hasGameStarted() {
+    return game.hasGameStarted();
+  }
+
+  public void doOwnPlayerTurn() {
+    if (getOwnPlayer().doTurn()) {
+      game.advanceTurn();
+      // game.serialize();
     }
   }
+
+  // TODO: Remove in prod
+  public void skipTurn() {
+    getAllPlayers().get(game.getDoingTurn()).getCards().remove(0); // simulate playing a card
+    game.advanceTurn();
+    // game.serialize();
+  }
+
+  // /**
+  //  * Adds 1 to the id of the current player or wraps around when the highest value is reached. If
+  //  * there are no players left who have cards, we go to the next round.
+  //  */
+  // public void increasePlayerCounter() {
+  //   int nextPlayer = game.getDoingTurn() + 1;
+  //   int highestPlayer = (Team.PLAYERS_PER_TEAM * Game.AMOUNT_OF_TEAMS) - 1;
+  //   game.setDoingTurnPlayer((nextPlayer <= highestPlayer) ? nextPlayer : 0);
+  //   if (game.amountOfPlayersWithCards() == 0) {
+  //     game.advanceRound();
+  //   }
+  // }
 
   public int getTimeLeft() {
     Timestamp startTime = game.getTurnStartTime();
@@ -116,12 +139,7 @@ public class GameController implements Controller {
   /** Remove all cards from the player and end turn. */
   public void passTurn() {
     getOwnPlayer().passTurn();
-    advanceTurn();
-  }
-
-  public void advanceTurn() {
-    increasePlayerCounter();
-    serialize();
+    game.advanceTurn();
   }
 
   public final Pawn getOwnPlayerPawn(int pawn) {
@@ -140,10 +158,7 @@ public class GameController implements Controller {
     if (cardSelected) {
       Pawn closestPawn = getPawnClosestToPoint(x, y);
       setOwnPlayerSelectedPawnIndex(closestPawn.getPawnNumber());
-      // if turn was successful
-      if (doOwnPlayerTurn()) {
-        advanceTurn();
-      }
+      doOwnPlayerTurn();
     }
   }
 
@@ -171,7 +186,6 @@ public class GameController implements Controller {
   public void update(DocumentSnapshot document) {
     logger.info("Received update from firebase"); // TODO Remove in production
     game.update(document);
-    // if our player has passed his turn skip the turn
   }
 
   @Override

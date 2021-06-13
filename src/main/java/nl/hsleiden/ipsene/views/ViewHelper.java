@@ -196,27 +196,26 @@ public class ViewHelper {
    * Creates a label to display the round number in a more human-readable format with appropriate
    * styling
    *
-   * @param roundNumber the current round number
-   * @param startOffset set to 0 if round counting starts at 1, set to 0 if counting starts at 1
+   * @param BigRoundNumber the current bigRound
+   * @param SmallRoundNumber the current smallRound
    * @return returns label with formatted round number
    */
-  public static VBox roundNumberDisplayBuilder(int roundNumber, int startOffset) {
+  public static VBox roundNumberDisplayBuilder(int BigRoundNumber, int smallRoundNumber) {
     String css = "-fx-font-family: 'Comic Sans MS'; -fx-font-size: 120; -fx-text-fill: #000000";
-    roundNumber = roundNumber + startOffset;
 
     VBox vbx = new VBox();
     Label roundNumberHeader = ViewHelper.headerLabelBuilder("Round Number:");
 
     Label roundNumberLabel = new Label();
     roundNumberLabel.setStyle(css);
-    roundNumberLabel.setText(String.valueOf(((roundNumber / 3) + 1)));
+    roundNumberLabel.setText(String.valueOf(BigRoundNumber));
     roundNumberLabel.setTranslateX(55);
 
     Label subroundNumberHeader = ViewHelper.headerLabelBuilder("Sub Round:");
 
     Label subroundNumberLabel = new Label();
     subroundNumberLabel.setStyle(css);
-    subroundNumberLabel.setText(String.valueOf(roundNumber % 3));
+    subroundNumberLabel.setText(String.valueOf(smallRoundNumber));
     subroundNumberLabel.setTranslateX(55);
 
     vbx.getChildren()
