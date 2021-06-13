@@ -110,7 +110,6 @@ public class GameController implements Controller {
   public void advanceTurn() {
     // We go to the next smallRound if no player has any cards left
     if (game.noPlayerHasCardsLeft()) {
-      System.out.println("noPlayerHasCardsLeft");
       game.EndOfSmallRound();
       serialize();
       return;
@@ -128,7 +127,6 @@ public class GameController implements Controller {
   public void skipTurn() {
     getAllPlayers().get(game.getDoingTurn()).getCards().remove(0); // simulate playing a card
     advanceTurn();
-    // game.serialize();
   }
 
   public int getTimeLeft() {

@@ -4,12 +4,17 @@ import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentSnapshot;
 import java.util.*;
 import nl.hsleiden.ipsene.controllers.LobbyController;
+import nl.hsleiden.ipsene.exceptions.OverdrawException;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
+
+  private static final Logger logger = LoggerFactory.getLogger(Game.class.getName());
 
   public static final int AMOUNT_OF_TEAMS = 2;
   public static final int AMOUNT_OF_PLAYERS = 4;
@@ -43,7 +48,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     this.deck = new Deck(4, this);
     this.lobbyController = lobbyController;
     this.doingTurn = 0;
-    distributeCards();
+    distributeCards(5);
   }
 
   public boolean hasGameStarted() {
@@ -73,7 +78,6 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
   public void advanceBigRound() {
     bigRound++;
     indexToNextPlayerToGoFirst();
-    indexToNextPlayer();
     deck.regenerate(); // Shuffle the deck
     startNewSmallRound();
   }
@@ -83,7 +87,8 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
    */
   public void startNewSmallRound() {
     doingTurn = playerToGoFirst;
-    distributeCards();
+    if (smallRound == 0) distributeCards(5);
+    else distributeCards(4);
   }
 
   /**
@@ -91,10 +96,11 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
    * smallRound we go to the next bigRound. Otherwise, we start a new round.
    */
   public void EndOfSmallRound() {
-    if (smallRound == AMOUNT_OF_SMALL_ROUNDS) {
+    if (smallRound == AMOUNT_OF_SMALL_ROUNDS - 1) {
       smallRound = 0;
       advanceBigRound();
     } else {
+      smallRound++;
       startNewSmallRound();
     }
   }
@@ -146,10 +152,15 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     return sb.toString();
   }
 
-  /** Distribute cards to all teams */
-  private void distributeCards() {
-    for (Team team : this.teams) {
-      team.distributeCards(cardsPerPlayerNextRound, deck);
+  private void distributeCards(int amountOfCards) {
+    for (Player player : getAllPlayers()) {
+      for (int i = 0; i < amountOfCards; i++) {
+        try {
+          player.addCard(deck.drawCard());
+        } catch (OverdrawException e) {
+          logger.error(e.getMessage(), e);
+        }
+      }
     }
   }
 

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import nl.hsleiden.ipsene.exceptions.OverdrawException;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,24 +36,6 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
         absolutePlayerId = i + (teamIndex + 1);
       }
       players[i] = new Player(this, absolutePlayerId, i, pawns);
-    }
-  }
-
-  /**
-   * draws a number of cards per player
-   *
-   * @param amountOfCardsPerPlayer the amount off cards drawn per player
-   * @param deck the deck to be drawn from
-   */
-  public void distributeCards(int amountOfCardsPerPlayer, Deck deck) {
-    for (int i = 0; i < players.length; i++) {
-      for (int j = 0; j < amountOfCardsPerPlayer; j++) {
-        try {
-          players[i].addCard(deck.drawCard());
-        } catch (OverdrawException e) {
-          logger.error(e.getMessage(), e);
-        }
-      }
     }
   }
 
