@@ -25,7 +25,7 @@ public class Firebase {
       throw new FileNotFoundException("Private key file could not be found.");
     GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
     FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).build();
-    if(FirebaseApp.getApps().isEmpty()) {
+    if (FirebaseApp.getApps().isEmpty()) {
       FirebaseApp.initializeApp(options);
     }
     this.store = FirestoreClient.getFirestore();
