@@ -65,7 +65,7 @@ public class VictoryView implements View {
   private Pane createPane(PlayerColour winningTeam) {
     Pane pane = new Pane();
 
-    ImageView backgroundLogo = ViewHelper.createLogo(null, 900);
+    ImageView backgroundLogo = ViewHelper.createLogo(900);
     backgroundLogo.setEffect(frostEffect);
     // Position does not need to be set, as its supposed to be at 0,0
 
@@ -94,7 +94,7 @@ public class VictoryView implements View {
       new EventHandler<>() {
         @Override
         public void handle(MouseEvent event) {
-          logger.debug("Back to menu button clicked");
+          logger.debug("back to menu button clicked");
           try {
             victoryController.backToMainMenu(primaryStage, firebaseService);
           } catch (IOException e) {

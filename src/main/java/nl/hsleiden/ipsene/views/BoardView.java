@@ -82,7 +82,7 @@ public class BoardView implements View {
     Rectangle cardRect = ViewHelper.createUIDividers(1350, 200);
     ViewHelper.setNodeCoordinates(cardRect, 0, 700);
 
-    ImageView keezBoardLogo = ViewHelper.createLogo(null, 150);
+    ImageView keezBoardLogo = ViewHelper.createLogo(150);
     ViewHelper.setNodeCoordinates(keezBoardLogo, 1350, 725);
 
     ImageView gameBoard = ViewHelper.drawGameBoard();
@@ -115,10 +115,6 @@ public class BoardView implements View {
     VBox cardsText = ViewHelper.verticalTextDisplayBuilder("CARDS");
     ViewHelper.setNodeCoordinates(cardsText, 10, 700);
 
-    // skip turn button
-    Button skipTurnButton = buildSkipTurnButton();
-    skipTurnButton.addEventFilter(MouseEvent.MOUSE_CLICKED, skipTurnEvent);
-
     // menu buttons
     Button gameRulesButton = buildMenuButton("RULES");
     ViewHelper.setNodeCoordinates(gameRulesButton, 5, 5);
@@ -141,7 +137,6 @@ public class BoardView implements View {
             timerLabel,
             timerHeader,
             playersTurnDisplay,
-            skipTurnButton,
             surrenderButton);
     pane.getChildren().addAll(cardsText, roundNumberDisplay);
     pane.getChildren().addAll(gameRulesButton, returnToMainMenuButton);
@@ -149,17 +144,6 @@ public class BoardView implements View {
     pane.getChildren().addAll(cards);
 
     return pane;
-  }
-
-  private Button buildSkipTurnButton() {
-    Button button = new Button();
-    button.setText("skip turn");
-    button.setPrefWidth(125);
-    button.setPrefHeight(125);
-    ViewHelper.setNodeCoordinates(button, 1020, 710);
-    button.setStyle("-fx-font-size: 20; -fx-background-color: " + RED);
-    ViewHelper.applyDropShadow(button);
-    return button;
   }
 
   private Button buildSurrenderButton() {
@@ -184,22 +168,14 @@ public class BoardView implements View {
     return button;
   }
 
-  EventHandler<MouseEvent> skipTurnEvent =
-      new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-          gameController.advanceTurn();
-          gameController.serialize();
-        }
-      };
-
   EventHandler<MouseEvent> surrenderEvent =
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          gameController.passTurn();
-          gameController.serialize();
-          loadPrimaryStage(createInitialPane());
+          if (gameController.isOwnPlayerCurrentPlayer()) {
+            gameController.passTurn();
+            loadPrimaryStage(createInitialPane());
+          }
         }
       };
 
@@ -254,13 +230,14 @@ public class BoardView implements View {
       new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-          // todo check if this is our turn
-          double mousex = mouseEvent.getSceneX();
-          // get the index of the card we clicked on
-          int clickedCardIndex = (int) ((mousex - CARD_START_X_POSITION) / CARD_SEPERATION_VALUE);
-          if (gameController.setOwnPlayerClickedCardIndex(clickedCardIndex)) {
-            cardSelected = true;
-            loadPrimaryStage(createInitialPane());
+          if (gameController.isOwnPlayerCurrentPlayer()) {
+            double mousex = mouseEvent.getSceneX();
+            // get the index of the card we clicked on
+            int clickedCardIndex = (int) ((mousex - CARD_START_X_POSITION) / CARD_SEPERATION_VALUE);
+            if (gameController.setOwnPlayerClickedCardIndex(clickedCardIndex)) {
+              cardSelected = true;
+              loadPrimaryStage(createInitialPane());
+            }
           }
         }
       };
@@ -300,12 +277,13 @@ public class BoardView implements View {
       gameController.unregisterObserver(this);
       // someone has won the game
       victoryView.show(potentialWinner);
+      gameController.removeGame();
     } else {
-      // reset the x position of the cards to draw them anew
       Platform.runLater(() -> loadPrimaryStage(createInitialPane()));
-      // if our player has passed his turn skip the turn
-      if (gameController.hasOwnPlayedPassed()) {
-        Platform.runLater(gameController::increasePlayerCounter);
+      if (gameController.isOwnPlayerCurrentPlayer()) {
+        if (gameController.hasOwnPlayerPassed()) {
+          Platform.runLater(() -> gameController.passTurn());
+        }
       }
     }
   }

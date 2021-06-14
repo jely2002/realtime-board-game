@@ -66,12 +66,11 @@ public class ViewHelper {
   /**
    * Creates a KeezBoard Logo JavaFX Node
    *
-   * @param img Pass a null Image object
    * @param fitHeight Desired height of the logo
    * @return Returns an ImageView Node of the logo
    */
-  public static ImageView createLogo(Image img, int fitHeight) {
-
+  public static ImageView createLogo(int fitHeight) {
+    Image img = null;
     try {
       img = new Image(loadResource("/assets/branding/keez.png"));
     } catch (FileNotFoundException e) {
@@ -140,40 +139,37 @@ public class ViewHelper {
 
     Label lbl = new Label();
 
-    try {
-      switch (player) {
-        case 0:
-          {
-            playerColor = RED;
-            playerText += "1" + suffix;
-            break;
-          }
-        case 1:
-          {
-            playerColor = GREEN;
-            playerText += "2" + suffix;
-            break;
-          }
-        case 2:
-          {
-            playerColor = BLUE;
-            playerText += "3" + suffix;
-            break;
-          }
-        case 3:
-          {
-            playerColor = YELLOW;
-            playerText += "4" + suffix;
-            break;
-          }
-        default:
-          {
-            throw new IllegalStateException("Unexpected value: " + player);
-          }
-      }
-    } catch (IllegalStateException e) {
-      logger.error(e.getMessage(), e);
+    switch (player) {
+      case 0:
+        {
+          playerColor = RED;
+          playerText += "1" + suffix;
+          break;
+        }
+      case 1:
+        {
+          playerColor = GREEN;
+          playerText += "2" + suffix;
+          break;
+        }
+      case 2:
+        {
+          playerColor = BLUE;
+          playerText += "3" + suffix;
+          break;
+        }
+      case 3:
+        {
+          playerColor = YELLOW;
+          playerText += "4" + suffix;
+          break;
+        }
+      default:
+        {
+          throw new IllegalStateException("Unexpected value: " + player);
+        }
     }
+    lbl.setId("turnsDisplay");
     lbl.setText(playerText);
     lbl.setStyle(
         ""
@@ -293,7 +289,7 @@ public class ViewHelper {
     ImageView imageView = new ImageView(img);
     imageView.setPreserveRatio(true);
     try {
-      fillCoordinateList();
+      fillCoordinateList("/assets/board/positions.json");
     } catch (FileNotFoundException e) {
       logger.error(e.getMessage(), e);
     }
@@ -349,8 +345,8 @@ public class ViewHelper {
   }
 
   /** Fills the Coordinate Arraylist with coordinates for pawn tiles */
-  private static void fillCoordinateList() throws FileNotFoundException {
-    Reader reader = new InputStreamReader(loadResource("/assets/board/positions.json"));
+  public static void fillCoordinateList(String positionsPath) throws FileNotFoundException {
+    Reader reader = new InputStreamReader(loadResource(positionsPath));
     Type listType = new TypeToken<ArrayList<Vec2d>>() {}.getType();
     List<Vec2d> points = new Gson().fromJson(reader, listType);
     for (int i = 0; i < points.size(); i++) {

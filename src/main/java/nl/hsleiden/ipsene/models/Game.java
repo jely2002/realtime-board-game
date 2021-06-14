@@ -54,9 +54,11 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 
   /** Empties all decks and regenerates cards for them */
   public void advanceRound() {
+    for (Player player : getAllPlayers()) {
+      player.setHasPassed(false);
+    }
     round += 1;
     cardsPerPlayerNextRound = (cardsThisTurnValue == 1) ? 5 : 4;
-
     for (Team team : teams) {
       team.emptyCards();
     }
@@ -70,7 +72,6 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
       cardsThisTurnValue = 1;
       deck.regenerate();
     }
-    getAllPlayers().get(getOwnPlayer()).setHasPassed(false);
   }
 
   private ArrayList<Team> generateTeams() {
@@ -184,7 +185,7 @@ public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
     token = document.getId();
 
     // empty the pools so the pawns can add themselves again
-    Board.emptyEndPools();
+    Board.getInstance().emptyEndPools();
 
     teams.forEach(team -> team.update(document));
     deck.update(document);

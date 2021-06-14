@@ -47,7 +47,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
   }
 
   public void passTurn() {
-    hasPassedTheTurn = true;
+    setHasPassed(true);
     emptyCards();
   }
 
@@ -133,7 +133,6 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
   }
 
   private void playCard() {
-
     if (selectedCardIndex != -1) {
       Card c = cards.get(selectedCardIndex);
       c.play(this);
@@ -171,6 +170,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
     serializedPlayer.put(Firebase.CARD_FIELD_NAME, serializedCards);
     serializedPlayer.put("pawns", serializedPawns);
     serializedPlayer.put("selected", !available);
+    serializedPlayer.put("hasPassedTheTurn", hasPassedTheTurn);
     return serializedPlayer;
   }
 
@@ -181,6 +181,7 @@ public class Player implements FirebaseSerializable<Map<String, Object>>, Model 
 
     HashMap<String, Object> ourPlayer = serializedPlayers.get(String.valueOf(getId()));
     available = !(boolean) ourPlayer.get("selected");
+    hasPassedTheTurn = (boolean) ourPlayer.get("hasPassedTheTurn");
     ArrayList<HashMap<String, Object>> pawns =
         (ArrayList<HashMap<String, Object>>) ourPlayer.get("pawns");
     ArrayList<HashMap<String, Object>> cards =

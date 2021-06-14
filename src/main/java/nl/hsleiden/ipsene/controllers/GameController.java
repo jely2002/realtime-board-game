@@ -43,7 +43,7 @@ public class GameController implements Controller {
     return false;
   }
 
-  public boolean hasOwnPlayedPassed() {
+  public boolean hasOwnPlayerPassed() {
     return getOwnPlayer().hasPassed();
   }
 
@@ -58,6 +58,10 @@ public class GameController implements Controller {
 
   public boolean isOwnPlayerCurrentPlayer() {
     return getIdCurrentPlayer() == getOwnPlayer().getId();
+  }
+
+  public int getOwnPlayerId() {
+    return getOwnPlayer().getId();
   }
 
   public void setOwnPlayerSelectedPawnIndex(int index) {
@@ -84,8 +88,8 @@ public class GameController implements Controller {
     return game.getRound();
   }
 
-  public boolean hasGameStarted() {
-    return game.hasGameStarted();
+  public boolean doesOwnPlayerHaveCards() {
+    return getOwnPlayer().getCards().size() != 0;
   }
 
   /**
@@ -113,7 +117,16 @@ public class GameController implements Controller {
   /** Remove all cards from the player and end turn. */
   public void passTurn() {
     getOwnPlayer().passTurn();
+    advanceTurn();
+  }
+
+  public void advanceTurn() {
     increasePlayerCounter();
+    serialize();
+  }
+
+  public void removeGame() {
+    firebaseService.delete(game.getToken());
   }
 
   public final Pawn getOwnPlayerPawn(int pawn) {
@@ -126,11 +139,6 @@ public class GameController implements Controller {
     } catch (ExecutionException | InterruptedException e) {
       logger.error(e.getMessage(), e);
     }
-  }
-
-  public void advanceTurn() {
-    increasePlayerCounter();
-    serialize();
   }
 
   public void clickPawn(boolean cardSelected, double x, double y) {
@@ -166,6 +174,7 @@ public class GameController implements Controller {
   public void update(DocumentSnapshot document) {
     logger.info("Received update from firebase"); // TODO Remove in production
     game.update(document);
+    // if our player has passed his turn skip the turn
   }
 
   @Override
