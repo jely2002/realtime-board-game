@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"nl.hsleiden.ipsene.application"},{"l":"nl.hsleiden.ipsene.controllers"},{"l":"nl.hsleiden.ipsene.exceptions"},{"l":"nl.hsleiden.ipsene.firebase"},{"l":"nl.hsleiden.ipsene.interfaces"},{"l":"nl.hsleiden.ipsene.models"},{"l":"nl.hsleiden.ipsene.views"}];updateSearchResults();

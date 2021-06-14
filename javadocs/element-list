@@ -1,0 +1,8 @@
+unnamed package
+nl.hsleiden.ipsene.application
+nl.hsleiden.ipsene.controllers
+nl.hsleiden.ipsene.exceptions
+nl.hsleiden.ipsene.firebase
+nl.hsleiden.ipsene.interfaces
+nl.hsleiden.ipsene.models
+nl.hsleiden.ipsene.views
