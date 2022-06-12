@@ -7,10 +7,11 @@ import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
+import nl.hsleiden.ipsene.models.enums.CardType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Player implements FirebaseSerializable<Map<String, Object>>, Model {
+public class Player implements Model, FirebaseSerializable<Map<String, Object>> {
 
   private static final Logger logger = LoggerFactory.getLogger(Player.class.getName());
 

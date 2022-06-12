@@ -5,7 +5,7 @@ import com.sun.javafx.PlatformUtil;
 import nl.hsleiden.ipsene.interfaces.Controller;
 import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.Board;
-import nl.hsleiden.ipsene.models.PlayerColour;
+import nl.hsleiden.ipsene.models.enums.PlayerColour;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,6 @@ public class BoardController implements Controller {
   }
 
   public void unregisterObserver(View v) {
-
     board.unregisterObserver(v);
   }
 

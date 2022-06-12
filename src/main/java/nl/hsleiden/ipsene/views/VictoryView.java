@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import nl.hsleiden.ipsene.controllers.VictoryController;
 import nl.hsleiden.ipsene.firebase.FirebaseService;
 import nl.hsleiden.ipsene.interfaces.View;
-import nl.hsleiden.ipsene.models.PlayerColour;
+import nl.hsleiden.ipsene.models.enums.PlayerColour;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

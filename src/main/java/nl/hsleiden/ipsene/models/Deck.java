@@ -6,8 +6,11 @@ import java.util.stream.Collectors;
 import nl.hsleiden.ipsene.exceptions.OverdrawException;
 import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
+import nl.hsleiden.ipsene.interfaces.Model;
+import nl.hsleiden.ipsene.interfaces.View;
+import nl.hsleiden.ipsene.models.enums.CardType;
 
-public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
+public class Deck implements Model, FirebaseSerializable<List<Map<String, Object>>> {
   private ArrayList<Card> cards;
   private final Game game;
   private final int amountOfPlayers;
@@ -132,5 +135,20 @@ public class Deck implements FirebaseSerializable<List<Map<String, Object>>> {
       newCards.add(new Card(type, steps));
     }
     cards = newCards;
+  }
+
+  @Override
+  public void registerObserver(View v) {
+
+  }
+
+  @Override
+  public void unregisterObserver(View v) {
+
+  }
+
+  @Override
+  public void notifyObservers() {
+
   }
 }

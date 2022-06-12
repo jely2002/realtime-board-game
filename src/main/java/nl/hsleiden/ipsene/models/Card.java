@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
+import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.Playable;
+import nl.hsleiden.ipsene.interfaces.View;
+import nl.hsleiden.ipsene.models.enums.CardType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Card implements FirebaseSerializable<Map<String, Object>> {
+public class Card implements Model,FirebaseSerializable<Map<String, Object>> {
 
   private static final Logger logger = LoggerFactory.getLogger(Card.class.getName());
 
@@ -115,4 +118,19 @@ public class Card implements FirebaseSerializable<Map<String, Object>> {
 
   @Override
   public void update(DocumentSnapshot document) {}
+
+  @Override
+  public void registerObserver(View v) {
+
+  }
+
+  @Override
+  public void unregisterObserver(View v) {
+
+  }
+
+  @Override
+  public void notifyObservers() {
+
+  }
 }

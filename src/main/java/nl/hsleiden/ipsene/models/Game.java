@@ -8,6 +8,7 @@ import nl.hsleiden.ipsene.firebase.Firebase;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
+import nl.hsleiden.ipsene.models.enums.PlayerColour;
 
 public class Game implements Model, FirebaseSerializable<Map<String, Object>> {
 

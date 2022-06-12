@@ -2,10 +2,15 @@ package nl.hsleiden.ipsene.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.google.cloud.firestore.DocumentSnapshot;
+import com.sun.javafx.collections.MappingChange;
+import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
+import nl.hsleiden.ipsene.models.enums.PlayerColour;
 
-public class Board implements Model {
+public class Board implements Model, FirebaseSerializable<MappingChange.Map<String, Object>> {
 
   public static final int START_POSITION_INDEX = 37;
   public static final int HIGHEST_BOARD_POSITION = 101;
@@ -120,5 +125,15 @@ public class Board implements Model {
   @Override
   public void notifyObservers() {
     observers.forEach(View::update);
+  }
+
+  @Override
+  public MappingChange.Map<String, Object> serialize() {
+    return null;
+  }
+
+  @Override
+  public void update(DocumentSnapshot document) {
+
   }
 }

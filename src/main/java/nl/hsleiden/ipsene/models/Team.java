@@ -7,10 +7,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import nl.hsleiden.ipsene.exceptions.OverdrawException;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
+import nl.hsleiden.ipsene.interfaces.Model;
+import nl.hsleiden.ipsene.interfaces.View;
+import nl.hsleiden.ipsene.models.enums.PlayerColour;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Team implements FirebaseSerializable<Map<String, Object>> {
+public class Team implements Model, FirebaseSerializable<Map<String, Object>> {
 
   private static final Logger logger = LoggerFactory.getLogger(Team.class.getName());
 
@@ -101,5 +104,20 @@ public class Team implements FirebaseSerializable<Map<String, Object>> {
   @Override
   public void update(DocumentSnapshot document) {
     Arrays.stream(players).forEach(player -> player.update(document));
+  }
+
+  @Override
+  public void registerObserver(View v) {
+
+  }
+
+  @Override
+  public void unregisterObserver(View v) {
+
+  }
+
+  @Override
+  public void notifyObservers() {
+
   }
 }

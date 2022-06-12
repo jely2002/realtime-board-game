@@ -20,7 +20,7 @@ import nl.hsleiden.ipsene.controllers.GameController;
 import nl.hsleiden.ipsene.interfaces.View;
 import nl.hsleiden.ipsene.models.Card;
 import nl.hsleiden.ipsene.models.Pawn;
-import nl.hsleiden.ipsene.models.PlayerColour;
+import nl.hsleiden.ipsene.models.enums.PlayerColour;
 import nl.hsleiden.ipsene.models.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -7,8 +7,9 @@ import java.util.Map;
 import nl.hsleiden.ipsene.interfaces.FirebaseSerializable;
 import nl.hsleiden.ipsene.interfaces.Model;
 import nl.hsleiden.ipsene.interfaces.View;
+import nl.hsleiden.ipsene.models.enums.PlayerColour;
 
-public class Pawn implements FirebaseSerializable<Map<String, Object>>, Model {
+public class Pawn implements Model, FirebaseSerializable<Map<String, Object>> {
   private int boardPosition;
   private final PlayerColour colour;
   private Player player;

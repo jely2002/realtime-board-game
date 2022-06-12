@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import nl.hsleiden.ipsene.models.Board;
 import nl.hsleiden.ipsene.models.Pawn;
-import nl.hsleiden.ipsene.models.PlayerColour;
+import nl.hsleiden.ipsene.models.enums.PlayerColour;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

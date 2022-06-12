@@ -1,4 +1,4 @@
-package nl.hsleiden.ipsene.models;
+package nl.hsleiden.ipsene.models.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;
